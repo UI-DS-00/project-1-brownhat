@@ -13,13 +13,14 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table
+public
 class Aka{
     @Id
     @GeneratedValue
     private Long ID;
 
     @ManyToOne
-    //@JoinColumn(name = "title_id_id")
+    @JoinColumn(name = "title_id_id")
     private TitleBasic titleId;
     private int ordering;
     private String region;
@@ -30,11 +31,8 @@ class Aka{
 
 
     @OneToOne
-    //@JoinColumn(name = "rate_id")
+    @JoinColumn(name = "rate_id")
     private Rating rate;
-
-
-
 
 
 }

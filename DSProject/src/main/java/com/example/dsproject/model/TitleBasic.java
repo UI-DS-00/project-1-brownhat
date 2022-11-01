@@ -13,17 +13,17 @@ import java.util.ArrayList;
 @Setter
 @Table
 @ToString
+public
 class TitleBasic {
-
+/*
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
-
-
-
-
+ */
+    @Id
+    @Column(name = "tconst", nullable = false)
     private String tConst;
+
 
     private String title_type;
     private String primary_title;

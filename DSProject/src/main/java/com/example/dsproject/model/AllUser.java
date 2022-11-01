@@ -22,16 +22,16 @@ public class AllUser
     private String username;
     private String password;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private Set<Comment> comments;
 
 
-    @OneToMany
+    @OneToMany(mappedBy = "owner")
     private Set<WatchList> watchLists;
 
 
-    @OneToMany
-    private Set <TitleBasic> favoriteLists;
+    @OneToMany(mappedBy = "tConst")
+    private Set<TitleBasic> favoriteLists;
 
 
 }

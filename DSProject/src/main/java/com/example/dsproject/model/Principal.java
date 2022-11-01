@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table
+public
 class Principal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,12 +20,12 @@ class Principal {
     private Long id;
 
     @ManyToOne
-    //@JoinColumn(name = "t_const_id")
+    @JoinColumn(name = "t_const_id")
     private TitleBasic tConst;
 
     private int ordering;
     @ManyToOne
-    //@JoinColumn(name = "n_const_id")
+    @JoinColumn(name = "n_const_id")
     private NameBasic nConst;
 
     private String category;

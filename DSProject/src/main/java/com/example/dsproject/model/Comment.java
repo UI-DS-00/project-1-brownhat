@@ -19,18 +19,21 @@ public class Comment
    @GeneratedValue
    private Long ID;
 
+
+   private String text;
    @ManyToOne
-//   @JoinColumn(name = "user_id")
+   @JoinColumn(name = "user_id")
    private AllUser user;
 
-   @OneToMany
+   @OneToMany(mappedBy = "user")
    private Set<Comment> replies;
 
    @ManyToOne
-//   @JoinColumn(name = "aka_id")
+   @JoinColumn(name = "aka_id")
    private Aka aka;
 
 
-
-
+   @ManyToOne(optional = false)
+   private AllUser allUsers;
+   
 }

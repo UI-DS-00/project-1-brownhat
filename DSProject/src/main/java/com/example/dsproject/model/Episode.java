@@ -12,16 +12,20 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table
-
+public
 class Episode {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    //private TitleBasic tConst;
+    @OneToOne
+    @JoinColumn(name = "t_const_id")
+    private TitleBasic tConst;
 
-    //private TitleBasic parentConst;
+    @ManyToOne
+    @JoinColumn(name = "parent_const_id")
+    private TitleBasic parentConst;
     private int seasonNumber;
     private int episodeNumber;
 

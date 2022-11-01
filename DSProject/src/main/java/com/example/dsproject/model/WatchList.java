@@ -21,10 +21,12 @@ public class WatchList {
     private Long id;
 
 
+
     @ManyToOne
+    @JoinColumn(name = "owner_id")
     private AllUser owner;
 
-    @OneToMany
+    @OneToMany(mappedBy = "tConst")
     private Set<TitleBasic> list;
 
 
