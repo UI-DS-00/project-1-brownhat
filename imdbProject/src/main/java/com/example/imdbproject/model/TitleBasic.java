@@ -1,6 +1,6 @@
-package com.example.dsproject.model;
+package com.example.imdbproject.model;
 
-import com.example.dsproject.model.response.TitleBasicResponse;
+
 import lombok.*;
 
 import javax.persistence.*;

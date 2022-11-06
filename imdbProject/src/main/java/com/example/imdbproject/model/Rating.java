@@ -1,4 +1,4 @@
-package com.example.dsproject.model;
+package com.example.imdbproject.model;
 
 
 import lombok.*;

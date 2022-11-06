@@ -1,4 +1,4 @@
-package com.example.dsproject.model;
+package com.example.imdbproject.model;
 
 
 import lombok.*;
@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Set;
+
 
 @Entity
 @NoArgsConstructor
