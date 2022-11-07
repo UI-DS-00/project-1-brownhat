@@ -1,4 +1,4 @@
-package com.example.dsproject.model.enums;
+package com.example.imdbproject.model.enums;
 
 public enum Professions
 {
