@@ -1,7 +1,7 @@
 package com.example.imdbproject.repository;
 
 
-import com.example.dsproject.model.Principal;
+import com.example.imdbproject.model.Principal;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

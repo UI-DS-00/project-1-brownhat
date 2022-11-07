@@ -1,4 +1,4 @@
-package com.example.dsproject.model.response;
+package com.example.imdbproject.model.response;
 
 public class AkaSummery
 {

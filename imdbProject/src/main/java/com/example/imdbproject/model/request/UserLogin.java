@@ -1,4 +1,4 @@
-package com.example.dsproject.model.request;
+package com.example.imdbproject.model.request;
 
 public class UserLogin {
 
