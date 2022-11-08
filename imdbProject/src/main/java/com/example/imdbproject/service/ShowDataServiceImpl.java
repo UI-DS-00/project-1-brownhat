@@ -13,6 +13,10 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 @Slf4j
@@ -24,8 +28,9 @@ public class ShowDataServiceImpl implements ShowDataService{
 
     private final TitleBasicRepository titleBasicRepository;
     private final PrimaryProfessionRepository primaryProfessionRepository;
-
     private final NameBasicRepository nameBasicRepository;
+
+
 
 
     @Override
@@ -59,26 +64,13 @@ public class ShowDataServiceImpl implements ShowDataService{
         Set <PrimaryProfession> primaryProfession = primaryProfessionRepository.findByProfession(professions);
         Set <NameBasicSummery> nameBasics = new HashSet<>();
 
-
-
         for (PrimaryProfession primaryProfession1 :primaryProfession) {
            Optional <NameBasic>  person =  nameBasicRepository.findById(primaryProfession1.getNameBasicBy().getNConst());
 
-
            if (person.isPresent())
                nameBasics.add(person.get().responseModel());
-
-
         }
-
-
-
-
         return nameBasics;
-
-
     }
-
-
 
 }
