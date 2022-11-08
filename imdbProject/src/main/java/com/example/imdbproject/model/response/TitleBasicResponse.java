@@ -11,7 +11,7 @@ public class TitleBasicResponse {
     String original_title;
     boolean is_adult;
     int start_year;
-    int end_year;
+    int endYear;
     int runtime;
     String genres;
 
