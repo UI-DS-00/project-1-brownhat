@@ -2,6 +2,7 @@ package com.example.imdbproject.model;
 
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
@@ -12,6 +13,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table
+@Data
+@SuperBuilder (toBuilder = true)
 public
 class Rating {
     @Id
@@ -21,11 +24,26 @@ class Rating {
 
 
     @OneToOne
-    @JoinColumn(name = "t_const_tconst")
-    private TitleBasic tConst;
+    private TitleBasic titleConst;
 
-    private float averageRate;
-    private int vote_numbers;
+    private Float averageRate;
+    private Integer vote_numbers;
 
+
+
+    public void calculateAverage(Float rateAmount)
+    {
+        Float temp;
+
+       try {
+           temp = this.getVote_numbers() * this.getAverageRate();
+           temp += rateAmount;
+           ++vote_numbers;
+           averageRate = rateAmount / vote_numbers;
+       } catch (NullPointerException e) {
+           averageRate = rateAmount;
+           vote_numbers = 1;
+       }
+    }
 
    }

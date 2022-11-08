@@ -27,19 +27,28 @@ class TitleBasic {
     private String tConst;
 
 
-    private String title_type;
-    private String primary_title;
-    private String original_title;
-    private boolean is_adult;
-    private int start_year;
-    private int end_year;
+
+    @OneToOne
+    private Rating rating;
+
+    private String titleType;
+
+    private String primaryTitle;
+
+    private String originalTitle;
+
+    private boolean isAdult;
+
+    private int startYear;
+
+    private int endYear;
     private int runtime;
     private String genres;
 
 
     public TitleBasicResponse responseModel(){
-        return new TitleBasicResponse(title_type,primary_title,original_title
-                ,is_adult,start_year,end_year,runtime,genres);
+        return new TitleBasicResponse(titleType,primaryTitle,originalTitle
+                ,isAdult,startYear,endYear,runtime,genres);
     }
 
 }

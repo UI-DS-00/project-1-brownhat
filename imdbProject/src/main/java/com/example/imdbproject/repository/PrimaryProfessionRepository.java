@@ -12,6 +12,6 @@ import java.util.Set;
 
 public interface PrimaryProfessionRepository extends JpaRepository<PrimaryProfession, String> {
 
-    Set<PrimaryProfession> findByProfession(String profession);
+    Set<PrimaryProfession> findByProfession (String profession);
 
 }

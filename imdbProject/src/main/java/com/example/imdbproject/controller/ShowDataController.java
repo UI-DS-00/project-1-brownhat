@@ -50,5 +50,15 @@ public class ShowDataController {
         return new ResponseEntity<>(showDataService.ActorsAndDirectors("directors"),HttpStatus.OK);
     }
     //----------------------------------------------------------------------------------------------------
-    
+
+    @GetMapping("/allfilms/date")
+    public ResponseEntity <Set<TitleBasicResponse>> getFilmsByDate() {
+        return new ResponseEntity<>(showDataService.filmEndYear(), HttpStatus.OK);
+    }
+
+    @GetMapping("/allfilms/rate")
+    public ResponseEntity <Set<TitleBasicResponse>> getFilmsByRate() {
+        return new ResponseEntity<>(showDataService.filmRating(), HttpStatus.OK);
+    }
+
 }
