@@ -7,6 +7,7 @@ import com.example.imdbproject.model.response.NameBasicSummery;
 import com.example.imdbproject.model.response.TitleBasicResponse;
 import com.example.imdbproject.repository.NameBasicRepository;
 import com.example.imdbproject.repository.PrimaryProfessionRepository;
+import com.example.imdbproject.repository.RatingRepository;
 import com.example.imdbproject.repository.TitleBasicRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
