@@ -32,4 +32,12 @@ public class UserServiceController {
     {
         userServiceImp.addFilmToWatchList(id , watchlistName , filmId);
     }
+
+
+    @PostMapping("add/new/comment/{titleBasic}/{id}")
+    public void addComment(@RequestBody String commentText , @PathVariable String titleBasic ,@PathVariable Integer id ){
+
+        userServiceImp.addComment(id , commentText , titleBasic);
+
+    }
 }

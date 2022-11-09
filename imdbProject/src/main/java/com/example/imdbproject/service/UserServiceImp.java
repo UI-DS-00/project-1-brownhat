@@ -3,20 +3,15 @@ package com.example.imdbproject.service;
 import com.example.imdbproject.exceptions.DuplicateName;
 import com.example.imdbproject.exceptions.WrongInput;
 import com.example.imdbproject.exceptions.ratingOutOfBound;
-import com.example.imdbproject.model.AllUser;
-import com.example.imdbproject.model.Rating;
-import com.example.imdbproject.model.TitleBasic;
-import com.example.imdbproject.model.WatchList;
-import com.example.imdbproject.repository.AllUserRepository;
-import com.example.imdbproject.repository.RatingRepository;
-import com.example.imdbproject.repository.TitleBasicRepository;
-import com.example.imdbproject.repository.WatchListRepository;
+import com.example.imdbproject.model.*;
+import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Optional;
+import com.example.imdbproject.model.*;
 
 
 @Slf4j
@@ -30,6 +25,8 @@ public class UserServiceImp implements UserService{
 
     private TitleBasicRepository titleBasicRepository;
     private AllUserRepository allUserRepository;
+
+    private CommentRepository commentRepository;
 
     @Override
     public void rating(String titleBasic, Float rateAmount) {
@@ -83,4 +80,20 @@ public class UserServiceImp implements UserService{
         watchListRepository.save(currentWatchList.get());
 
     }
+
+    @Override
+    public void addComment(Integer userId, String commentText, String titleBasicId) {
+
+        Optional<AllUser> user = allUserRepository.findById(userId);
+        Optional <TitleBasic> movie = titleBasicRepository.findById(titleBasicId);
+
+        if (user.isEmpty() || movie.isEmpty())
+            throw new WrongInput("wrong user id or movie id");
+
+        Comment newComment= new Comment(user.get() , movie.get() ,commentText);
+
+        commentRepository.save(newComment);
+    }
+
+
 }

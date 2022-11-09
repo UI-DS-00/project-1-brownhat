@@ -12,4 +12,6 @@ public interface UserService {
     void makeWatchList(String name , Integer userId);
 
     void addFilmToWatchList(Integer userId,String name ,String titleBasic);
+
+    void addComment(Integer userId , String commentText , String titleBasicId);
 }
