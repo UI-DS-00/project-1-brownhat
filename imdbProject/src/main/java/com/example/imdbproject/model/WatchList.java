@@ -28,7 +28,7 @@ public class WatchList {
     private AllUser owner;
 
     @OneToMany(mappedBy = "tConst")
-    @JoinColumn(name = "titleBasics")
+ //   @JoinColumn(name = "titleBasics")
     private Set<TitleBasic> list;
 
 

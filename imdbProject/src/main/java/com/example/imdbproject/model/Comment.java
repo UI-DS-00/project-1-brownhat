@@ -29,11 +29,13 @@ public class Comment
    private Set<Comment> replies;
 
    @ManyToOne
-   @JoinColumn(name = "aka_id")
-   private Aka aka;
+   @JoinColumn(name = "titleBasic_id")
+   private TitleBasic titleBasic;
 
 
-   @ManyToOne(optional = false)
-   private AllUser allUsers;
-   
+   public Comment(AllUser user , TitleBasic titleBasic , String text) {
+      this.text = text;
+      this.titleBasic = titleBasic;
+      this.user = user;
+   }
 }
