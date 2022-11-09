@@ -31,16 +31,16 @@ class Crew {
     @ManyToMany
     @JoinTable(
             name = "Crew_NameBasic_Directors",
-            joinColumns = @JoinColumn(name = "NameBasic_id"),
-            inverseJoinColumns = @JoinColumn(name = "Crew_id"))
+            joinColumns = @JoinColumn(name = "Crew_id"),
+            inverseJoinColumns = @JoinColumn(name = "NameBasic_id"))
     private Set<NameBasic> directors;
 
 
     @ManyToMany
     @JoinTable(
             name = "Crew_NameBasic_Writers",
-            joinColumns = @JoinColumn(name = "NameBasic_id"),
-            inverseJoinColumns = @JoinColumn(name = "Crew_id"))
+            joinColumns = @JoinColumn(name = "Crew_id"),
+            inverseJoinColumns = @JoinColumn(name = "NameBasic_id"))
     private Set<NameBasic> writers;
 
 }

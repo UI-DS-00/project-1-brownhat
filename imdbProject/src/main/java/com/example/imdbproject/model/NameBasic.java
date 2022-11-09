@@ -35,21 +35,16 @@ class NameBasic{
 
 
     @OneToMany
-    //@JoinColumn(name = "name_basic_primary_professions")
     private Set<PrimaryProfession> primary_professions;
 
     @ManyToMany
     @JoinTable(
-            name = "name_basic_TitleBasic",
-            joinColumns = @JoinColumn(name = "TitleBasic_id"),
-            inverseJoinColumns = @JoinColumn(name = "NameBasic_id"))
+            name = "TitleBasic_NameBasic",
+            joinColumns = @JoinColumn(name = "NameBasic_id"),
+            inverseJoinColumns = @JoinColumn(name = "TitleBasic_id"))
 
     private Set<TitleBasic> KnownForTitles;
-
-
-
-    public NameBasicSummery responseModel()
-    {
+    public NameBasicSummery responseModel() {
         return new NameBasicSummery(primaryName , birth_year , death_year);
     }
 

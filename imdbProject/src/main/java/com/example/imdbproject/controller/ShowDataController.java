@@ -1,19 +1,15 @@
 package com.example.imdbproject.controller;
 
 
-import com.example.imdbproject.model.NameBasic;
-import com.example.imdbproject.model.TitleBasic;
 import com.example.imdbproject.model.response.NameBasicSummery;
 import com.example.imdbproject.model.response.TitleBasicResponse;
-import com.example.imdbproject.service.ShowDataService;
 import com.example.imdbproject.service.ShowDataServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.Optional;
+
 import java.util.Set;
 
 @RestController
@@ -21,7 +17,7 @@ import java.util.Set;
 public class ShowDataController {
 
     private final ShowDataServiceImpl showDataService;
-
+    //private final ReadingFilesImpl readingFiles;
 
     //all films service function
 
@@ -49,6 +45,11 @@ public class ShowDataController {
     public ResponseEntity<Set<NameBasicSummery>> getDirectors() {
         return new ResponseEntity<>(showDataService.ActorsAndDirectors("directors"),HttpStatus.OK);
     }
+/*
+    @GetMapping ("/test")
+    public ResponseEntity<> getDirectors() throws IOException {
+        return new ResponseEntity<>(readingFiles.readingFromFiles(),HttpStatus.OK);
+    }
     //----------------------------------------------------------------------------------------------------
 
     @GetMapping("/allfilms/date")
@@ -61,4 +62,5 @@ public class ShowDataController {
         return new ResponseEntity<>(showDataService.filmRating(), HttpStatus.OK);
     }
 
+    */
 }

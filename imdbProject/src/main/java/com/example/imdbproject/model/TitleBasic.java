@@ -17,11 +17,11 @@ import java.util.ArrayList;
 @ToString
 public
 class TitleBasic {
-/*
-    @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
- */
+    /*
+        @Id
+        @Column(name = "id", nullable = false)
+        private Long id;
+     */
     @Id
     @Column(name = "tconst", nullable = false)
     private String tConst;
@@ -50,5 +50,9 @@ class TitleBasic {
         return new TitleBasicResponse(titleType,primaryTitle,originalTitle
                 ,isAdult,startYear,endYear,runtime,genres);
     }
+    public TitleBasic(String tConst){
+        this.tConst=tConst;
+    }
+
 
 }
