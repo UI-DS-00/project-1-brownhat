@@ -6,11 +6,11 @@ import lombok.Value;
 public class TitleBasicResponse {
 
 
-    String title_type;
-    String primary_title;
-    String original_title;
-    boolean is_adult;
-    int start_year;
+    String titleType;
+    String primaryTitle;
+    String originalTitle;
+    boolean isAdult;
+    int startYear;
     int endYear;
     int runtime;
     String genres;

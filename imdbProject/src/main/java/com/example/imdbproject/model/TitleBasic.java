@@ -5,6 +5,7 @@ import com.example.imdbproject.model.response.TitleBasicResponse;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 
 
 @Entity
@@ -16,29 +17,42 @@ import javax.persistence.*;
 @ToString
 public
 class TitleBasic {
-
+    /*
+        @Id
+        @Column(name = "id", nullable = false)
+        private Long id;
+     */
     @Id
     @Column(name = "tconst", nullable = false)
     private String tConst;
 
 
-    private String title_type;
-    private String primary_title;
-    private String original_title;
-    private boolean is_adult;
-    private int start_year;
-    private Integer endYear;
+
+    @OneToOne
+    private Rating rating;
+
+    private String titleType;
+
+    private String primaryTitle;
+
+    private String originalTitle;
+
+    private boolean isAdult;
+
+    private int startYear;
+
+    private int endYear;
     private int runtime;
     private String genres;
 
 
     public TitleBasicResponse responseModel(){
-        return new TitleBasicResponse(title_type,primary_title,original_title
-                ,is_adult,start_year, endYear,runtime,genres);
+        return new TitleBasicResponse(titleType,primaryTitle,originalTitle
+                ,isAdult,startYear,endYear,runtime,genres);
     }
-
     public TitleBasic(String tConst){
         this.tConst=tConst;
     }
+
 
 }

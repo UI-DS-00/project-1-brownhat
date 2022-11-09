@@ -1,6 +1,8 @@
 package com.example.imdbproject.service;
 
 import com.example.imdbproject.model.NameBasic;
+import com.example.imdbproject.model.Rating;
+import com.example.imdbproject.model.TitleBasic;
 import com.example.imdbproject.model.response.NameBasicSummery;
 import com.example.imdbproject.model.response.TitleBasicResponse;
 
@@ -14,7 +16,11 @@ public interface ShowDataService {
 
     Set <NameBasicSummery> ActorsAndDirectors (String professions);
 
-    Set<TitleBasicResponse> allMoviesData ();
+    Set<TitleBasicResponse> allMoviesData();
+
+    Set <TitleBasicResponse> filmEndYear();
+
+    Set <TitleBasicResponse> filmRating();
 
 
 
