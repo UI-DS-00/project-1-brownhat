@@ -1,6 +1,9 @@
 package com.example.imdbproject.model.response;
 
+import com.example.imdbproject.model.Genre;
 import lombok.Value;
+
+import java.util.Set;
 
 @Value
 public class TitleBasicResponse {
@@ -13,7 +16,7 @@ public class TitleBasicResponse {
     int startYear;
     int endYear;
     int runtime;
-    String genres;
+    Set<Genre> genres;
 
 
 }

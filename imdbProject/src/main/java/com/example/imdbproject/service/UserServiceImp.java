@@ -3,7 +3,10 @@ package com.example.imdbproject.service;
 import com.example.imdbproject.exceptions.DuplicateName;
 import com.example.imdbproject.exceptions.WrongInput;
 import com.example.imdbproject.exceptions.ratingOutOfBound;
-import com.example.imdbproject.model.*;
+import com.example.imdbproject.model.AllUser;
+import com.example.imdbproject.model.Rating;
+import com.example.imdbproject.model.TitleBasic;
+import com.example.imdbproject.model.WatchList;
 import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +26,10 @@ public class UserServiceImp implements UserService{
     private RatingRepository ratingRepository;
     private WatchListRepository watchListRepository;
 
+    private FavouriteListRepository favouriteListRepository;
+    private CommentRepository commentRepository;
     private TitleBasicRepository titleBasicRepository;
     private AllUserRepository allUserRepository;
-
-    private CommentRepository commentRepository;
 
     @Override
     public void rating(String titleBasic, Float rateAmount) {
@@ -79,6 +82,43 @@ public class UserServiceImp implements UserService{
         currentWatchList.get().getList().add(film.get());
         watchListRepository.save(currentWatchList.get());
 
+    }
+
+    @Override
+    public void makeFavouriteList(String name, Integer userId) {
+        Optional<AllUser> user = allUserRepository.findById(userId);
+        try {
+            FavouriteList newWatchList = new FavouriteList(name , user.get() , new HashSet<>());
+            favouriteListRepository.save(newWatchList);
+
+        }catch (Exception e) {
+            throw new DuplicateName();
+        }
+    }
+
+    @Override
+    public void addFilmToFavouriteList(Integer userId, String name, String titleBasic) {
+        Optional <FavouriteList> currentWatchList = favouriteListRepository.findByName(name);
+        Optional <AllUser> user = allUserRepository.findById(userId);
+        Optional <TitleBasic> film = titleBasicRepository.findById(titleBasic);
+
+        if (currentWatchList.isEmpty())
+            throw new WrongInput("watch list not found");
+        if (film.isEmpty())
+            throw new WrongInput("film not found");
+
+        currentWatchList.get().getList().add(film.get());
+        favouriteListRepository.save(currentWatchList.get());
+    }
+
+    @Override
+    public Optional<Comment> reply(Comment comment, Comment reComment) {
+
+        commentRepository.save(reComment);
+        comment.getReplies().add(reComment);
+        commentRepository.save(comment);
+
+        return Optional.empty();
     }
 
     @Override

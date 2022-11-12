@@ -2,7 +2,6 @@
 
 package com.example.imdbproject.model;
 
-import com.example.imdbproject.model.TitleBasic;
 import lombok.*;
 
 import javax.persistence.*;

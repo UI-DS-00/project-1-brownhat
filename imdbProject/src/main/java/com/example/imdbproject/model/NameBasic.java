@@ -5,7 +5,6 @@ import com.example.imdbproject.model.response.NameBasicSummery;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Set;
 
 

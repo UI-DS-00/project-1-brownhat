@@ -5,7 +5,7 @@ import com.example.imdbproject.model.response.TitleBasicResponse;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.Set;
 
 
 @Entity
@@ -17,6 +17,8 @@ import java.util.ArrayList;
 @ToString
 public
 class TitleBasic {
+
+
     /*
         @Id
         @Column(name = "id", nullable = false)
@@ -43,16 +45,28 @@ class TitleBasic {
 
     private int endYear;
     private int runtime;
-    private String genres;
-
+    @OneToMany
+    //@JoinColumn(name = "genre")
+    private Set<Genre> genres;
 
     public TitleBasicResponse responseModel(){
         return new TitleBasicResponse(titleType,primaryTitle,originalTitle
-                ,isAdult,startYear,endYear,runtime,genres);
+                ,isAdult,startYear,endYear,runtime, genres);
     }
     public TitleBasic(String tConst){
         this.tConst=tConst;
     }
 
-
+    public TitleBasic(String tConst, String titleType, String primaryTitle, String originalTitle,
+                      boolean isAdult, int startYear, int endYear, int runtime, Set<Genre> genres) {
+        this.tConst = tConst;
+        this.titleType = titleType;
+        this.primaryTitle = primaryTitle;
+        this.originalTitle = originalTitle;
+        this.isAdult = isAdult;
+        this.startYear = startYear;
+        this.endYear = endYear;
+        this.runtime = runtime;
+        this.genres = genres;
+    }
 }

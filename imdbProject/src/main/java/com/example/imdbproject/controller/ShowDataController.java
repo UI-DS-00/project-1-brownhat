@@ -1,6 +1,8 @@
 package com.example.imdbproject.controller;
 
 
+import com.example.imdbproject.model.FavouriteList;
+import com.example.imdbproject.model.TitleBasic;
 import com.example.imdbproject.model.response.NameBasicSummery;
 import com.example.imdbproject.model.response.TitleBasicResponse;
 import com.example.imdbproject.service.ShowDataServiceImpl;
@@ -8,6 +10,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
@@ -17,6 +21,7 @@ import java.util.Set;
 public class ShowDataController {
 
     private final ShowDataServiceImpl showDataService;
+
     //private final ReadingFilesImpl readingFiles;
 
     //all films service function
@@ -45,22 +50,9 @@ public class ShowDataController {
     public ResponseEntity<Set<NameBasicSummery>> getDirectors() {
         return new ResponseEntity<>(showDataService.ActorsAndDirectors("directors"),HttpStatus.OK);
     }
-/*
-    @GetMapping ("/test")
-    public ResponseEntity<> getDirectors() throws IOException {
-        return new ResponseEntity<>(readingFiles.readingFromFiles(),HttpStatus.OK);
-    }
-    //----------------------------------------------------------------------------------------------------
 
-    @GetMapping("/allfilms/date")
-    public ResponseEntity <Set<TitleBasicResponse>> getFilmsByDate() {
-        return new ResponseEntity<>(showDataService.filmEndYear(), HttpStatus.OK);
+    @GetMapping ("/others/favouriteList/{movieName}")
+    public ResponseEntity<Set<FavouriteList>> getFavouriteLists() {
+        return new ResponseEntity<>(showDataService.favouriteList(new TitleBasic("1")),HttpStatus.OK);
     }
-
-    @GetMapping("/allfilms/rate")
-    public ResponseEntity <Set<TitleBasicResponse>> getFilmsByRate() {
-        return new ResponseEntity<>(showDataService.filmRating(), HttpStatus.OK);
-    }
-
-    */
 }

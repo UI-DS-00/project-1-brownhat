@@ -10,4 +10,6 @@ public interface RatingRepository extends JpaRepository<Rating, String> {
 
     Set<Rating> findAllByOrderByAverageRateDesc();
 
+    public Set<Rating> findTop10ByOrderByAverageRateDesc();
+
 }
