@@ -1,24 +1,13 @@
 package com.example.imdbproject.service;
-import com.example.imdbproject.model.NameBasic;
-import com.example.imdbproject.model.PrimaryProfession;
-import com.example.imdbproject.model.Rating;
-import com.example.imdbproject.model.TitleBasic;
+import com.example.imdbproject.model.*;
 import com.example.imdbproject.model.response.NameBasicSummery;
 import com.example.imdbproject.model.response.TitleBasicResponse;
-import com.example.imdbproject.repository.NameBasicRepository;
-import com.example.imdbproject.repository.PrimaryProfessionRepository;
-import com.example.imdbproject.repository.RatingRepository;
-import com.example.imdbproject.repository.TitleBasicRepository;
+import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
 
 @Slf4j
@@ -34,8 +23,7 @@ public class ShowDataServiceImpl implements ShowDataService{
 
     private final RatingRepository ratingRepository;
 
-
-
+    private FavouriteListRepository favouriteListRepository;
 
     @Override
     public TitleBasicResponse allMoviesData(String tConst) {
@@ -109,5 +97,32 @@ public class ShowDataServiceImpl implements ShowDataService{
         return allFilms;
 
     }
+
+    @Override
+    public Set<TitleBasicResponse> topTen() {
+
+        Set<Rating> inputRatings= ratingRepository.findTop10ByOrderByAverageRateDesc();
+        Set<TitleBasic> filteredMovies = new HashSet<>();
+        Set<TitleBasicResponse> moviesByRating = new HashSet<>();
+
+        for (Rating rating:inputRatings)
+            filteredMovies.add(rating.getTitleConst());
+
+        for(TitleBasic titleBasic1:filteredMovies)
+            moviesByRating.add(titleBasic1.responseModel());
+
+
+        return moviesByRating;
+    }
+
+    @Override
+    public Set<FavouriteList> favouriteList(TitleBasic titleBasic) {
+
+        Set<FavouriteList> favouriteLists;
+        favouriteLists = favouriteListRepository.findByList(titleBasic);
+
+        return favouriteLists;
+    }
+
 
 }

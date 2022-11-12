@@ -3,7 +3,6 @@ package com.example.imdbproject.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Set;
 
 @Entity
@@ -22,16 +21,34 @@ public class AllUser
     private String username;
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    //@OneToMany(mappedBy = "user")
+    @OneToMany
+
+    @JoinTable(
+            name = "user_comment",
+            joinColumns = @JoinColumn(name = "allUser"),
+            inverseJoinColumns = @JoinColumn(name = "Comment"))
     private Set<Comment> comments;
 
 
-    @OneToMany(mappedBy = "owner")
-    private Set<WatchList> watchLists;
+    //@OneToMany(mappedBy = "owner")
+    @OneToMany
+    @JoinTable(
+            name = "user_watchList",
+            joinColumns = @JoinColumn(name = "allUser"),
+            inverseJoinColumns = @JoinColumn(name = "watchList"))
+
+    private Set<WatchList> movieLists;
 
 
-    @OneToMany(mappedBy = "tConst")
-    private Set<TitleBasic> favoriteLists;
+    //@OneToMany(mappedBy = "owner")
+    @OneToMany
+    @JoinTable(
+            name = "user_favourite",
+            joinColumns = @JoinColumn(name = "allUser"),
+            inverseJoinColumns = @JoinColumn(name = "FavouriteList"))
+
+    private Set<FavouriteList> favoriteLists;
 
 
 }
