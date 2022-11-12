@@ -1,10 +1,17 @@
 package com.example.imdbproject.controller;
 
+import com.example.imdbproject.model.AllUser;
 import com.example.imdbproject.service.UserServiceImp;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping ("/loggedIn/{id}")
 public class UserServiceController {
 
 
@@ -36,4 +43,14 @@ public class UserServiceController {
         userServiceImp.addComment(id , commentText , titleBasic);
 
     }
+
+
+    //--------------------------------------------------------------------------JWT :)
+
+    @GetMapping("/all/users")
+    public ResponseEntity<List<AllUser>> getUsers(){
+
+        return ResponseEntity.ok().body(userServiceImp.getUser());
+    }
+
 }

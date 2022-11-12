@@ -9,17 +9,25 @@ import com.example.imdbproject.model.TitleBasic;
 import com.example.imdbproject.model.WatchList;
 import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import com.example.imdbproject.model.*;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Slf4j
 @AllArgsConstructor
 @Service
+@RequiredArgsConstructor
+@Transactional
+@javax.transaction.Transactional
 public class UserServiceImp implements UserService{
 
 
@@ -30,6 +38,8 @@ public class UserServiceImp implements UserService{
     private CommentRepository commentRepository;
     private TitleBasicRepository titleBasicRepository;
     private AllUserRepository allUserRepository;
+
+    private RoleRepository roleRepository;
 
     @Override
     public void rating(String titleBasic, Float rateAmount) {
@@ -135,5 +145,48 @@ public class UserServiceImp implements UserService{
         commentRepository.save(newComment);
     }
 
+
+    //----------------------------------------------------------------------------------------JWT :)
+    @Override
+    public AllUser saveUser(AllUser allUser) {
+
+        log.info("saving new user to the database");
+
+        return allUserRepository.save(allUser);
+    }
+
+    @Override
+    public Role saveRole(Role role) {
+
+        log.info("saving new role to the database");
+        return roleRepository.save(role);
+    }
+
+    @Override
+    public void addRoleToUser(String username, String roleName) {
+
+        log.info("adding role to the user");
+
+        Optional<AllUser> allUser = allUserRepository.findByUsername(username);
+        Optional<Role> role = roleRepository.findByName(roleName);
+        allUser.get().getRoles().add(role.get());
+
+
+    }
+
+    @Override
+    public Optional<AllUser> getUser(String userName) {
+
+        log.info("getting a specific user username: {} form the database", userName);
+        return allUserRepository.findByUsername(userName);
+    }
+
+    @Override
+    public List<AllUser> getUser() {
+
+        log.info("getting all users from the database");
+
+        return allUserRepository.findAll();
+    }
 
 }

@@ -1,8 +1,10 @@
 package com.example.imdbproject.service;
 
 import com.example.imdbproject.model.AllUser;
+import com.example.imdbproject.model.Role;
 import com.example.imdbproject.model.TitleBasic;
 
+import java.util.List;
 import java.util.Set;
 import com.example.imdbproject.model.Comment;
 
@@ -21,4 +23,18 @@ public interface UserService {
 
 
     void addComment(Integer userId , String commentText , String titleBasicId);
+
+    //================================ JWT :)
+
+    AllUser saveUser (AllUser allUser);
+
+    Role saveRole(Role role);
+
+    void addRoleToUser(String username , String roleName);
+
+    Optional<AllUser> getUser(String userName);
+
+
+    //method of returning a list of all users
+     List<AllUser> getUser();
 }
