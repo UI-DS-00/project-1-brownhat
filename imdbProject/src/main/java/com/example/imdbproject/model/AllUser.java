@@ -12,6 +12,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Table
+@Data
+
 public class AllUser
 {
     @Id
@@ -50,5 +52,7 @@ public class AllUser
 
     private Set<FavouriteList> favoriteLists;
 
+    @ManyToMany (fetch = FetchType.EAGER)
+    private Set <Role> roles;
 
 }
