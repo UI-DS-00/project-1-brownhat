@@ -2,9 +2,11 @@ package com.example.imdbproject.controller;
 
 import com.example.imdbproject.model.AllUser;
 import com.example.imdbproject.service.UserService;
+import com.example.imdbproject.service.UserService;
 import com.example.imdbproject.service.UserServiceImp;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.List;
 
 
 @RestController
+
 @AllArgsConstructor
 @RequestMapping ("/loggedIn")
 
@@ -54,9 +57,8 @@ public class UserServiceController {
 
     @GetMapping("/all/users")
     public ResponseEntity<List<AllUser>> getUsers(){
-        //return ResponseEntity.ok().body(userServiceImp.getUser());
-        return new ResponseEntity<>(userServiceImp.getUser(), HttpStatus.OK);
-
+        return ResponseEntity.ok().body(userServiceImp.getUser());
+        //return new ResponseEntity<>(userServiceImp.getUser(), HttpStatus.OK);
     }
 
 }
