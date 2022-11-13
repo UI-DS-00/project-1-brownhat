@@ -19,27 +19,26 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.example.imdbproject.model.*;
-import org.springframework.transaction.annotation.Transactional;
+
+import javax.transaction.Transactional;
 
 
 @Slf4j
 @AllArgsConstructor
 @Service
-@RequiredArgsConstructor
 @Transactional
-@javax.transaction.Transactional
 public class UserServiceImp implements UserService{
 
 
-    private RatingRepository ratingRepository;
-    private WatchListRepository watchListRepository;
+    private final RatingRepository ratingRepository;
+    private final WatchListRepository watchListRepository;
 
-    private FavouriteListRepository favouriteListRepository;
-    private CommentRepository commentRepository;
-    private TitleBasicRepository titleBasicRepository;
-    private AllUserRepository allUserRepository;
+    private final FavouriteListRepository favouriteListRepository;
+    private final CommentRepository commentRepository;
+    private final TitleBasicRepository titleBasicRepository;
+    private final AllUserRepository allUserRepository;
 
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public void rating(String titleBasic, Float rateAmount) {
@@ -185,8 +184,10 @@ public class UserServiceImp implements UserService{
     public List<AllUser> getUser() {
 
         log.info("getting all users from the database");
-
-        return allUserRepository.findAll();
+        System.out.println("\n\n hello");
+        List<AllUser> allUserList;
+        allUserList =  allUserRepository.findAll();
+        return allUserList;
     }
 
 }
