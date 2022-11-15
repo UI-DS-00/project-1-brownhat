@@ -169,8 +169,6 @@ public class UserServiceImp implements UserService{
         Optional<AllUser> allUser = allUserRepository.findByUsername(username);
         Optional<Role> role = roleRepository.findByName(roleName);
         allUser.get().getRoles().add(role.get());
-
-
     }
 
     @Override
