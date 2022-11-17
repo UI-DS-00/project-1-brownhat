@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.dynamic.DynamicType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,6 +43,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
 
     @Override
+    //this is where spring is going to load users from the database
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<AllUser> user = allUserRepository.findByUsername(username);
         if (user == null){
@@ -50,10 +52,19 @@ public class UserServiceImp implements UserService, UserDetailsService {
         }else {
             log.info("user found in the db");
         }
-        //return null;
+
+
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.get().getRoles().forEach(role -> {authorities.add(new SimpleGrantedAuthority(role.getName()))});
-        return org.springframework.security.core.userdetails.User(user.get().getUsername(),user.get().getPassword(),authorities);
+
+        // we are looping through all the roles of the user we found , and for each role , we are going to
+        //give them a simple granted authority
+
+        user.get().getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        });
+        return new User(user.get().getUsername(),user.get().getPassword(),authorities);
+
+        //authorities : we are passing all of our rules and permissions of our application up above
     }
 
     @Override

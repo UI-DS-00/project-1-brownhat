@@ -16,7 +16,9 @@ public class ImdbProjectApplication {
 		SpringApplication.run(ImdbProjectApplication.class, args);
 	}
 
+
 	@Bean
+	// we are using default spring password encoder instead of making them ourselves
 	PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
 	}
