@@ -44,7 +44,6 @@ public class ShowDataServiceImpl implements ShowDataService{
         titleBasicRepository.findAll().forEach(titleBasic ->
                 allFilms.add(titleBasic.responseModel()));
 
-
         return allFilms;
     }
 
@@ -62,10 +61,6 @@ public class ShowDataServiceImpl implements ShowDataService{
            if (person.isPresent())
                nameBasics.add(person.get().responseModel());
         }
-
-
-
-
         return nameBasics;
 
 
