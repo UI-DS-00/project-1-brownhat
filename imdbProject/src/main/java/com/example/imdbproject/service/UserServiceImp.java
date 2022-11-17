@@ -9,14 +9,15 @@ import com.example.imdbproject.model.TitleBasic;
 import com.example.imdbproject.model.WatchList;
 import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.dynamic.DynamicType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import com.example.imdbproject.model.*;
 
@@ -27,7 +28,7 @@ import javax.transaction.Transactional;
 @AllArgsConstructor
 @Service
 @Transactional
-public class UserServiceImp implements UserService{
+public class UserServiceImp implements UserService, UserDetailsService {
 
 
     private final RatingRepository ratingRepository;
@@ -37,8 +38,23 @@ public class UserServiceImp implements UserService{
     private final CommentRepository commentRepository;
     private final TitleBasicRepository titleBasicRepository;
     private final AllUserRepository allUserRepository;
-
     private final RoleRepository roleRepository;
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<AllUser> user = allUserRepository.findByUsername(username);
+        if (user == null){
+            log.error("user not found");
+            throw new UsernameNotFoundException("user not found");
+        }else {
+            log.info("user found in the db");
+        }
+        //return null;
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        user.get().getRoles().forEach(role -> {authorities.add(new SimpleGrantedAuthority(role.getName()))});
+        return org.springframework.security.core.userdetails.User(user.get().getUsername(),user.get().getPassword(),authorities);
+    }
 
     @Override
     public void rating(String titleBasic, Float rateAmount) {
@@ -187,5 +203,6 @@ public class UserServiceImp implements UserService{
         allUserList =  allUserRepository.findAll();
         return allUserList;
     }
+
 
 }

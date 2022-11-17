@@ -4,8 +4,11 @@ import com.example.imdbproject.model.AllUser;
 import com.example.imdbproject.model.Role;
 import com.example.imdbproject.model.request.RoleToUserForm;
 import com.example.imdbproject.service.UserService;
+import com.example.imdbproject.service.UserServiceImp;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,7 +26,7 @@ public class UserServiceController {
 
 
     private final UserService userService;
-
+    private final UserService userServiceImp;
 
     @PostMapping ("/rating")
     public void makeRating(@RequestBody String titleBasic,@RequestBody Float ratingAmount)
@@ -40,14 +43,14 @@ public class UserServiceController {
     @PostMapping("/add/to/watchlist/{id}")
     public void addToWatchList(@RequestBody String filmId , @RequestBody String watchlistName , @PathVariable Integer id)
     {
-        userService.addFilmToWatchList(id , watchlistName , filmId);
+        userServiceImp.addFilmToWatchList(id , watchlistName , filmId);
     }
 
 
     @PostMapping("add/new/comment/{titleBasic}/{id}")
     public void addComment(@RequestBody String commentText , @PathVariable String titleBasic ,@PathVariable Integer id ){
 
-        userService.addComment(id , commentText , titleBasic);
+        userServiceImp.addComment(id , commentText , titleBasic);
 
     }
 
