@@ -3,6 +3,7 @@ package com.example.imdbproject.repository;
 
 import com.example.imdbproject.model.TitleBasic;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Set;
 

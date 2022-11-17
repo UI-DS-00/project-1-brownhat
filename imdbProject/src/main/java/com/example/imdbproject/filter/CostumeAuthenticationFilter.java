@@ -2,6 +2,7 @@ package com.example.imdbproject.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -23,11 +24,27 @@ public class CostumeAuthenticationFilter extends UsernamePasswordAuthenticationF
 
     //constructor
     public CostumeAuthenticationFilter(AuthenticationManager authenticationManager){
+        //we tell authenticationManager to authenticate the user
         this.authenticationManager = authenticationManager;
     }
+
+    //In the fellow function we grab username and password from the request and pass it to UsernamePasswordAuthenticationToken
+
+    //If login was successful, it calls successfulAuthentication
+    //else it calls unsuccessfulAuthentication
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        return super.attemptAuthentication(request, response);
+        //This is the way we reach username and password
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        log.info("username id: {}" , username);
+        log.info("password id: {}" , password);
+        //This gets username and password to create token
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,password);
+        //we tell authenticationManager to authenticate the user
+        return authenticationManager.authenticate(authenticationToken);
+
+
     }
 
 

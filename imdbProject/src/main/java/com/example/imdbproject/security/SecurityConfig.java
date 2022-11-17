@@ -1,8 +1,13 @@
 package com.example.imdbproject.security;
 
 
+import com.example.imdbproject.filter.CostumeAuthenticationFilter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,7 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration //to be picked up by spring
 @EnableWebSecurity
 @RequiredArgsConstructor
-
 //this is where we are going to tell the application how we are going to manage the security and the users
 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -24,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     //we need beans for each of these two
+
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -51,7 +56,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //we want to give everyone access at this point
         http.authorizeRequests().anyRequest().permitAll();
 
-        http.addFilter(null);
+        http.addFilter(new CostumeAuthenticationFilter(authenticationManagerBean()));
 
     }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception{
+
+        return super.authenticationManagerBean();
+    }
+
+
 }
