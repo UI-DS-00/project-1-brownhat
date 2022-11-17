@@ -12,6 +12,9 @@ import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.dynamic.DynamicType;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +35,7 @@ import javax.transaction.Transactional;
 @AllArgsConstructor
 @Service
 @Transactional
+@Configuration
 public class UserServiceImp implements UserService, UserDetailsService {
 
 
@@ -218,6 +222,4 @@ public class UserServiceImp implements UserService, UserDetailsService {
         allUserList =  allUserRepository.findAll();
         return allUserList;
     }
-
-
 }
