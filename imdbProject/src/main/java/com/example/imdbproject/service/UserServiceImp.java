@@ -47,6 +47,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
     private final AllUserRepository allUserRepository;
     private final RoleRepository roleRepository;
 
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 
     @Override
     //this is where spring is going to load users from the database
@@ -183,7 +185,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
     public AllUser saveUser(AllUser allUser) {
 
         log.info("saving new user to the database");
-
+        //Encoding the user's password
+        allUser.setPassword(passwordEncoder.encode(allUser.getPassword()));
         return allUserRepository.save(allUser);
     }
 

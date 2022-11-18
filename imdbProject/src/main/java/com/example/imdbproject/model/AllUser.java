@@ -23,6 +23,7 @@ public class AllUser
     private String username;
     private String password;
 
+
     //@OneToMany(mappedBy = "user")
     @OneToMany
 
