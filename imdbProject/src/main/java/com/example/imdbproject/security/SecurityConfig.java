@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,8 +19,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @Configuration //to be picked up by spring
+@ComponentScan
 @EnableWebSecurity
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
+@AllArgsConstructor
+//@NoArgsConstructor
 //this is where we are going to tell the application how we are going to manage the security and the users
 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -30,10 +34,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //we need beans for each of these two
 
     private final UserDetailsService userDetailsService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
 
         //this is the way we are about to find the users
         //we can also use -> inMemoryAuthentication , jdbcAuthentication

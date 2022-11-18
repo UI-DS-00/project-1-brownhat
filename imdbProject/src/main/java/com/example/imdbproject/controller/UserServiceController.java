@@ -29,14 +29,12 @@ public class UserServiceController {
     private final UserService userServiceImp;
 
     @PostMapping ("/rating")
-    public void makeRating(@RequestBody String titleBasic,@RequestBody Float ratingAmount)
-    {
+    public void makeRating(@RequestBody String titleBasic,@RequestBody Float ratingAmount) {
         userService.rating(titleBasic , ratingAmount);
     }
 
     @PostMapping ("/make/watchlist/{userId}")
-    public void makeWatchList(@RequestBody String name , @PathVariable Integer userId)
-    {
+    public void makeWatchList(@RequestBody String name , @PathVariable Integer userId) {
         userService.makeWatchList(name , userId);
     }
 
@@ -72,7 +70,6 @@ public class UserServiceController {
 
         //this uri is going to be added to the header of the new user header
         return ResponseEntity.created(uri).body(userService.saveUser(user));
-
     }
 
 
