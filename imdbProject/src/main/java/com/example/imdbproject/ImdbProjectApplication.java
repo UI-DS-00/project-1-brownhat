@@ -41,8 +41,8 @@ public class ImdbProjectApplication {
 
 
 
-			userService.saveRole(new Role(null, "ROLE_ADMIN"));
-			userService.saveRole(new Role(null, "ROLE_USER"));
+			//userService.saveRole(new Role(null, "ROLE_ADMIN"));
+			//userService.saveRole(new Role(null, "ROLE_USER"));
 
 			//userService.saveUser(new AllUser(null,"mmd","mmd",null,null,null,null));
 
