@@ -19,6 +19,7 @@ public class AllUser
     @Id
     @GeneratedValue
     private Long id;
+    @Column(unique=true, nullable=false)
 
     private String username;
     private String password;

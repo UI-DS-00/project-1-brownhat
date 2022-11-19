@@ -3,6 +3,7 @@ package com.example.imdbproject.service;
 import com.example.imdbproject.exceptions.DuplicateName;
 import com.example.imdbproject.exceptions.WrongInput;
 import com.example.imdbproject.exceptions.ratingOutOfBound;
+import com.example.imdbproject.filter.CostumeAuthenticationFilter;
 import com.example.imdbproject.model.AllUser;
 import com.example.imdbproject.model.Rating;
 import com.example.imdbproject.model.TitleBasic;
@@ -11,9 +12,6 @@ import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.dynamic.DynamicType;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,7 +32,6 @@ import javax.transaction.Transactional;
 @AllArgsConstructor
 @Service
 @Transactional
-@Configuration
 public class UserServiceImp implements UserService, UserDetailsService {
 
 
@@ -60,8 +57,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
         }else {
             log.info("user found in the db");
         }
-
-
+        //return null;
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
         // we are looping through all the roles of the user we found , and for each role , we are going to
@@ -185,7 +181,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
     public AllUser saveUser(AllUser allUser) {
 
         log.info("saving new user to the database");
-        //Encoding the user's password
         allUser.setPassword(passwordEncoder.encode(allUser.getPassword()));
         return allUserRepository.save(allUser);
     }
@@ -223,4 +218,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
         allUserList =  allUserRepository.findAll();
         return allUserList;
     }
+
+
 }

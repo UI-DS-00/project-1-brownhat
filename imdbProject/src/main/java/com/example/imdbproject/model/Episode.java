@@ -28,6 +28,4 @@ class Episode {
     private TitleBasic parentConst;
     private int seasonNumber;
     private int episodeNumber;
-
-
 }
