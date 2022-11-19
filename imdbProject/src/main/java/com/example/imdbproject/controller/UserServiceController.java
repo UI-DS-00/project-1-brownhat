@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 
 @AllArgsConstructor
-@RequestMapping ("/loggedIn")
+@RequestMapping ("/api")
 
 public class UserServiceController {
 
@@ -55,7 +55,7 @@ public class UserServiceController {
 
     //--------------------------------------------------------------------------JWT :)
 
-    @GetMapping("/all/users")
+    @GetMapping("/users")
     public ResponseEntity<List<AllUser>> getUsers(){
         return ResponseEntity.ok().body(userService.getUser());
         //return new ResponseEntity<>(userServiceImp.getUser(), HttpStatus.OK);

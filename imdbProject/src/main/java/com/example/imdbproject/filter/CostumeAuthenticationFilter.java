@@ -2,6 +2,7 @@ package com.example.imdbproject.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,8 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @Slf4j
@@ -76,7 +81,7 @@ public class CostumeAuthenticationFilter extends UsernamePasswordAuthenticationF
                 //bemanad be yadegar ke 100 bar avaz kardam in comment ro
                 //the expiration time should be little because access token time is low
                 //set 10 minutes for access token
-                .withExpiresAt(new Date(System.currentTimeMillis()+ 10*60*1000))
+                .withExpiresAt(new Date(System.currentTimeMillis()+ 1*60*1000))
                 //using company name or issuer name for generation
                 .withIssuer(request.getRequestURL().toString())
                 //todo we dont know :/
@@ -88,16 +93,33 @@ public class CostumeAuthenticationFilter extends UsernamePasswordAuthenticationF
         String refreshToken = JWT.create()
                 .withSubject(user.getUsername())
 
-                .withExpiresAt(new Date(System.currentTimeMillis()+ 30*24*3600*1000))
+                .withExpiresAt(new Date(System.currentTimeMillis()+ 2*60*1000))
                 .withIssuer(request.getRequestURL().toString())
                 //todo we dont know :/
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
 
+
+        System.out.println(refreshToken);
+        System.out.println(accessToken);
+        //these two lines return generated tokens
+//        response.setHeader("access_token",accessToken);
+//        response.setHeader("refresh_Token",refreshToken);
+
+
+        //fellow lines create a set of tokens and then send them in json format
+        Map<String,String> tokens = new HashMap<>();
+        tokens.put("accessToken" , accessToken);
+        tokens.put("refreshToken" , refreshToken);
+        response.setContentType(APPLICATION_JSON_VALUE);
+        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+
+
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        System.out.println("failed");
         super.unsuccessfulAuthentication(request, response, failed);
         //DDOS :)
     }
