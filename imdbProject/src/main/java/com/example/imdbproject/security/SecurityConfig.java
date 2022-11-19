@@ -3,11 +3,11 @@ package com.example.imdbproject.security;
 
 import com.example.imdbproject.filter.CostumeAuthenticationFilter;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +16,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import static org.springframework.http.HttpMethod.GET;
 
 
 @Configuration //to be picked up by spring
@@ -30,9 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     //WebSecurityConfigurerAdapter is the main security class
 
-
     //we need beans for each of these two
-
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
@@ -46,21 +46,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         super.configure(auth);
     }
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-
         //after giving the user a token , we are not going to track him down with cookies or etc , but we are going to use
         // jason token system instead of sessions
 
-        //also we want to disable forgery i here:
+        //also we want to disable forgery in here:
         http.csrf().disable();
-
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+        //http.authorizeRequests().antMatchers(GET,"users").hasAnyAuthority("ROLE_USER");
         //we want to give everyone access at this point
+        http.authorizeRequests().antMatchers(GET, "/api/**").hasAnyAuthority("ROLE_USER");
         http.authorizeRequests().anyRequest().permitAll();
-
         http.addFilter(new CostumeAuthenticationFilter(authenticationManagerBean()));
 
     }
@@ -71,6 +69,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         return super.authenticationManagerBean();
     }
-
-
 }
