@@ -100,8 +100,6 @@ public class CostumeAuthenticationFilter extends UsernamePasswordAuthenticationF
                 .sign(algorithm);
 
 
-        System.out.println(refreshToken);
-        System.out.println(accessToken);
         //these two lines return generated tokens
 //        response.setHeader("access_token",accessToken);
 //        response.setHeader("refresh_Token",refreshToken);
@@ -113,8 +111,6 @@ public class CostumeAuthenticationFilter extends UsernamePasswordAuthenticationF
         tokens.put("refreshToken" , refreshToken);
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
-
-
     }
 
     @Override
