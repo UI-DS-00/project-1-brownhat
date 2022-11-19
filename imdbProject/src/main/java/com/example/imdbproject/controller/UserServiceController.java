@@ -28,24 +28,24 @@ public class UserServiceController {
     private final UserService userService;
     private final UserService userServiceImp;
 
-    @PostMapping ("/rating")
+    @PostMapping ("/user/rating")
     public void makeRating(@RequestBody String titleBasic,@RequestBody Float ratingAmount) {
         userService.rating(titleBasic , ratingAmount);
     }
 
-    @PostMapping ("/make/watchlist/{userId}")
+    @PostMapping ("/user/make/watchlist/{userId}")
     public void makeWatchList(@RequestBody String name , @PathVariable Integer userId) {
         userService.makeWatchList(name , userId);
     }
 
-    @PostMapping("/add/to/watchlist/{id}")
+    @PostMapping("/user/add/to/watchlist/{id}")
     public void addToWatchList(@RequestBody String filmId , @RequestBody String watchlistName , @PathVariable Integer id)
     {
         userServiceImp.addFilmToWatchList(id , watchlistName , filmId);
     }
 
 
-    @PostMapping("add/new/comment/{titleBasic}/{id}")
+    @PostMapping("/user/add/new/comment/{titleBasic}/{id}")
     public void addComment(@RequestBody String commentText , @PathVariable String titleBasic ,@PathVariable Integer id ){
 
         userServiceImp.addComment(id , commentText , titleBasic);
@@ -55,13 +55,13 @@ public class UserServiceController {
 
     //--------------------------------------------------------------------------JWT :)
 
-    @GetMapping("/users")
+    @GetMapping("/admin/users")
     public ResponseEntity<List<AllUser>> getUsers(){
         return ResponseEntity.ok().body(userService.getUser());
         //return new ResponseEntity<>(userServiceImp.getUser(), HttpStatus.OK);
     }
 
-    @PostMapping ("user/save")
+    @PostMapping ("/admin/saveuser")
     public ResponseEntity <AllUser> saveUser (@RequestBody AllUser user){
 
         //creating uri to send data to the url and change it to a string
@@ -73,7 +73,7 @@ public class UserServiceController {
     }
 
 
-    @PostMapping("/role/save")
+    @PostMapping("/admin/role/save")
     public ResponseEntity<Role> saveRole(@RequestBody Role role){
 
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/loggedIn/role/save")
@@ -84,7 +84,7 @@ public class UserServiceController {
 
 
 
-    @PostMapping("/role/addtouser")
+    @PostMapping("/admin/role/addtouser")
     public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserForm form){
 
         userService.addRoleToUser(form.getUsername(), form.getRoleName());
@@ -92,6 +92,4 @@ public class UserServiceController {
         // the addRoleToUser function output is void
         return ResponseEntity.ok().build();
     }
-
-
 }

@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 
 @Configuration //to be picked up by spring
@@ -52,14 +53,41 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //after giving the user a token , we are not going to track him down with cookies or etc , but we are going to use
         // jason token system instead of sessions
 
+
+        CostumeAuthenticationFilter costumeAuthenticationFilter=new CostumeAuthenticationFilter(authenticationManagerBean());
+        //changing the default login url
+        costumeAuthenticationFilter.setFilterProcessesUrl("/api/login");
+
+
+
         //also we want to disable forgery in here:
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         //http.authorizeRequests().antMatchers(GET,"users").hasAnyAuthority("ROLE_USER");
         //we want to give everyone access at this point
-        http.authorizeRequests().antMatchers(GET, "/api/**").hasAnyAuthority("ROLE_USER");
-        http.authorizeRequests().anyRequest().permitAll();
-        http.addFilter(new CostumeAuthenticationFilter(authenticationManagerBean()));
+
+
+
+        //we should write down all of the URLs we want everyone to have access to , on top of the
+        //commands in between '========' lines
+        http.authorizeRequests().antMatchers("/api/login/**").permitAll();
+             //the login path comes from : filter -> costumeAuthenticationFilter -> UsernamePasswordAuthenticationFilter.class
+
+        //=======================================================================================
+
+        //giving authorizations for each role
+        http.authorizeRequests().antMatchers(POST, "/api/user/**").hasAnyAuthority("ROLE_USER");
+        http.authorizeRequests().antMatchers(GET, "/api/user/**").hasAnyAuthority("ROLE_USER");
+        http.authorizeRequests().antMatchers(GET, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(POST, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN");
+
+
+        //http.authorizeRequests().anyRequest().permitAll();
+        //we want to authenticate e everyone which is why we are not going to use the command above
+        http.authorizeRequests().anyRequest().authenticated();
+
+        //=================================================================================
+        http.addFilter(costumeAuthenticationFilter);
 
     }
 
