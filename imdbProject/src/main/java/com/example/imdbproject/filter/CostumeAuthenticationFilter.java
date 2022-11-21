@@ -81,7 +81,7 @@ public class CostumeAuthenticationFilter extends UsernamePasswordAuthenticationF
                 //bemanad be yadegar ke 100 bar avaz kardam in comment ro
                 //the expiration time should be little because access token time is low
                 //set 10 minutes for access token
-                .withExpiresAt(new Date(System.currentTimeMillis()+ 1*60*1000))
+                .withExpiresAt(new Date(System.currentTimeMillis()+ 10*60*1000))
                 //using company name or issuer name for generation
                 .withIssuer(request.getRequestURL().toString())
                 //todo we dont know :/
