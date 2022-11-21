@@ -2,6 +2,7 @@ package com.example.imdbproject.security;
 
 
 import com.example.imdbproject.filter.CostumeAuthenticationFilter;
+import com.example.imdbproject.filter.CustomAuthorizationFilter;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -70,16 +72,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //we should write down all of the URLs we want everyone to have access to , on top of the
         //commands in between '========' lines
-        http.authorizeRequests().antMatchers("/api/login/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/login/**" , "/token/refresh/**").permitAll();
              //the login path comes from : filter -> costumeAuthenticationFilter -> UsernamePasswordAuthenticationFilter.class
 
         //=======================================================================================
 
         //giving authorizations for each role
+        http.authorizeRequests().antMatchers(GET, "/api/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers(POST, "/api/user/**").hasAnyAuthority("ROLE_USER");
         http.authorizeRequests().antMatchers(GET, "/api/user/**").hasAnyAuthority("ROLE_USER");
-        http.authorizeRequests().antMatchers(GET, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeRequests().antMatchers(POST, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(POST, "/api/**").hasAnyAuthority("ROLE_ADMIN");
 
 
         //http.authorizeRequests().anyRequest().permitAll();
@@ -87,8 +89,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().anyRequest().authenticated();
 
         //=================================================================================
+
         http.addFilter(costumeAuthenticationFilter);
 
+        //this filter should come before all the other filters because we should  intercept all the requests before any other filters
+        //in the second parameter , we are telling what is this authorization for , which is for that ( UsernamePasswordAuthenticationFilter.class) specific class
+        http.addFilterBefore(new CustomAuthorizationFilter() , UsernamePasswordAuthenticationFilter.class );
     }
 
     @Bean
