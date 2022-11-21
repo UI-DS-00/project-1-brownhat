@@ -34,7 +34,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         //if these were the paths we are in, we don't really want to do anything and let the user pass
-        if (request.getServletPath().equals("/api/login")  || request.getServletPath().equals("/token/refresh/** ")){
+        if (request.getServletPath().equals("/api/login")  || request.getServletPath().equals("/api/token/refresh")){
             //we don't really do anything here
             filterChain.doFilter(request , response);
         }//this is where we are about to check the user authorization

@@ -155,6 +155,14 @@ public class UserServiceController {
                         .sign(algorithm);
 
 
+                //fellow lines create a set of tokens and then send them in json format
+                Map<String,String> tokens = new HashMap<>();
+                tokens.put("accessToken" , accessToken);
+                tokens.put("refreshToken" , refresh_token);
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+
+
             } catch (Exception exception) {
                 response.setHeader("error", exception.getMessage());
                 response.setStatus(FORBIDDEN.value());
