@@ -217,7 +217,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
     public List<AllUser> getUser() {
 
         log.info("getting all users from the database");
-        System.out.println("\n\n hello");
         List<AllUser> allUserList;
         allUserList =  allUserRepository.findAll();
         return allUserList;

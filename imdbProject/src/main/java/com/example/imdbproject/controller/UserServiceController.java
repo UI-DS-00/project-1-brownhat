@@ -105,7 +105,6 @@ public class UserServiceController {
         return ResponseEntity.ok().build();
     }
 
-
     //make a request for the user so they can renew their token after the refresh token was expired
     //so we have to send the refresh token so it can makes us a new access token
 
@@ -135,14 +134,11 @@ public class UserServiceController {
                 //decoding the refresh_token and verifying it
                 DecodedJWT decodedJWT = jwtVerifier.verify(refresh_token);
 
-
                 //getting the username that comes with the refresh_token
                 String username = decodedJWT.getSubject();
 
                 //once we get the username ,we need to load him , so we are going to find the user inside the database
                 Optional<AllUser> user = userService.getUser(username);
-
-
 
                 //creating a new access refresh_token
                 String accessToken = JWT.create()
@@ -153,7 +149,6 @@ public class UserServiceController {
                         //todo we dont know :/
                         .withClaim("roles", user.get().getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                         .sign(algorithm);
-
 
                 //fellow lines create a set of tokens and then send them in json format
                 Map<String,String> tokens = new HashMap<>();

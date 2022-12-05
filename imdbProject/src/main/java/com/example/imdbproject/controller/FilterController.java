@@ -36,4 +36,5 @@ public class FilterController {
     public ResponseEntity<Set<TitleBasicResponse>> getFilmsByRegion(){
         return new ResponseEntity<>(filterService.filterByRegion("1"), HttpStatus.OK);
     }
+
 }

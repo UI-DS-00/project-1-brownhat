@@ -29,22 +29,21 @@ class NameBasic{
 
     private long personId;
     private String primaryName;
-    private int birth_year;
-    private int death_year;
+    private int birthYear;
+    private int deathYear;
 
 
     @OneToMany
-    private Set<PrimaryProfession> primary_professions;
+    private Set<PrimaryProfession> primaryProfessions;
 
     @ManyToMany
     @JoinTable(
             name = "TitleBasic_NameBasic",
             joinColumns = @JoinColumn(name = "NameBasic_id"),
             inverseJoinColumns = @JoinColumn(name = "TitleBasic_id"))
-
     private Set<TitleBasic> KnownForTitles;
     public NameBasicSummery responseModel() {
-        return new NameBasicSummery(primaryName , birth_year , death_year);
+        return new NameBasicSummery(primaryName , birthYear, deathYear);
     }
 
 }

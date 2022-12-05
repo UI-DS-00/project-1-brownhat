@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //we should write down all of the URLs we want everyone to have access to , on top of the
         //commands in between '========' lines
-        http.authorizeRequests().antMatchers("/api/login/**" , "/api/token/refresh").permitAll();
+        http.authorizeRequests().antMatchers("/api/login/**" , "/api/token/refresh", "/upload").permitAll();
              //the login path comes from : filter -> costumeAuthenticationFilter -> UsernamePasswordAuthenticationFilter.class
 
         //=======================================================================================

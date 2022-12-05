@@ -25,7 +25,6 @@ class Rating {
 
     @OneToOne
     private TitleBasic titleConst;
-
     private Float averageRate;
     private Integer vote_numbers;
 

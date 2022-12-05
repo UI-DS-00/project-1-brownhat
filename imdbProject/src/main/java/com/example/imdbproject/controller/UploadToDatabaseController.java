@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 @RestController
 @AllArgsConstructor
-public class UpdateToDatabaseController {
+public class UploadToDatabaseController {
 
     private UploadToDatabaseImpl uploadToDatabase;
 

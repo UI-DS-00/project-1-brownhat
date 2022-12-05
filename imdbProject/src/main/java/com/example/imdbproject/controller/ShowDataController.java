@@ -43,6 +43,7 @@ public class ShowDataController {
     @GetMapping ("/actresses")
     public ResponseEntity<Set<NameBasicSummery>> getActresses() {
         return new ResponseEntity<>(showDataService.ActorsAndDirectors("actress"),HttpStatus.OK);
+
     }
 
 

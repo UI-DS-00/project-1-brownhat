@@ -22,7 +22,6 @@ import java.util.Set;
 public class FilterServiceImpl implements FilterService{
     private TitleBasicRepository titleBasicRepository;
     private NameBasicRepository nameBasic;
-
     private AkaRepository akaRepository;
     @Override
     public Set<TitleBasicResponse> filterByYear(int year) {
