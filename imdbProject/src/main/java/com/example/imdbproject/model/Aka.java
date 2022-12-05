@@ -13,8 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table
-public
-class Aka{
+public class Aka{
     @Id
     @GeneratedValue
     private Long ID;
