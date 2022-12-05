@@ -24,18 +24,18 @@ public class FilterController {
     }
 
     @GetMapping("/genre")
-    public ResponseEntity<Set<TitleBasicResponse>> getFilmsByGenre(){
-        return new ResponseEntity<>(filterService.filterByGenre("1"), HttpStatus.OK);
+    public ResponseEntity<Set<TitleBasicResponse>> getFilmsByGenre(@RequestBody  Input input){
+        return new ResponseEntity<>(filterService.filterByGenre(input.getInput()), HttpStatus.OK);
     }
 
     @GetMapping("/actor")
-    public ResponseEntity<Set<TitleBasicResponse>> getFilmsByActors(){
-        return new ResponseEntity<>(filterService.filterByActor("amir"), HttpStatus.OK);
+    public ResponseEntity<Set<TitleBasicResponse>> getFilmsByActors(@RequestBody  Input input){
+        return new ResponseEntity<>(filterService.filterByActor(input.getInput()), HttpStatus.OK);
     }
 
     @GetMapping("/region")
-    public ResponseEntity<Set<TitleBasicResponse>> getFilmsByRegion(){
-        return new ResponseEntity<>(filterService.filterByRegion("1"), HttpStatus.OK);
+    public ResponseEntity<Set<TitleBasicResponse>> getFilmsByRegion(@RequestBody  Input input){
+        return new ResponseEntity<>(filterService.filterByRegion(input.getInput()), HttpStatus.OK);
     }
 
 }
