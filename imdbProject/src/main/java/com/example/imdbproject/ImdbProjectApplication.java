@@ -35,12 +35,12 @@ public class ImdbProjectApplication {
 	@Bean
 	CommandLineRunner run(UserServiceImp userService) {
 		return args -> {
-			//userService.saveRole(new Role(null,"ROLE_ADMIN"));
-			//userService.saveRole(new Role(null,"ROLE_USER"));
-
-		//	userService.saveUser(new AllUser(null,"123","123",null,null,null,null));
-
-		//	userService.addRoleToUser("123","ROLE_ADMIN");
+//			userService.saveRole(new Role(null,"ROLE_ADMIN"));
+//			userService.saveRole(new Role(null,"ROLE_USER"));
+//
+//			userService.saveUser(new AllUser(null,"mmd2","123",null,null,null,null));
+//
+			//userService.addRoleToUser("mmd2","ROLE_USER");
 
 		};
 	}

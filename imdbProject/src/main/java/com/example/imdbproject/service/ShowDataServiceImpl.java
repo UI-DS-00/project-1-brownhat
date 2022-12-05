@@ -20,9 +20,7 @@ public class ShowDataServiceImpl implements ShowDataService{
     private final TitleBasicRepository titleBasicRepository;
     private final PrimaryProfessionRepository primaryProfessionRepository;
     private final NameBasicRepository nameBasicRepository;
-
     private final RatingRepository ratingRepository;
-
     private FavouriteListRepository favouriteListRepository;
 
     @Override
@@ -56,7 +54,7 @@ public class ShowDataServiceImpl implements ShowDataService{
         Set <NameBasicSummery> nameBasics = new HashSet<>();
 
         for (PrimaryProfession primaryProfession1 :primaryProfession) {
-           Optional <NameBasic>  person =  nameBasicRepository.findById(primaryProfession1.getNameBasicBy().getNConst());
+           Optional <NameBasic>  person =  nameBasicRepository.findById(primaryProfession1.getNameBasic().getNConst());
 
            if (person.isPresent())
                nameBasics.add(person.get().responseModel());

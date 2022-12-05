@@ -14,19 +14,13 @@ public class UploadingFiles {
 
     public void reading() throws SQLException, IOException, ClassNotFoundException {
 
-        new SendingIntoTables<TitleBasic>("title.basics.tsv" , new TitleBasic());
+        new SendingIntoTables<TitleBasic>("name.basic.1-200.tsv" , new TitleBasic());
 
-        new SendingIntoTables<NameBasic>("name.basics.tsv" , new NameBasic());
+        new SendingIntoTables<NameBasic>("title.basic.1-200.tsv" , new NameBasic());
 
-        new SendingIntoTables<Aka>("title.akas.tsv" , new Aka());
+        new SendingIntoTables<Principal>("title.principals1-200.tsv" ,  new Principal());
 
-        new SendingIntoTables<Crew>("title.crew.tsv" , new Crew());
-
-        new SendingIntoTables<Episode>("title.episode.tsv" , new Episode());
-
-        new SendingIntoTables<Principal>("title.principals.tsv" ,  new Principal());
-
-        new SendingIntoTables<Rating>("title.ratings.tsv" ,  new Rating());
+        new SendingIntoTables<Rating>("title.rating.1-200.tsv" ,  new Rating());
 
     }
 
@@ -41,7 +35,7 @@ public class UploadingFiles {
 
             FileInputStream fileInputStream= new FileInputStream(url+filePath);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-
+            MODEL m = (MODEL)objectInputStream;
 
 
 

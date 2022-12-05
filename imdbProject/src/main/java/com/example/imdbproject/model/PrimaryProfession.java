@@ -15,12 +15,13 @@ public class PrimaryProfession {
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
 
     @ManyToOne
-    //@JoinColumn(name = "name_basic_primary_professions")
-    private NameBasic nameBasicBy;
+//    @JoinColumn(name = "name_basic_primary_professions")
+    private NameBasic nameBasic;
 
     private String profession;
 
