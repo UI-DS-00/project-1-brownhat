@@ -18,12 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @RequestMapping("/data/show")
 public class ShowDataController {
-
     private final ShowDataServiceImpl showDataService;
-
-    //private final ReadingFilesImpl readingFiles;
-
-    //all films service function
 
     @GetMapping("/allFilms")
     public ResponseEntity<Set<TitleBasicResponse>> getFilms(){
