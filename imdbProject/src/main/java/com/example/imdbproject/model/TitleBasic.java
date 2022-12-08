@@ -5,6 +5,7 @@ import com.example.imdbproject.model.response.TitleBasicResponse;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -15,8 +16,7 @@ import java.util.Set;
 @Setter
 @Table
 @ToString
-public
-class TitleBasic {
+public class TitleBasic {
 
 
     /*
@@ -45,13 +45,18 @@ class TitleBasic {
 
     private int endYear;
     private int runtime;
-    @OneToMany
+    @OneToMany  //@ElementCollection(targetClass = String.class)
     //@JoinColumn(name = "genre")
     private Set<Genre> genres;
 
     public TitleBasicResponse responseModel(){
+
+        Set <String> genreNames = new HashSet<>();
+        for (Genre genre : genres)
+            genreNames.add(genre.getGenre());
+
         return new TitleBasicResponse(titleType,primaryTitle,originalTitle
-                ,isAdult,startYear,endYear,runtime, genres);
+                ,isAdult,startYear,endYear,runtime, genreNames);
     }
     public TitleBasic(String tConst){
         this.tConst=tConst;

@@ -43,9 +43,11 @@ public class ShowDataController {
 
     @GetMapping ("/directors")
     public ResponseEntity<Set<NameBasicSummery>> getDirectors() {
-        return new ResponseEntity<>(showDataService.ActorsAndDirectors("directors"),HttpStatus.OK);
+        return new ResponseEntity<>(showDataService.ActorsAndDirectors("director"),HttpStatus.OK);
     }
 
+
+    //======================================================no debug
     @GetMapping ("/others/favouriteList/{movieName}")
     public ResponseEntity<Set<FavouriteList>> getFavouriteLists(@RequestBody Input input) {
         return new ResponseEntity<>(showDataService.favouriteList(new TitleBasic(input.getInput())),HttpStatus.OK);

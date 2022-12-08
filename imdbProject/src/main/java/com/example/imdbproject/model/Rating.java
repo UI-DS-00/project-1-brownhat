@@ -1,6 +1,7 @@
 package com.example.imdbproject.model;
 
 
+import com.example.imdbproject.model.response.RateResponse;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -43,6 +44,11 @@ class Rating {
            averageRate = rateAmount;
            vote_numbers = 1;
        }
+    }
+
+    public RateResponse responseModel(){
+
+        return new RateResponse(averageRate , vote_numbers);
     }
 
    }
