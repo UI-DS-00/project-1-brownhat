@@ -1,6 +1,7 @@
 package com.example.imdbproject.service;
 import com.example.imdbproject.model.*;
 import com.example.imdbproject.model.response.NameBasicSummery;
+import com.example.imdbproject.model.response.PrincipalResponse;
 import com.example.imdbproject.model.response.TitleBasicResponse;
 import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,8 @@ public class ShowDataServiceImpl implements ShowDataService{
     private final RatingRepository ratingRepository;
     private FavouriteListRepository favouriteListRepository;
 
+    private PrincipalRepository principalRepository;
+
     @Override
     public TitleBasicResponse allMoviesData(String tConst) {
         Optional<TitleBasic> titleBasic = titleBasicRepository.findById(tConst);
@@ -37,10 +40,43 @@ public class ShowDataServiceImpl implements ShowDataService{
 
     @Override
     public Set<TitleBasicResponse> allMoviesData() {
-        Set<TitleBasicResponse> allFilms = new HashSet<>();
 
-        titleBasicRepository.findAll().forEach(titleBasic ->
-                allFilms.add(titleBasic.responseModel()));
+        Set<TitleBasicResponse> allFilms = new HashSet<>();
+        Iterable<TitleBasic> films = titleBasicRepository.findAll();
+
+
+        for (TitleBasic eachFilm: films){
+
+            Set <PrincipalResponse> casts = new HashSet<>();
+            Set <PrincipalResponse> crew = new HashSet<>();
+            TitleBasicResponse filmResponse = eachFilm.responseModel();
+            //getting all the cast and crew
+
+            //todo=========================================================================================
+            Set <Principal> principals = null;//= principalRepository.findByTConst(eachFilm);
+
+            //adding cast and crew
+            for (Principal eachPerson : principals){
+
+                if (eachPerson.getCategory().equals("actor")  || eachPerson.getCategory().equals("actress") )
+                    casts.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
+                            , eachPerson.getJob(), eachPerson.getCharacters()));
+
+                else crew.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
+                        , eachPerson.getJob(), eachPerson.getCharacters()));
+
+            }
+
+            //adding the rate
+            filmResponse.setRate(ratingRepository.findByTitleConst(eachFilm).responseModel());
+
+            filmResponse.setCrew( crew);
+            filmResponse.setActors(casts);
+
+
+            allFilms.add(filmResponse);
+        }
+
 
         return allFilms;
     }

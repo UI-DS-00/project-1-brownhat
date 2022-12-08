@@ -179,6 +179,22 @@ public class UserServiceImp implements UserService, UserDetailsService {
         commentRepository.save(newComment);
     }
 
+    @Override
+    public Boolean signUp(String username, String password) {
+
+
+        Optional<AllUser> user = allUserRepository.findByUsername(username);
+
+        if (user.isPresent())
+            throw new DuplicateName();
+
+        AllUser newUser = new AllUser(username , password);
+
+        saveUser(newUser);
+
+        return true;
+    }
+
 
     //----------------------------------------------------------------------------------------JWT :)
     @Override

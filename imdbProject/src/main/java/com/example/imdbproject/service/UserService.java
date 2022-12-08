@@ -20,9 +20,8 @@ public interface UserService {
     void addFilmToWatchList(Integer userId,String name ,String titleBasic);
     void makeFavouriteList(String name , Integer userId);
     void addFilmToFavouriteList(Integer userId,String name ,String titleBasic);
-
-
     void addComment(Integer userId , String commentText , String titleBasicId);
+    Boolean signUp(String username , String password);
 
     //================================ JWT :)
 

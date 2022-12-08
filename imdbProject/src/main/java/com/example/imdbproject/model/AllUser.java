@@ -3,11 +3,11 @@ package com.example.imdbproject.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 @ToString
 @Getter
 @Setter
@@ -24,6 +24,15 @@ public class AllUser
     private String username;
     private String password;
 
+
+    public AllUser( String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.comments = new HashSet<>();
+        this.movieLists = new HashSet<>();
+        this.favoriteLists = new HashSet<>();
+        this.roles = new HashSet<>();
+    }
 
     //@OneToMany(mappedBy = "user")
     @OneToMany
