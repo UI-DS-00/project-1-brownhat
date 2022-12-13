@@ -49,6 +49,8 @@ public class TitleBasic {
     //@JoinColumn(name = "genre")
     private Set<Genre> genres;
 
+    @ElementCollection
+    Set<String> allGenres;
     public TitleBasicResponse responseModel(){
 
         Set <String> genreNames = new HashSet<>();
@@ -56,11 +58,13 @@ public class TitleBasic {
             genreNames.add(genre.getGenre());
 
         return new TitleBasicResponse(titleType,primaryTitle,originalTitle
+
                 ,isAdult,startYear,endYear,runtime, genreNames);
     }
     public TitleBasic(String tConst){
         this.tConst=tConst;
     }
+
 
     public TitleBasic(String tConst, String titleType, String primaryTitle, String originalTitle,
                       boolean isAdult, int startYear, int endYear, int runtime, Set<Genre> genres) {

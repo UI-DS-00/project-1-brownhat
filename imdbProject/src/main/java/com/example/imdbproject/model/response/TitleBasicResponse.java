@@ -23,7 +23,6 @@ public class TitleBasicResponse {
     private int startYear;
     private int endYear;
     private int runtime;
-    private Set <String> genres;
 
     private Set <PrincipalResponse> actors; //casts
     private Set <PrincipalResponse> crew;
