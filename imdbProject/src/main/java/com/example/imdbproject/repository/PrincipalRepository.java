@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Set;
 
 
-public interface PrincipalRepository extends JpaRepository<Principal, Integer> {
+public interface PrincipalRepository extends JpaRepository<Principal, Long> {
 
-  //  Set<Principal> findByTConst(TitleBasic titleBasic);
+    Set<Principal> findByFilmCode(String titleBasicCode);
 
 }

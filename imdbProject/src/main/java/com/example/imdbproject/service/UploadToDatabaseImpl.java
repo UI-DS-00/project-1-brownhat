@@ -201,8 +201,10 @@ public class UploadToDatabaseImpl <T> {
         titleBasicOptional = titleBasicRepository.findById(data[0]);
         nameBasicOptional = nameBasicRepository.findById(data[2]);
 
-        if (titleBasicOptional.isPresent())
+        if (titleBasicOptional.isPresent()) {
             principal.setTConst(titleBasicOptional.get());
+            principal.setFilmCode(titleBasicOptional.get().getTConst());
+        }
         if (nameBasicOptional.isPresent())
             principal.setNConst(nameBasicOptional.get());
 
