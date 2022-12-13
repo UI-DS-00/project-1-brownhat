@@ -17,6 +17,6 @@ public class TitleBasicResponse {
     int endYear;
     int runtime;
     Set<Genre> genres;
-
+    Set<String> allGenres;
 
 }

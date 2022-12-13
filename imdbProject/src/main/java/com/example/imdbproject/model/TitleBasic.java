@@ -49,13 +49,16 @@ class TitleBasic {
     //@JoinColumn(name = "genre")
     private Set<Genre> genres;
 
+    @ElementCollection
+    Set<String> allGenres;
     public TitleBasicResponse responseModel(){
         return new TitleBasicResponse(titleType,primaryTitle,originalTitle
-                ,isAdult,startYear,endYear,runtime, genres);
+                ,isAdult,startYear,endYear,runtime, genres,allGenres);
     }
     public TitleBasic(String tConst){
         this.tConst=tConst;
     }
+
 
     public TitleBasic(String tConst, String titleType, String primaryTitle, String originalTitle,
                       boolean isAdult, int startYear, int endYear, int runtime, Set<Genre> genres) {

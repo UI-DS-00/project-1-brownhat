@@ -20,6 +20,6 @@ public class Genre{
     @Column(name = "id", nullable = false)
     private Long id;
 
-    String genre;
-    String titleBasic;
+    private String genre;
+    private String titleBasic;
 }
