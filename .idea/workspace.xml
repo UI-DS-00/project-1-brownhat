@@ -4,16 +4,20 @@
     <list default="true" id="28cb7034-e8a0-4ad1-beb1-495d259ebbc8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/ImdbProjectApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/ImdbProjectApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/model/Genre.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/model/Genre.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/config/UploadingFiles.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/config/UploadingFiles.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/controller/FilterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/controller/FilterController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/controller/ShowDataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/controller/ShowDataController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/controller/UpdateToDatabaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/controller/UploadToDatabaseController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/controller/UserServiceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/controller/UserServiceController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/model/NameBasic.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/model/NameBasic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/model/PrimaryProfession.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/model/PrimaryProfession.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/model/Rating.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/model/Rating.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/model/TitleBasic.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/model/TitleBasic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/model/response/TitleBasicResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/model/response/TitleBasicResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/repository/FavouriteListRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/repository/FavouriteListRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/repository/GenreRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/repository/GenreRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/repository/NameBasicRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/repository/NameBasicRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/repository/TitleBasicRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/repository/TitleBasicRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/security/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/service/FilterServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/service/FilterServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/service/ShowDataServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/service/ShowDataServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/service/UploadToDatabaseImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/service/UploadToDatabaseImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/service/UserServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/imdbProject/src/main/java/com/example/imdbproject/service/UserServiceImp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,9 +62,6 @@
       <workItem from="1669959850531" duration="3488000" />
       <workItem from="1670051726779" duration="636000" />
       <workItem from="1670059017628" duration="2561000" />
-      <workItem from="1670693428736" duration="45000" />
-      <workItem from="1670828044937" duration="310000" />
-      <workItem from="1670963107757" duration="7000" />
     </task>
     <servers />
   </component>

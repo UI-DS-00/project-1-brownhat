@@ -38,8 +38,8 @@ public class ImdbProjectApplication {
 //			userService.saveRole(new Role(null,"ROLE_ADMIN"));
 //			userService.saveRole(new Role(null,"ROLE_USER"));
 //
-			//userService.saveUser(new AllUser(null,"mmd2","123",null,null,null,null));
-
+	//		userService.saveUser(new AllUser(null,"mmd2","123",null,null,null,null));
+//
 			//userService.addRoleToUser("mmd2","ROLE_USER");
 
 		};
