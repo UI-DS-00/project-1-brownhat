@@ -24,8 +24,7 @@ class Rating {
     private Long id;
 
 
-
-    @Transient
+    @OneToOne
     private TitleBasic titleConst;
     private Float averageRate;
     private Integer vote_numbers;

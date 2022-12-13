@@ -42,7 +42,7 @@ public class UploadToDatabaseImpl <T> {
 
     public void readingFiles() throws IOException, SQLException, ClassNotFoundException {
 
-        FileInputStream file = new FileInputStream("C:\\Users\\hp\\Desktop\\Desktop\\Files\\top200-IMDB-dataSet\\title.basic.1-200.tsv");
+        FileInputStream file = new FileInputStream("C:/Users/ES/Downloads/Compressed/top200-IMDB-dataSet/title.basic.1-200.tsv");
         Scanner reader = new Scanner(file);
 
         reader.nextLine();
@@ -53,7 +53,7 @@ public class UploadToDatabaseImpl <T> {
 
         }
 
-        file = new FileInputStream("C:\\Users\\hp\\Desktop\\Desktop\\Files\\top200-IMDB-dataSet\\title.rating.1-200.tsv");
+        file = new FileInputStream("C:/Users/ES/Downloads/Compressed/top200-IMDB-dataSet/title.rating.1-200.tsv");
         reader = new Scanner(file);
 
         reader.nextLine();
@@ -64,7 +64,7 @@ public class UploadToDatabaseImpl <T> {
 
         }
 
-        file = new FileInputStream("C:\\Users\\hp\\Desktop\\Desktop\\Files\\top200-IMDB-dataSet\\name.basic.1-200.tsv");
+        file = new FileInputStream("C:/Users/ES/Downloads/Compressed/top200-IMDB-dataSet/name.basic.1-200.tsv");
         reader = new Scanner(file);
 
         reader.nextLine();
@@ -75,7 +75,7 @@ public class UploadToDatabaseImpl <T> {
 
         }
 
-        file = new FileInputStream("C:\\Users\\hp\\Desktop\\Desktop\\Files\\top200-IMDB-dataSet\\title.principals1-200.tsv");
+        file = new FileInputStream("C:/Users/ES/Downloads/Compressed/top200-IMDB-dataSet/title.principals1-200.tsv");
         reader = new Scanner(file);
 
         reader.nextLine();
@@ -108,18 +108,13 @@ public class UploadToDatabaseImpl <T> {
         }
         buildTitleBasic.setRuntime(Integer.parseInt(data[7]));
         String[] data2 = data[8].split(",");
-        Set<String> stringSet = new HashSet<>();
         for (int i = 0; i < data2.length; i++) {
             temp = new Genre();
             temp.setGenre(data2[i]);
             temp.setTitleBasic(data[0]);
             genreRepository.save(temp);
             genreSet.add(temp);
-            stringSet.add(data2[i]);
-
         }
-        buildTitleBasic.setAllGenres(stringSet);
-
         buildTitleBasic.setGenres(genreSet);
         titleBasicRepository.save(buildTitleBasic);
     }
@@ -213,4 +208,6 @@ public class UploadToDatabaseImpl <T> {
         principalRepository.save(principal);
 
     }
+
+
 }

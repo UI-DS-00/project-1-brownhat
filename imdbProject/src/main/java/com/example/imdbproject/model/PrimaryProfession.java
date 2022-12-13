@@ -24,4 +24,5 @@ public class PrimaryProfession {
     private NameBasic nameBasic;
 
     private String profession;
+
 }

@@ -5,7 +5,6 @@ import com.example.imdbproject.model.TitleBasic;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.Set;
 
 public interface TitleBasicRepository extends CrudRepository<TitleBasic, String> {
@@ -13,8 +12,6 @@ public interface TitleBasicRepository extends CrudRepository<TitleBasic, String>
     Set<TitleBasic> findAllByOrderByEndYearDesc();
     //Set<Optional<TitleBasic>> findByEnd_year(int endYear);
     Set<TitleBasic> findByEndYearIs(Integer endYear);
-    Set<String> findByGenres(String genre);
-    Set<TitleBasic> findByAllGenres(String genre);
+    Set<TitleBasic> findByGenres(String genre);
 
-    //Optional<TitleBasic> findByTConst(String tConst);
 }
