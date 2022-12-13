@@ -2,6 +2,7 @@ package com.example.imdbproject.repository;
 
 
 import com.example.imdbproject.model.Rating;
+import com.example.imdbproject.model.TitleBasic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +14,5 @@ public interface RatingRepository extends JpaRepository<Rating, String> {
 
     public Set<Rating> findTop10ByOrderByAverageRateDesc();
 
+    Rating findByTitleConst(TitleBasic titleBasic);
 }

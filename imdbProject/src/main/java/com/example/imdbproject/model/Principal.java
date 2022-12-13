@@ -1,6 +1,7 @@
 package com.example.imdbproject.model;
 
 
+import com.example.imdbproject.model.response.PrincipalResponse;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,5 +32,10 @@ class Principal {
     private String category;
     private String job;
     private String characters;
+
+
+    public PrincipalResponse responseModel(){
+        return new PrincipalResponse(nConst.responseModel() , job , characters);
+    }
 
 }
