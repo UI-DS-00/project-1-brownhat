@@ -29,6 +29,8 @@ class Principal {
     @JoinColumn(name = "n_const_id")
     private NameBasic nConst;
 
+    private String filmCode;
+
     private String category;
     private String job;
     private String characters;

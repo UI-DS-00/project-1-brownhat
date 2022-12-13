@@ -52,11 +52,13 @@ public class ShowDataServiceImpl implements ShowDataService{
             TitleBasicResponse filmResponse = eachFilm.responseModel();
             //getting all the cast and crew
 
-            //todo=========================================================================================
-            Set <Principal> principals = null;//= principalRepository.findByTConst(eachFilm);
+            Set <Principal> principals = principalRepository.findByFilmCode(eachFilm.getTConst());
 
             //adding cast and crew
             for (Principal eachPerson : principals){
+
+                if (eachPerson.getNConst() == null)
+                    continue;
 
                 if (eachPerson.getCategory().equals("actor")  || eachPerson.getCategory().equals("actress") )
                     casts.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
