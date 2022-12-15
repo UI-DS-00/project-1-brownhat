@@ -24,12 +24,12 @@ public class FavouriteList {
     @ManyToOne
     private AllUser owner;
 
-    @OneToMany(mappedBy = "tConst")
+    @OneToMany
     //@JoinColumn(name = "titleBasics")
     private Set<TitleBasic> list;
 
 
-    public FavouriteList( String name, AllUser owner, Set<TitleBasic> list) {
+    public FavouriteList(String name, AllUser owner, Set<TitleBasic> list) {
         this.name = name;
         this.owner = owner;
         this.list = list;

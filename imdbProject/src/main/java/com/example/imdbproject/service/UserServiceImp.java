@@ -29,6 +29,7 @@ import java.util.*;
 
 import com.example.imdbproject.model.*;
 
+import javax.swing.*;
 import javax.transaction.Transactional;
 
 
@@ -158,19 +159,26 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public BooleanResponse addFilmToFavouriteList(Integer userId, String name, String titleBasic) {
-        Optional <FavouriteList> currentWatchList = favouriteListRepository.findByName(name);
-        Optional <AllUser> user = allUserRepository.findById(userId);
-        Optional <TitleBasic> film = titleBasicRepository.findById(titleBasic);
+    public BooleanResponse addFilmToFavouriteList(String username, String favouriteListName, String titleBasic) {
+        try {
+            AllUser user = allUserRepository.findByUsername(username).get();
+            TitleBasic film = titleBasicRepository.findById(titleBasic).get();
 
-        if (currentWatchList.isEmpty())
-            throw new WrongInput("watch list not found");
-        if (film.isEmpty())
-            throw new WrongInput("film not found");
+            for (FavouriteList f : user.getFavoriteLists()) {
+                if (favouriteListName.compareTo(f.getName()) == 0) {
+                    f.getList().add(film);
+                    favouriteListRepository.save(f);
+                    user.getFavoriteLists().add(f);
+                    allUserRepository.save(user);
+                    return new BooleanResponse(true);
 
-        currentWatchList.get().getList().add(film.get());
-        favouriteListRepository.save(currentWatchList.get());
-        return null;
+                }
+            }
+
+        }catch (Exception e){
+            return new BooleanResponse(false);
+        }
+        return new BooleanResponse(false);
     }
 
     @Override

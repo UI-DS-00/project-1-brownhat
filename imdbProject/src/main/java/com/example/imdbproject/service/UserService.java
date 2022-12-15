@@ -20,7 +20,7 @@ public interface UserService {
 
     void addFilmToWatchList(String name ,String titleBasic , String username);
     BooleanResponse makeFavouriteList(String name , String username);
-    BooleanResponse addFilmToFavouriteList(Integer userId,String name ,String titleBasic);
+    BooleanResponse addFilmToFavouriteList(String username, String favouriteListName, String titleBasic);
     void addComment(String userId , String commentText , String titleBasicId);
     Boolean signUp(String username , String password);
 
