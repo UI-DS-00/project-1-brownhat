@@ -27,8 +27,8 @@ public class WatchList {
     @ManyToOne
     private AllUser owner;
 
-    @OneToMany(mappedBy = "tConst")
-    //@JoinColumn(name = "titleBasics")
+    @OneToMany
+   //JoinColumn(name = "titleBasics_watching")
     private Set<TitleBasic> list;
 
 

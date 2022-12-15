@@ -16,14 +16,19 @@ import java.util.Set;
 
 public class AllUser
 {
+
+    @Transient
+    public static AllUser user = null;
+
     @Id
     @GeneratedValue
     private Long id;
     @Column(unique=true, nullable=false)
-
     private String username;
     private String password;
 
+    @OneToMany
+    private Set<TitleBasic> ratingFilms;
 
     public AllUser( String username, String password) {
         this.username = username;

@@ -19,17 +19,16 @@ public class Comment
    @GeneratedValue
    private Long ID;
 
+   private Boolean isReply = false;
 
    private String text;
    @ManyToOne
-   @JoinColumn(name = "user_id")
    private AllUser user;
 
-   @OneToMany(mappedBy = "user")
+   @OneToMany
    private Set<Comment> replies;
 
    @ManyToOne
-   @JoinColumn(name = "titleBasic_id")
    private TitleBasic titleBasic;
 
 

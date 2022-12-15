@@ -76,33 +76,44 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public void rating(String titleBasic, Float rateAmount) {
+    public void rating(String titleBasic, Float rateAmount , String username) {
 
+        Optional <AllUser> user=allUserRepository.findByUsername(username);
+        if (user.isEmpty())
+            throw new UsernameNotFoundException("you are not login");
 
         if (rateAmount > 10 || rateAmount < 0)
             throw new ratingOutOfBound();
 
-        Optional <Rating> changeRate = ratingRepository.findById(titleBasic);
+        Optional <TitleBasic> film = titleBasicRepository.findById(titleBasic);
+        if (film.isEmpty())
+            throw new WrongInput("film not found");
 
 
-        Rating rating = null;
+        //if the user has not rated yet
+        if (user.get().getRatingFilms().contains(film.get()))
+            throw new DuplicateName();
 
-        if (changeRate.isPresent())
-            rating=changeRate.get();
+        Rating changeRate = ratingRepository.findByTitleConst(film.get());
 
-        rating.calculateAverage(rateAmount);
 
-        ratingRepository.save(rating);
+        changeRate.calculateAverage(rateAmount);
+        ratingRepository.save(changeRate);
+
+        user.get().getRatingFilms().add(film.get());
+
     }
 
 
     @Override
-    public void makeWatchList(String name , Integer userId) {
+    public void makeWatchList(String username , String filmName) {
 
-        Optional<AllUser> user = allUserRepository.findById(userId);
+        Optional<AllUser> user = allUserRepository.findByUsername(username);
+        if (user.isEmpty())
+            throw new UsernameNotFoundException("user not found");
 
         try {
-            WatchList newWatchList = new WatchList(name , user.get() , new HashSet<>());
+            WatchList newWatchList = new WatchList(filmName , user.get() , new HashSet<>());
             watchListRepository.save(newWatchList);
 
         }catch (Exception e) {
@@ -112,10 +123,12 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public void addFilmToWatchList(Integer userId, String watchlistName, String titleBasic) {
+    public void addFilmToWatchList( String watchlistName, String titleBasic , String username) {
 
-        Optional <WatchList> currentWatchList = watchListRepository.findByName(watchlistName);
-        Optional <AllUser> user = allUserRepository.findById(userId);
+        Optional <AllUser> user = allUserRepository.findByUsername(username);
+        if (user.isEmpty())
+            throw new UsernameNotFoundException("user not found");
+        Optional <WatchList> currentWatchList = watchListRepository.findByNameAndOwner(watchlistName , user.get());
         Optional <TitleBasic> film = titleBasicRepository.findById(titleBasic);
 
         if (currentWatchList.isEmpty())
@@ -125,7 +138,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         currentWatchList.get().getList().add(film.get());
         watchListRepository.save(currentWatchList.get());
-
     }
 
     @Override
@@ -166,9 +178,9 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public void addComment(Integer userId, String commentText, String titleBasicId) {
+    public void addComment(String username, String commentText, String titleBasicId) {
 
-        Optional<AllUser> user = allUserRepository.findById(userId);
+        Optional<AllUser> user = allUserRepository.findByUsername(username);
         Optional <TitleBasic> movie = titleBasicRepository.findById(titleBasicId);
 
         if (user.isEmpty() || movie.isEmpty())

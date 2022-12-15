@@ -13,14 +13,14 @@ import java.util.Optional;
 public interface UserService {
 
     Optional<Comment> reply(Comment comment, Comment reComment);
-    void rating (String titleBasic,Float rateAmount);
+    void rating (String titleBasic,Float rateAmount , String username);
 
-    void makeWatchList(String name , Integer userId);
+    void makeWatchList(String username , String filmName);
 
-    void addFilmToWatchList(Integer userId,String name ,String titleBasic);
+    void addFilmToWatchList(String name ,String titleBasic , String username);
     void makeFavouriteList(String name , Integer userId);
     void addFilmToFavouriteList(Integer userId,String name ,String titleBasic);
-    void addComment(Integer userId , String commentText , String titleBasicId);
+    void addComment(String userId , String commentText , String titleBasicId);
     Boolean signUp(String username , String password);
 
     //================================ JWT :)

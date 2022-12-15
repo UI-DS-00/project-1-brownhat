@@ -27,6 +27,7 @@ public class TitleBasicResponse {
 
     private Set <PrincipalResponse> actors; //casts
     private Set <PrincipalResponse> crew;
+    private Set <CommentResponse> comments;
 
     private RateResponse rate;
 

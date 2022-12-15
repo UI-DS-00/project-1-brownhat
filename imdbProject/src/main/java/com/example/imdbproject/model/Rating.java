@@ -39,7 +39,7 @@ class Rating {
            temp = this.getVote_numbers() * this.getAverageRate();
            temp += rateAmount;
            ++vote_numbers;
-           averageRate = rateAmount / vote_numbers;
+           averageRate = temp / vote_numbers;
        } catch (NullPointerException e) {
            averageRate = rateAmount;
            vote_numbers = 1;

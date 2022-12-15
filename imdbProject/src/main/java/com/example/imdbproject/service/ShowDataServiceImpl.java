@@ -25,6 +25,7 @@ public class ShowDataServiceImpl implements ShowDataService{
     private FavouriteListRepository favouriteListRepository;
 
     private PrincipalRepository principalRepository;
+    private CommentRepository commentRepository;
 
     @Override
     public TitleBasicResponse allMoviesData(String tConst) {
@@ -74,6 +75,11 @@ public class ShowDataServiceImpl implements ShowDataService{
 
             filmResponse.setCrew( crew);
             filmResponse.setActors(casts);
+
+
+            //add comments
+            Set <Comment> comments = commentRepository.findByTitleBasic(eachFilm);
+            Set <Comment> replies;//--------------------------------------------
 
 
             allFilms.add(filmResponse);

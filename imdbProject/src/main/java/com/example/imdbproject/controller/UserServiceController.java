@@ -7,15 +7,16 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.imdbproject.exceptions.DuplicateName;
 import com.example.imdbproject.model.AllUser;
 import com.example.imdbproject.model.Role;
-import com.example.imdbproject.model.request.RoleToUserForm;
-import com.example.imdbproject.model.request.SignUpRequest;
+import com.example.imdbproject.model.request.*;
 import com.example.imdbproject.model.response.BooleanResponse;
 import com.example.imdbproject.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,26 +48,26 @@ public class UserServiceController {
     private final UserService userServiceImp;
 
     @PostMapping("/user/rating")
-    public void makeRating(@RequestBody String titleBasic, @RequestBody Float ratingAmount) {
-        userService.rating(titleBasic, ratingAmount);
+    public void makeRating(Authentication authentication , @RequestBody RatingRequest ratingAmount) {
+        userService.rating(ratingAmount.getFilmTConst(), ratingAmount.getAmountOfRating(), authentication.getName());
     }
-
-    @PostMapping("/user/make/watchlist/{userId}")
-    public void makeWatchList(@RequestBody String name, @PathVariable Integer userId) {
-        userService.makeWatchList(name, userId);
-    }
-
-    @PostMapping("/user/add/to/watchlist/{id}")
-    public void addToWatchList(@RequestBody String filmId, @RequestBody String watchlistName, @PathVariable Integer id) {
-        userServiceImp.addFilmToWatchList(id, watchlistName, filmId);
+    @PostMapping("/user/make/watchlist")
+    public void makeWatchList(Authentication authentication , @RequestBody Input watch_name ) {
+        userService.makeWatchList(authentication.getName() , watch_name.getInput() );
     }
 
 
-    @PostMapping("/user/add/new/comment/{titleBasic}/{id}")
-    public void addComment(@RequestBody String commentText, @PathVariable String titleBasic, @PathVariable Integer id) {
+    @PostMapping("/user/add/to/watchlist")
+    public void addToWatchList(Authentication authentication , @RequestBody AddingWatchList addingWatchList) {
+        userServiceImp.addFilmToWatchList(addingWatchList.getWatchListName() , addingWatchList.getFilmId() , authentication.getName());
+    }
 
-        userServiceImp.addComment(id, commentText, titleBasic);
 
+    @PostMapping("/user/add/new/comment")
+    //"/user/add/new/comment/{titleBasic}/{id}"
+    public void addComment( Authentication authentication ,  @RequestBody CommentRequest commentRequest ) {
+
+        userServiceImp.addComment(authentication.getName(), commentRequest.getCommentText(),commentRequest.getFilmName());
     }
 
     @PostMapping("/signup")
