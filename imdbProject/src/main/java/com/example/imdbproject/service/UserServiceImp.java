@@ -8,6 +8,7 @@ import com.example.imdbproject.model.AllUser;
 import com.example.imdbproject.model.Rating;
 import com.example.imdbproject.model.TitleBasic;
 import com.example.imdbproject.model.WatchList;
+import com.example.imdbproject.model.response.BooleanResponse;
 import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -141,19 +142,23 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public void makeFavouriteList(String name, Integer userId) {
-        Optional<AllUser> user = allUserRepository.findById(userId);
+    public BooleanResponse makeFavouriteList(String name, String username) {
+        Optional<AllUser> user = allUserRepository.findByUsername(username);
+        BooleanResponse booleanResponse;
         try {
             FavouriteList newWatchList = new FavouriteList(name , user.get() , new HashSet<>());
             favouriteListRepository.save(newWatchList);
-
+            booleanResponse = new BooleanResponse(true);
         }catch (Exception e) {
+            booleanResponse = new BooleanResponse(false);
             throw new DuplicateName();
         }
+        return new BooleanResponse(booleanResponse.getResponse());
+
     }
 
     @Override
-    public void addFilmToFavouriteList(Integer userId, String name, String titleBasic) {
+    public BooleanResponse addFilmToFavouriteList(Integer userId, String name, String titleBasic) {
         Optional <FavouriteList> currentWatchList = favouriteListRepository.findByName(name);
         Optional <AllUser> user = allUserRepository.findById(userId);
         Optional <TitleBasic> film = titleBasicRepository.findById(titleBasic);
@@ -165,6 +170,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         currentWatchList.get().getList().add(film.get());
         favouriteListRepository.save(currentWatchList.get());
+        return null;
     }
 
     @Override

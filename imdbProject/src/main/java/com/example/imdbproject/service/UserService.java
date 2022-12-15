@@ -7,6 +7,7 @@ import com.example.imdbproject.model.TitleBasic;
 import java.util.List;
 import java.util.Set;
 import com.example.imdbproject.model.Comment;
+import com.example.imdbproject.model.response.BooleanResponse;
 
 import java.util.Optional;
 
@@ -18,8 +19,8 @@ public interface UserService {
     void makeWatchList(String username , String filmName);
 
     void addFilmToWatchList(String name ,String titleBasic , String username);
-    void makeFavouriteList(String name , Integer userId);
-    void addFilmToFavouriteList(Integer userId,String name ,String titleBasic);
+    BooleanResponse makeFavouriteList(String name , String username);
+    BooleanResponse addFilmToFavouriteList(Integer userId,String name ,String titleBasic);
     void addComment(String userId , String commentText , String titleBasicId);
     Boolean signUp(String username , String password);
 

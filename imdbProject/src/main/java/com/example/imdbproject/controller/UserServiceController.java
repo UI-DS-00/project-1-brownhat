@@ -83,6 +83,20 @@ public class UserServiceController {
         return new ResponseEntity<>(check , HttpStatus.OK);
     }
 
+    @PostMapping("/user/makeFavouriteList")
+    public ResponseEntity<BooleanResponse> favouriteListCreation(Authentication authentication,@RequestBody Input input){
+
+        BooleanResponse check;
+        try {
+            check = new BooleanResponse(userServiceImp.makeFavouriteList(input.getInput(),authentication.getName()).getResponse());
+        } catch (DuplicateName duplicateName){
+            check = new BooleanResponse(false);
+        }
+
+        return new ResponseEntity<>(check , HttpStatus.OK);
+    }
+
+
     //--------------------------------------------------------------------------JWT :)
 
     @GetMapping("/admin/users")
