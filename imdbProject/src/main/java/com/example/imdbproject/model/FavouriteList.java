@@ -34,4 +34,6 @@ public class FavouriteList {
         this.owner = owner;
         this.list = list;
     }
+
+
 }

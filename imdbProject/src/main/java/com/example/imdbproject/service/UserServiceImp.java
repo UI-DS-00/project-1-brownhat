@@ -192,6 +192,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
             AllUser user = allUserRepository.findByUsername(username).get();
             Comment main = commentRepository.findById(commentId).get();
+            reComment.setReplyForMainComment(main);
             reComment.setTitleBasic(main.getTitleBasic());
             reComment.setUser(main.getUser());
             main.getReplies().add(reComment);
@@ -233,6 +234,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         saveUser(newUser);
 
+        addRoleToUser(username,"ROLE_USER");
         return true;
     }
 

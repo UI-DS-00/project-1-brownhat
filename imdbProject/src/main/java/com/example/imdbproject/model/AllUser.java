@@ -40,7 +40,7 @@ public class AllUser
     }
 
     //@OneToMany(mappedBy = "user")
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
 
     @JoinTable(
             name = "user_comment",

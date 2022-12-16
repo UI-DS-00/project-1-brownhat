@@ -1,5 +1,6 @@
 package com.example.imdbproject.service;
 import com.example.imdbproject.model.*;
+import com.example.imdbproject.model.response.FavouriteListResponse;
 import com.example.imdbproject.model.response.NameBasicSummery;
 import com.example.imdbproject.model.response.PrincipalResponse;
 import com.example.imdbproject.model.response.TitleBasicResponse;
@@ -153,8 +154,9 @@ public class ShowDataServiceImpl implements ShowDataService{
     }
 
     @Override
-    public Set<FavouriteList> favouriteList(TitleBasic titleBasic) {
+    public Set<FavouriteList> othersFavouriteList(String titleBasicId) {
 
+        TitleBasic titleBasic = titleBasicRepository.findById(titleBasicId).get();
         Set<FavouriteList> favouriteLists;
         favouriteLists = favouriteListRepository.findByList(titleBasic);
 

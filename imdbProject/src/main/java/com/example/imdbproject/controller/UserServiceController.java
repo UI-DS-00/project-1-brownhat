@@ -12,14 +12,9 @@ import com.example.imdbproject.model.response.BooleanResponse;
 import com.example.imdbproject.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -109,11 +104,11 @@ public class UserServiceController {
         return new ResponseEntity<>(check , HttpStatus.OK);
     }
     @PostMapping("/user/reply")
-    public ResponseEntity<BooleanResponse> reply(){//Authentication authentication,@RequestBody Input input){
+    public ResponseEntity<BooleanResponse> reply(Authentication authentication,@RequestBody ReplyRequest input){
 
         BooleanResponse check;
         try {
-            check = new BooleanResponse(userServiceImp.reply("mmd2", "mmd2", 7445L));
+            check = new BooleanResponse(userServiceImp.reply(input.getCommentText(), authentication.getName(), input.getMainId()));
         } catch (DuplicateName duplicateName){
             check = new BooleanResponse(false);
         }
