@@ -1,39 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:get/get.dart';
 import 'BNavigationBar.dart';
+import 'package:flutter_app/Controllers/splash_screen_controller.dart';
 void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: SplashPage(),
+    home: SplashScreen(),
   ));
 }
-//########################################################
-class SplashPage extends StatefulWidget {
-  SplashPage({Key ?key}) : super(key: key);
 
+class SplashScreen extends StatefulWidget {
+  SplashScreen({Key? key}) : super(key: key);
+  SplashScreenController controller = Get.put<SplashScreenController>(SplashScreenController());
   @override
-  _SplashPageState createState() => _SplashPageState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashPageState extends State<SplashPage> {
-
+class _SplashScreenState extends State<SplashScreen> {
   static const s = TextStyle(fontFamily: "fredoka" , fontSize: 25);
-
-
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: EasySplashScreen(
-      logo: Image.asset('popcorn.png'),
-      title: const Text("IMDb",
-          style: s
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('popcorn.png'),
+            const SizedBox(height: 25,),
+            Text('IMDb' ,style: s,),
+
+
+
+          ],
+        ),
       ),
-      backgroundColor: Colors.grey.shade400,
-      showLoader: true,
-      loadingText: const Text("Loading..."),
-      navigator: const BNavigationBar(),
-      durationInSeconds: 5,
-    )
+
     );
   }
 }
