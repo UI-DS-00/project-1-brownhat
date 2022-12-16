@@ -42,7 +42,8 @@ public class UploadToDatabaseImpl <T> {
 
     public void readingFiles() throws IOException, SQLException, ClassNotFoundException {
 
-        FileInputStream file = new FileInputStream("C:/Users/ES/Downloads/Compressed/top200-IMDB-dataSet/title.basic.1-200.tsv");
+        String address = "C:\\Users\\hp\\Desktop\\Desktop\\Files\\top200-IMDB-dataSet";
+        FileInputStream file = new FileInputStream(address+"\\title.basic.1-200.tsv");
         Scanner reader = new Scanner(file);
 
         reader.nextLine();
@@ -53,7 +54,7 @@ public class UploadToDatabaseImpl <T> {
 
         }
 
-        file = new FileInputStream("C:/Users/ES/Downloads/Compressed/top200-IMDB-dataSet/title.rating.1-200.tsv");
+        file = new FileInputStream(address+"\\title.rating.1-200.tsv");
         reader = new Scanner(file);
 
         reader.nextLine();
@@ -64,7 +65,7 @@ public class UploadToDatabaseImpl <T> {
 
         }
 
-        file = new FileInputStream("C:/Users/ES/Downloads/Compressed/top200-IMDB-dataSet/name.basic.1-200.tsv");
+        file = new FileInputStream(address+"\\name.basic.1-200.tsv");
         reader = new Scanner(file);
 
         reader.nextLine();
@@ -75,7 +76,7 @@ public class UploadToDatabaseImpl <T> {
 
         }
 
-        file = new FileInputStream("C:/Users/ES/Downloads/Compressed/top200-IMDB-dataSet/title.principals1-200.tsv");
+        file = new FileInputStream(address+"\\title.principals1-200.tsv");
         reader = new Scanner(file);
 
         reader.nextLine();

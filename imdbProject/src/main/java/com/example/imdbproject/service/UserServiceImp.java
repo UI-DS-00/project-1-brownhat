@@ -147,7 +147,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
         Optional<AllUser> user = allUserRepository.findByUsername(username);
         BooleanResponse booleanResponse;
         try {
-            FavouriteList newWatchList = new FavouriteList(name , user.get() , new HashSet<>());
+            FavouriteList newWatchList = FavouriteList.builder().name(name).owner( user.get()).build();
             favouriteListRepository.save(newWatchList);
             booleanResponse = new BooleanResponse(true);
         }catch (Exception e) {
@@ -159,26 +159,41 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public BooleanResponse addFilmToFavouriteList(String username, String favouriteListName, String titleBasic) {
+    public BooleanResponse addFilmToFavouriteList(String username, String favouriteListName, String titleBasicId) {
+
+//        try {
+//            AllUser user = allUserRepository.findByUsername(username).get();
+//            TitleBasic film = titleBasicRepository.findById(titleBasic).get();
+//
+//            for (FavouriteList f : user.getFavoriteLists()) {
+//                if (favouriteListName.compareTo(f.getName()) == 0) {
+//                    f.getList().add(film);
+//                    favouriteListRepository.save(f);
+//                    user.getFavoriteLists().add(f);
+//                    allUserRepository.save(user);
+//                    return new BooleanResponse(true);
+//
+//                }
+//            }
+//
+//        }catch (Exception e){
+//            return new BooleanResponse(false);
+//        }
+//        return new BooleanResponse(false);
+
+
         try {
+
             AllUser user = allUserRepository.findByUsername(username).get();
-            TitleBasic film = titleBasicRepository.findById(titleBasic).get();
+            TitleBasic film = titleBasicRepository.findById(titleBasicId).get();
 
-            for (FavouriteList f : user.getFavoriteLists()) {
-                if (favouriteListName.compareTo(f.getName()) == 0) {
-                    f.getList().add(film);
-                    favouriteListRepository.save(f);
-                    user.getFavoriteLists().add(f);
-                    allUserRepository.save(user);
-                    return new BooleanResponse(true);
-
-                }
-            }
-
-        }catch (Exception e){
+            FavouriteList favouriteList = FavouriteList.builder().owner(user).name(favouriteListName).
+                    titleBasic(film).build();
+            favouriteListRepository.save(favouriteList);
             return new BooleanResponse(false);
+        }catch (Exception e) {
+            return new BooleanResponse(true);
         }
-        return new BooleanResponse(false);
     }
 
     @Override
@@ -235,6 +250,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
         saveUser(newUser);
 
         addRoleToUser(username,"ROLE_USER");
+
         return true;
     }
 

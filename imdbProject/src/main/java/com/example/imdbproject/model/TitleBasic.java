@@ -37,6 +37,10 @@ public class TitleBasic {
 
     private int endYear;
     private int runtime;
+
+    @OneToMany(mappedBy = "titleBasic")
+    public Set<FavouriteList> favouriteLists;
+
     @OneToMany  //@ElementCollection(targetClass = String.class)
     //@JoinColumn(name = "genre")
     private Set<Genre> genres;
@@ -66,4 +70,6 @@ public class TitleBasic {
         this.runtime = runtime;
         this.genres = genres;
     }
+
+
 }

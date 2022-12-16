@@ -153,14 +153,18 @@ public class ShowDataServiceImpl implements ShowDataService{
         return moviesByRating;
     }
 
+
     @Override
     public Set<FavouriteList> othersFavouriteList(String titleBasicId) {
 
-        TitleBasic titleBasic = titleBasicRepository.findById(titleBasicId).get();
-        Set<FavouriteList> favouriteLists;
-        favouriteLists = favouriteListRepository.findByList(titleBasic);
 
-        return favouriteLists;
+
+            TitleBasic titleBasic = titleBasicRepository.findById(titleBasicId).get();
+            Set<FavouriteList> favouriteLists;
+            favouriteLists = favouriteListRepository.findByTitleBasic(titleBasic);
+
+            System.out.println(favouriteLists);
+            return favouriteLists;
     }
 
 

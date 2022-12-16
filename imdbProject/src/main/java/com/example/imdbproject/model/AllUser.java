@@ -1,5 +1,6 @@
 package com.example.imdbproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -40,7 +41,7 @@ public class AllUser
     }
 
     //@OneToMany(mappedBy = "user")
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany()
 
     @JoinTable(
             name = "user_comment",
@@ -60,12 +61,8 @@ public class AllUser
 
 
     //@OneToMany(mappedBy = "owner")
-    @OneToMany
-    @JoinTable(
-            name = "user_favourite",
-            joinColumns = @JoinColumn(name = "allUser"),
-            inverseJoinColumns = @JoinColumn(name = "FavouriteList"))
-
+    @OneToMany(mappedBy = "owner")
+    @ToString.Exclude
     private Set<FavouriteList> favoriteLists;
 
     @ManyToMany (fetch = FetchType.EAGER)

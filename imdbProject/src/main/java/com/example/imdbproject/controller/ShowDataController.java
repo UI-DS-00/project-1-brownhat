@@ -48,7 +48,7 @@ public class ShowDataController {
 
     //======================================================no debug
     @GetMapping ("/others/favouriteList")
-    public ResponseEntity<Set<FavouriteList>> getFavouriteLists(@RequestBody Input input) {
+    public ResponseEntity<Set<FavouriteList>> getFavouriteLists(){//(@RequestBody Input input) {
         //return new ResponseEntity<>(showDataService.favouriteList(input.getInput()),HttpStatus.OK);
         return new ResponseEntity<>(showDataService.othersFavouriteList("tt0012349"),HttpStatus.OK);
     }

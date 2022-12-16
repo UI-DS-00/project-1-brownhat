@@ -25,6 +25,7 @@ class Rating {
 
 
     @OneToOne
+    @ToString.Exclude
     private TitleBasic titleConst;
     private Float averageRate;
     private Integer vote_numbers;
