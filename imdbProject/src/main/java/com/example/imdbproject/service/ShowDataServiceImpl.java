@@ -1,9 +1,6 @@
 package com.example.imdbproject.service;
 import com.example.imdbproject.model.*;
-import com.example.imdbproject.model.response.FavouriteListResponse;
-import com.example.imdbproject.model.response.NameBasicSummery;
-import com.example.imdbproject.model.response.PrincipalResponse;
-import com.example.imdbproject.model.response.TitleBasicResponse;
+import com.example.imdbproject.model.response.*;
 import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,10 +75,41 @@ public class ShowDataServiceImpl implements ShowDataService{
             filmResponse.setActors(casts);
 
 
-            //add comments
-            Set <Comment> comments = commentRepository.findByTitleBasic(eachFilm);
-            Set <Comment> replies;//--------------------------------------------
+            //add comments---------------------------------------------------------------------------------
+            Set <Comment> comments = commentRepository.findByTitleBasicAndIsReply(eachFilm , false);
 
+            Set <Comment> addingAllSubComments = comments;
+            Set <CommentResponse> addingAllSubComments2= CommentResponse.makeCommentRespond(comments);
+            Set <CommentResponse> copy = addingAllSubComments2;
+
+            while (! addingAllSubComments.isEmpty()) {
+                Set <Comment> newComments = new HashSet<>();
+                Set <CommentResponse> newComments1 = new HashSet<>();
+
+                for (CommentResponse comment : addingAllSubComments2) {
+
+                    Comment foundedComment=null;
+                    for (Comment comment1 : addingAllSubComments){
+                        if (CommentResponse.isEqual(comment1 , comment)){
+                            foundedComment = comment1;
+                            break;
+                        }
+                    }
+                    Set<Comment> replies = commentRepository.findByReplyForMainComment(foundedComment);
+
+                    comment.setReplies(CommentResponse.makeCommentRespond(replies));
+
+
+                    newComments.addAll(replies);
+                    newComments1.addAll(comment.getReplies());
+
+                }
+
+                addingAllSubComments = newComments;
+                addingAllSubComments2 = newComments1;
+            }
+
+            filmResponse.setComments(copy);
 
             allFilms.add(filmResponse);
         }
