@@ -8,6 +8,7 @@ import com.example.imdbproject.model.AllUser;
 import com.example.imdbproject.model.Rating;
 import com.example.imdbproject.model.TitleBasic;
 import com.example.imdbproject.model.WatchList;
+import com.example.imdbproject.model.response.BooleanResponse;
 import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ import java.util.*;
 
 import com.example.imdbproject.model.*;
 
+import javax.swing.*;
 import javax.transaction.Transactional;
 
 
@@ -141,40 +143,68 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public void makeFavouriteList(String name, Integer userId) {
-        Optional<AllUser> user = allUserRepository.findById(userId);
+    public BooleanResponse makeFavouriteList(String name, String username) {
+        Optional<AllUser> user = allUserRepository.findByUsername(username);
+        BooleanResponse booleanResponse;
         try {
             FavouriteList newWatchList = new FavouriteList(name , user.get() , new HashSet<>());
             favouriteListRepository.save(newWatchList);
-
+            booleanResponse = new BooleanResponse(true);
         }catch (Exception e) {
+            booleanResponse = new BooleanResponse(false);
             throw new DuplicateName();
         }
+        return new BooleanResponse(booleanResponse.getResponse());
+
     }
 
     @Override
-    public void addFilmToFavouriteList(Integer userId, String name, String titleBasic) {
-        Optional <FavouriteList> currentWatchList = favouriteListRepository.findByName(name);
-        Optional <AllUser> user = allUserRepository.findById(userId);
-        Optional <TitleBasic> film = titleBasicRepository.findById(titleBasic);
+    public BooleanResponse addFilmToFavouriteList(String username, String favouriteListName, String titleBasic) {
+        try {
+            AllUser user = allUserRepository.findByUsername(username).get();
+            TitleBasic film = titleBasicRepository.findById(titleBasic).get();
 
-        if (currentWatchList.isEmpty())
-            throw new WrongInput("watch list not found");
-        if (film.isEmpty())
-            throw new WrongInput("film not found");
+            for (FavouriteList f : user.getFavoriteLists()) {
+                if (favouriteListName.compareTo(f.getName()) == 0) {
+                    f.getList().add(film);
+                    favouriteListRepository.save(f);
+                    user.getFavoriteLists().add(f);
+                    allUserRepository.save(user);
+                    return new BooleanResponse(true);
 
-        currentWatchList.get().getList().add(film.get());
-        favouriteListRepository.save(currentWatchList.get());
+                }
+            }
+
+        }catch (Exception e){
+            return new BooleanResponse(false);
+        }
+        return new BooleanResponse(false);
     }
 
     @Override
-    public Optional<Comment> reply(Comment comment, Comment reComment) {
+    public Boolean reply(String reCommentText, String username,Long commentId) {
 
-        commentRepository.save(reComment);
-        comment.getReplies().add(reComment);
-        commentRepository.save(comment);
+        try {
 
-        return Optional.empty();
+            Comment reComment = new Comment();
+            reComment.setText(reCommentText);
+            reComment.setIsReply(true);
+
+            AllUser user = allUserRepository.findByUsername(username).get();
+            Comment main = commentRepository.findById(commentId).get();
+            reComment.setReplyForMainComment(main);
+            reComment.setTitleBasic(main.getTitleBasic());
+            reComment.setUser(main.getUser());
+            main.getReplies().add(reComment);
+            commentRepository.save(reComment);
+            commentRepository.save(main);
+            user.getComments().add(reComment);
+            allUserRepository.save(user);
+            return true;
+
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @Override
@@ -204,6 +234,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         saveUser(newUser);
 
+        addRoleToUser(username,"ROLE_USER");
         return true;
     }
 

@@ -93,7 +93,7 @@ public class CostumeAuthenticationFilter extends UsernamePasswordAuthenticationF
         String refreshToken = JWT.create()
                 .withSubject(user.getUsername())
 
-                .withExpiresAt(new Date(System.currentTimeMillis()+ 20*60*1000))
+                .withExpiresAt(new Date(System.currentTimeMillis()+ 200*60*1000))
                 .withIssuer(request.getRequestURL().toString())
                 //todo we dont know :/
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))

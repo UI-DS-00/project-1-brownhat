@@ -1,5 +1,6 @@
 package com.example.imdbproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class Comment
 
    private String text;
    @ManyToOne
+   @JsonIgnore
    private AllUser user;
 
    @OneToMany
@@ -31,6 +33,8 @@ public class Comment
    @ManyToOne
    private TitleBasic titleBasic;
 
+   @OneToOne
+   Comment replyForMainComment = null;
 
    public Comment(AllUser user , TitleBasic titleBasic , String text) {
       this.text = text;

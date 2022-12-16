@@ -18,17 +18,9 @@ import java.util.Set;
 @ToString
 public class TitleBasic {
 
-
-    /*
-        @Id
-        @Column(name = "id", nullable = false)
-        private Long id;
-     */
     @Id
     @Column(name = "tconst", nullable = false)
     private String tConst;
-
-
 
     @OneToOne
     private Rating rating;

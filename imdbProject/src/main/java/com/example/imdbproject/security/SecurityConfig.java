@@ -48,8 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
         super.configure(auth);
     }
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //after giving the user a token , we are not going to track him down with cookies or etc , but we are going to use
@@ -74,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //commands in between '========' lines
 
         http.authorizeRequests().antMatchers("/api/login/**" , "/api/token/refresh", "/upload", "/swagger-ui/**").permitAll();
-        http.authorizeRequests().antMatchers("/filter/**" , "/data/show/**", "/readFiles").permitAll();
+        http.authorizeRequests().antMatchers("/filter/**" , "/data/show/**", "/readFiles","/api/signup").permitAll();
 
       //the login path comes from : filter -> costumeAuthenticationFilter -> UsernamePasswordAuthenticationFilter.class
 
