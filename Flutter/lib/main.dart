@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:get/get.dart';
-import 'BNavigationBar.dart';
+import 'Screens/BNavigationBar.dart';
 import 'package:flutter_app/Controllers/splash_screen_controller.dart';
 void main() {
   runApp(GetMaterialApp(

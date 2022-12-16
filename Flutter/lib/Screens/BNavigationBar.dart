@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'HomePage.dart';
+import 'login_page.dart';
 //import 'Home.dart';
 //##########################################################
 class BNavigationBar extends StatefulWidget {
@@ -62,8 +63,8 @@ class _MainState extends State<BNavigationBar> {
   {
     switch(_bottomNavIndex)
     {
-      case 1 :
-        return const Scaffold(body: Center(child: Text("1"),),backgroundColor: Colors.white);
+      case 0 :
+        return LoginScreen();
         break;
       case 2 :
         return const HomePage();
