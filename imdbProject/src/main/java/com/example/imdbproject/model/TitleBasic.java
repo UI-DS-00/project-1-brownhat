@@ -22,8 +22,6 @@ public class TitleBasic {
     @Column(name = "tconst", nullable = false)
     private String tConst;
 
-
-
     @OneToOne
     private Rating rating;
 

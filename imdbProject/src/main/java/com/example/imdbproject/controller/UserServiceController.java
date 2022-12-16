@@ -97,11 +97,23 @@ public class UserServiceController {
     }
 
     @PostMapping("/user/addToFavouriteList")
-    public ResponseEntity<BooleanResponse> addToFavouriteList(){//Authentication authentication,@RequestBody Input input){
+    public ResponseEntity<BooleanResponse> addToFavouriteList(Authentication authentication,@RequestBody AddingWatchList input){
 
         BooleanResponse check;
         try {
-            check = new BooleanResponse(userServiceImp.addFilmToFavouriteList("mmd2", "mmdam","tt0015324").getResponse());
+            check = new BooleanResponse(userServiceImp.addFilmToFavouriteList(authentication.getName(), input.getWatchListName(),input.getFilmId()).getResponse());
+        } catch (DuplicateName duplicateName){
+            check = new BooleanResponse(false);
+        }
+
+        return new ResponseEntity<>(check , HttpStatus.OK);
+    }
+    @PostMapping("/user/reply")
+    public ResponseEntity<BooleanResponse> reply(){//Authentication authentication,@RequestBody Input input){
+
+        BooleanResponse check;
+        try {
+            check = new BooleanResponse(userServiceImp.reply("mmd2", "mmd2", 7445L));
         } catch (DuplicateName duplicateName){
             check = new BooleanResponse(false);
         }

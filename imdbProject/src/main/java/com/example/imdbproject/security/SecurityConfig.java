@@ -48,8 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
         super.configure(auth);
     }
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //after giving the user a token , we are not going to track him down with cookies or etc , but we are going to use

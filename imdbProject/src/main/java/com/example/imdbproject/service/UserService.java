@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    Optional<Comment> reply(Comment comment, Comment reComment);
+    Boolean reply(String recommentText, String username,Long commentId);
     void rating (String titleBasic,Float rateAmount , String username);
 
     void makeWatchList(String username , String filmName);
@@ -27,14 +27,9 @@ public interface UserService {
     //================================ JWT :)
 
     AllUser saveUser (AllUser allUser);
-
     Role saveRole(Role role);
-
     void addRoleToUser(String username , String roleName);
-
     Optional<AllUser> getUser(String userName);
-
-
     //method of returning a list of all users
      List<AllUser> getUser();
 }

@@ -182,13 +182,28 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public Optional<Comment> reply(Comment comment, Comment reComment) {
+    public Boolean reply(String reCommentText, String username,Long commentId) {
 
-        commentRepository.save(reComment);
-        comment.getReplies().add(reComment);
-        commentRepository.save(comment);
+        try {
 
-        return Optional.empty();
+            Comment reComment = new Comment();
+            reComment.setText(reCommentText);
+            reComment.setIsReply(true);
+
+            AllUser user = allUserRepository.findByUsername(username).get();
+            Comment main = commentRepository.findById(commentId).get();
+            reComment.setTitleBasic(main.getTitleBasic());
+            reComment.setUser(main.getUser());
+            main.getReplies().add(reComment);
+            commentRepository.save(reComment);
+            commentRepository.save(main);
+            user.getComments().add(reComment);
+            allUserRepository.save(user);
+            return true;
+
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @Override
