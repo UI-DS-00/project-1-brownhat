@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //commands in between '========' lines
 
         http.authorizeRequests().antMatchers("/api/login/**" , "/api/token/refresh", "/upload", "/swagger-ui/**").permitAll();
-        http.authorizeRequests().antMatchers("/filter/**" , "/data/show/**", "/readFiles").permitAll();
+        http.authorizeRequests().antMatchers("/filter/**" , "/data/show/**", "/readFiles","/api/signup").permitAll();
 
       //the login path comes from : filter -> costumeAuthenticationFilter -> UsernamePasswordAuthenticationFilter.class
 
