@@ -45,8 +45,6 @@ public class ShowDataController {
         return new ResponseEntity<>(showDataService.ActorsAndDirectors("director"),HttpStatus.OK);
     }
 
-
-    //======================================================no debug
     @GetMapping ("/others/favouriteList")
     public ResponseEntity<Set<FavouriteList>> getFavouriteLists(@RequestBody Input input) {
         //return new ResponseEntity<>(showDataService.favouriteList(input.getInput()),HttpStatus.OK);

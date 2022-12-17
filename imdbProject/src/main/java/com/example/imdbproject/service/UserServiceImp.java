@@ -9,6 +9,7 @@ import com.example.imdbproject.model.Rating;
 import com.example.imdbproject.model.TitleBasic;
 import com.example.imdbproject.model.WatchList;
 import com.example.imdbproject.model.response.BooleanResponse;
+import com.example.imdbproject.model.response.TitleBasicRecommenderResponse;
 import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -236,6 +237,14 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         addRoleToUser(username,"ROLE_USER");
         return true;
+    }
+
+    @Override
+    public Set<TitleBasicRecommenderResponse> recommender(String username) {
+
+
+        return null;
+
     }
 
 

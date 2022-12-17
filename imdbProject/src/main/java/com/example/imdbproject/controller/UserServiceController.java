@@ -9,6 +9,8 @@ import com.example.imdbproject.model.AllUser;
 import com.example.imdbproject.model.Role;
 import com.example.imdbproject.model.request.*;
 import com.example.imdbproject.model.response.BooleanResponse;
+import com.example.imdbproject.model.response.TitleBasicRecommenderResponse;
+import com.example.imdbproject.model.response.TitleBasicResponse;
 import com.example.imdbproject.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -114,6 +116,12 @@ public class UserServiceController {
         }
 
         return new ResponseEntity<>(check , HttpStatus.OK);
+    }
+
+
+    @PostMapping("/user/recommender")
+    public ResponseEntity <Set<TitleBasicRecommenderResponse>> recommender(Authentication authentication){
+        return new ResponseEntity<>(userServiceImp.recommender(authentication.getName()) , HttpStatus.OK);
     }
 
 

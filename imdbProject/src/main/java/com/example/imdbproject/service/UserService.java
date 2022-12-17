@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import com.example.imdbproject.model.Comment;
 import com.example.imdbproject.model.response.BooleanResponse;
+import com.example.imdbproject.model.response.TitleBasicRecommenderResponse;
 
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ public interface UserService {
     BooleanResponse addFilmToFavouriteList(String username, String favouriteListName, String titleBasic);
     void addComment(String userId , String commentText , String titleBasicId);
     Boolean signUp(String username , String password);
+    Set <TitleBasicRecommenderResponse> recommender(String username);
 
     //================================ JWT :)
 
