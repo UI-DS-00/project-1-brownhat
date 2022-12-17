@@ -108,38 +108,35 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
 
     @Override
-    public void makeWatchList(String username , String filmName) {
-
+    public Boolean makeWatchList(String name, String username) {
         Optional<AllUser> user = allUserRepository.findByUsername(username);
-        if (user.isEmpty())
-            throw new UsernameNotFoundException("user not found");
-
+        BooleanResponse booleanResponse;
         try {
-            WatchList newWatchList = new WatchList(filmName , user.get() , new HashSet<>());
+            WatchList newWatchList = WatchList.builder().name(name).owner( user.get()).build();
             watchListRepository.save(newWatchList);
-
+            booleanResponse = new BooleanResponse(true);
         }catch (Exception e) {
-            throw new DuplicateName();
+            booleanResponse = new BooleanResponse(false);
         }
-
+        return booleanResponse.getResponse();
     }
 
     @Override
-    public void addFilmToWatchList( String watchlistName, String titleBasic , String username) {
+    public Boolean addFilmToWatchList( String watchlistName, String titleBasicId , String username) {
 
-        Optional <AllUser> user = allUserRepository.findByUsername(username);
-        if (user.isEmpty())
-            throw new UsernameNotFoundException("user not found");
-        Optional <WatchList> currentWatchList = watchListRepository.findByNameAndOwner(watchlistName , user.get());
-        Optional <TitleBasic> film = titleBasicRepository.findById(titleBasic);
+        try {
 
-        if (currentWatchList.isEmpty())
-            throw new WrongInput("watch list not found");
-        if (film.isEmpty())
-            throw new WrongInput("film not found");
+            AllUser user = allUserRepository.findByUsername(username).get();
+            TitleBasic film = titleBasicRepository.findById(titleBasicId).get();
 
-        currentWatchList.get().getList().add(film.get());
-        watchListRepository.save(currentWatchList.get());
+            WatchList watchList = WatchList.builder().owner(user).
+                    name(watchlistName).titleBasic(film).build();
+            watchListRepository.save(watchList);
+            return true;
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     @Override
@@ -147,40 +144,18 @@ public class UserServiceImp implements UserService, UserDetailsService {
         Optional<AllUser> user = allUserRepository.findByUsername(username);
         BooleanResponse booleanResponse;
         try {
-            FavouriteList newWatchList = FavouriteList.builder().name(name).owner( user.get()).build();
-            favouriteListRepository.save(newWatchList);
+            FavouriteList newFavouriteList = FavouriteList.builder().name(name).owner( user.get()).build();
+            favouriteListRepository.save(newFavouriteList);
             booleanResponse = new BooleanResponse(true);
         }catch (Exception e) {
             booleanResponse = new BooleanResponse(false);
-            throw new DuplicateName();
         }
-        return new BooleanResponse(booleanResponse.getResponse());
+        return booleanResponse;
 
     }
 
     @Override
     public BooleanResponse addFilmToFavouriteList(String username, String favouriteListName, String titleBasicId) {
-
-//        try {
-//            AllUser user = allUserRepository.findByUsername(username).get();
-//            TitleBasic film = titleBasicRepository.findById(titleBasic).get();
-//
-//            for (FavouriteList f : user.getFavoriteLists()) {
-//                if (favouriteListName.compareTo(f.getName()) == 0) {
-//                    f.getList().add(film);
-//                    favouriteListRepository.save(f);
-//                    user.getFavoriteLists().add(f);
-//                    allUserRepository.save(user);
-//                    return new BooleanResponse(true);
-//
-//                }
-//            }
-//
-//        }catch (Exception e){
-//            return new BooleanResponse(false);
-//        }
-//        return new BooleanResponse(false);
-
 
         try {
 

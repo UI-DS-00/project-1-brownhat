@@ -40,10 +40,12 @@ public class TitleBasic {
     private int runtime;
 
     @OneToMany(mappedBy = "titleBasic")
-    @JsonIgnore
     public Set<FavouriteList> favouriteLists;
 
-    @OneToMany  //@ElementCollection(targetClass = String.class)
+    @OneToMany(mappedBy = "titleBasic")
+    public Set<WatchList> watchLists;
+
+    @OneToMany  //@ElementCollection(targetsClass = String.class)
     //@JoinColumn(name = "genre")
     private Set<Genre> genres;
 

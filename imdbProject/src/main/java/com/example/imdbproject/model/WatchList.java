@@ -15,26 +15,33 @@ import java.util.Set;
 @Getter
 @Setter
 @Table
+@Builder
 public class WatchList {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column (unique = true)
+    @Column (unique = false)
     private String name;
 
     @ManyToOne
+    @ToString.Exclude
+    @JoinColumn(
+            name = "owner_id"
+    )
     private AllUser owner;
 
-    @OneToMany
-   //JoinColumn(name = "titleBasics_watching")
-    private Set<TitleBasic> list;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JoinColumn(name = "titleBasics")
+    private TitleBasic titleBasic;
 
 
-    public WatchList( String name, AllUser owner, Set<TitleBasic> list) {
+    public WatchList( String name, AllUser owner) {
         this.name = name;
         this.owner = owner;
-        this.list = list;
+
     }
 }
