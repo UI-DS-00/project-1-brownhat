@@ -12,5 +12,8 @@ public interface FavouriteListRepository extends JpaRepository<FavouriteList, In
     Set<FavouriteList> findByTitleBasic(TitleBasic titleBasic);
     Set<FavouriteList> findAllByNameAndOwner(String s1, AllUser s2);
 
+    Set<FavouriteList> findAllByOwner(AllUser user);
+
+    Set<FavouriteList> findAllByTitleBasic(TitleBasic titleBasic);
 
 }

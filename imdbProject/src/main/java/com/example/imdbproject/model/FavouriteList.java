@@ -1,5 +1,6 @@
 package com.example.imdbproject.model;
 
+import com.example.imdbproject.model.response.FavouriteListResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -30,9 +31,15 @@ public class FavouriteList {
     )
     private AllUser owner;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     @JoinColumn(name = "titleBasics")
     private TitleBasic titleBasic;
 
+     public FavouriteListResponse toResponse(FavouriteList favouriteList){
+        FavouriteListResponse favouriteListResponse = new FavouriteListResponse();
+        favouriteListResponse.setTitleBasicResponse(favouriteList.getTitleBasic().responseModel());
+        return favouriteListResponse;
+    }
 
 }

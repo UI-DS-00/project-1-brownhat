@@ -11,5 +11,5 @@ import java.util.Set;
 @Setter
 @Component
 public class FavouriteListResponse {
-    private Set<TitleBasic> films;
+    TitleBasicResponse titleBasicResponse;
 }

@@ -2,6 +2,7 @@ package com.example.imdbproject.model;
 
 
 import com.example.imdbproject.model.response.TitleBasicResponse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,6 +40,7 @@ public class TitleBasic {
     private int runtime;
 
     @OneToMany(mappedBy = "titleBasic")
+    @JsonIgnore
     public Set<FavouriteList> favouriteLists;
 
     @OneToMany  //@ElementCollection(targetClass = String.class)

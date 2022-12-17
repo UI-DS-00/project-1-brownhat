@@ -3,6 +3,7 @@ package com.example.imdbproject.controller;
 
 import com.example.imdbproject.model.FavouriteList;
 import com.example.imdbproject.model.request.Input;
+import com.example.imdbproject.model.response.FavouriteListResponse;
 import com.example.imdbproject.model.response.NameBasicSummery;
 import com.example.imdbproject.model.response.TitleBasicResponse;
 import com.example.imdbproject.service.ShowDataServiceImpl;
@@ -48,8 +49,15 @@ public class ShowDataController {
 
     //======================================================no debug
     @GetMapping ("/others/favouriteList")
-    public ResponseEntity<Set<FavouriteList>> getFavouriteLists(){//(@RequestBody Input input) {
+    public ResponseEntity<Set<FavouriteListResponse>> getFavouriteLists(){//(@RequestBody Input input) {
         //return new ResponseEntity<>(showDataService.favouriteList(input.getInput()),HttpStatus.OK);
         return new ResponseEntity<>(showDataService.othersFavouriteList("tt0012349"),HttpStatus.OK);
     }
+    @GetMapping ("/user/favouriteList")
+    public ResponseEntity<Set<FavouriteListResponse>> getUserFavouriteLists(){//(@RequestBody Input input) {
+        //return new ResponseEntity<>(showDataService.favouriteList(input.getInput()),HttpStatus.OK);
+        return new ResponseEntity<>(showDataService.showPersonalFavouriteList("mmd2"),HttpStatus.OK);
+    }
+
 }
+

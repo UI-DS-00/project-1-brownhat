@@ -1,6 +1,7 @@
 package com.example.imdbproject.service;
 
 import com.example.imdbproject.model.FavouriteList;
+import com.example.imdbproject.model.response.FavouriteListResponse;
 import com.example.imdbproject.model.response.NameBasicSummery;
 import com.example.imdbproject.model.response.TitleBasicResponse;
 
@@ -19,8 +20,9 @@ public interface ShowDataService {
 
     Set<TitleBasicResponse> topTen();
 
-    Set<FavouriteList> othersFavouriteList(String titleBasic);
+    Set<FavouriteListResponse> othersFavouriteList(String titleBasic);
 
+    Set<FavouriteListResponse> showPersonalFavouriteList(String userId);
 
 }
 

@@ -16,7 +16,8 @@ import java.util.*;
 @AllArgsConstructor
 @Service
 
-public class ShowDataServiceImpl implements ShowDataService{
+public class ShowDataServiceImpl implements ShowDataService {
+    private final AllUserRepository allUserRepository;
 
 
     private final TitleBasicRepository titleBasicRepository;
@@ -32,7 +33,7 @@ public class ShowDataServiceImpl implements ShowDataService{
     public TitleBasicResponse allMoviesData(String tConst) {
         Optional<TitleBasic> titleBasic = titleBasicRepository.findById(tConst);
 
-        if(titleBasic.isEmpty())
+        if (titleBasic.isEmpty())
             throw new EntityNotFoundException(TitleBasic.class.getName());
 
 
@@ -47,40 +48,41 @@ public class ShowDataServiceImpl implements ShowDataService{
         Iterable<TitleBasic> films = titleBasicRepository.findAll();
 
 
-        for (TitleBasic eachFilm: films){
+        for (TitleBasic eachFilm : films) {
 
-            Set <PrincipalResponse> casts = new HashSet<>();
-            Set <PrincipalResponse> crew = new HashSet<>();
+            Set<PrincipalResponse> casts = new HashSet<>();
+            Set<PrincipalResponse> crew = new HashSet<>();
             TitleBasicResponse filmResponse = eachFilm.responseModel();
             //getting all the cast and crew
 
-            Set <Principal> principals = principalRepository.findByFilmCode(eachFilm.getTConst());
+            Set<Principal> principals = principalRepository.findByFilmCode(eachFilm.getTConst());
 
             //adding cast and crew
-            for (Principal eachPerson : principals){
+            for (Principal eachPerson : principals) {
 
                 if (eachPerson.getNConst() == null)
                     continue;
 
-                if (eachPerson.getCategory().equals("actor")  || eachPerson.getCategory().equals("actress") )
+                if (eachPerson.getCategory().equals("actor") || eachPerson.getCategory().equals("actress"))
                     casts.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
                             , eachPerson.getJob(), eachPerson.getCharacters()));
 
-                else crew.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
-                        , eachPerson.getJob(), eachPerson.getCharacters()));
+                else
+                    crew.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
+                            , eachPerson.getJob(), eachPerson.getCharacters()));
 
             }
 
             //adding the rate
             filmResponse.setRate(ratingRepository.findByTitleConst(eachFilm).responseModel());
 
-            filmResponse.setCrew( crew);
+            filmResponse.setCrew(crew);
             filmResponse.setActors(casts);
 
 
             //add comments
-            Set <Comment> comments = commentRepository.findByTitleBasic(eachFilm);
-            Set <Comment> replies;//--------------------------------------------
+            Set<Comment> comments = commentRepository.findByTitleBasic(eachFilm);
+            Set<Comment> replies;//--------------------------------------------
 
 
             allFilms.add(filmResponse);
@@ -91,18 +93,17 @@ public class ShowDataServiceImpl implements ShowDataService{
     }
 
 
-
     @Override
     public Set<NameBasicSummery> ActorsAndDirectors(String professions) {
 
-        Set <PrimaryProfession> primaryProfession = primaryProfessionRepository.findByProfession(professions);
-        Set <NameBasicSummery> nameBasics = new HashSet<>();
+        Set<PrimaryProfession> primaryProfession = primaryProfessionRepository.findByProfession(professions);
+        Set<NameBasicSummery> nameBasics = new HashSet<>();
 
-        for (PrimaryProfession primaryProfession1 :primaryProfession) {
-           Optional <NameBasic>  person =  nameBasicRepository.findById(primaryProfession1.getNameBasic().getNConst());
+        for (PrimaryProfession primaryProfession1 : primaryProfession) {
+            Optional<NameBasic> person = nameBasicRepository.findById(primaryProfession1.getNameBasic().getNConst());
 
-           if (person.isPresent())
-               nameBasics.add(person.get().responseModel());
+            if (person.isPresent())
+                nameBasics.add(person.get().responseModel());
         }
         return nameBasics;
 
@@ -112,9 +113,9 @@ public class ShowDataServiceImpl implements ShowDataService{
     @Override
     public Set<TitleBasicResponse> filmEndYear() {
 
-        Set <TitleBasic> allFilms= titleBasicRepository.findAllByOrderByEndYearDesc();
+        Set<TitleBasic> allFilms = titleBasicRepository.findAllByOrderByEndYearDesc();
 
-        Set <TitleBasicResponse> allFilms1 = new HashSet<>();
+        Set<TitleBasicResponse> allFilms1 = new HashSet<>();
 
         for (TitleBasic titleBasic : allFilms)
             allFilms1.add(titleBasic.responseModel());
@@ -126,9 +127,9 @@ public class ShowDataServiceImpl implements ShowDataService{
     @Override
     public Set<TitleBasicResponse> filmRating() {
 
-        Set <Rating> films = ratingRepository.findAllByOrderByAverageRateDesc();
+        Set<Rating> films = ratingRepository.findAllByOrderByAverageRateDesc();
 
-        Set <TitleBasicResponse> allFilms = new HashSet<>();
+        Set<TitleBasicResponse> allFilms = new HashSet<>();
         for (Rating rating : films)
             allFilms.add(rating.getTitleConst().responseModel());
 
@@ -139,14 +140,14 @@ public class ShowDataServiceImpl implements ShowDataService{
     @Override
     public Set<TitleBasicResponse> topTen() {
 
-        Set<Rating> inputRatings= ratingRepository.findTop10ByOrderByAverageRateDesc();
+        Set<Rating> inputRatings = ratingRepository.findTop10ByOrderByAverageRateDesc();
         Set<TitleBasic> filteredMovies = new HashSet<>();
         Set<TitleBasicResponse> moviesByRating = new HashSet<>();
 
-        for (Rating rating:inputRatings)
+        for (Rating rating : inputRatings)
             filteredMovies.add(rating.getTitleConst());
 
-        for(TitleBasic titleBasic1:filteredMovies)
+        for (TitleBasic titleBasic1 : filteredMovies)
             moviesByRating.add(titleBasic1.responseModel());
 
 
@@ -155,17 +156,41 @@ public class ShowDataServiceImpl implements ShowDataService{
 
 
     @Override
-    public Set<FavouriteList> othersFavouriteList(String titleBasicId) {
+    public Set<FavouriteListResponse> othersFavouriteList(String titleBasicId) {
 
+        TitleBasic titleBasic = titleBasicRepository.findById(titleBasicId).get();
+        Set<FavouriteList> favouriteLists;
+        favouriteLists = titleBasic.getFavouriteLists();
+        System.out.println(favouriteLists);
+        Set<FavouriteListResponse> favouriteListResponseSet = new HashSet<>();
+        for (FavouriteList favouriteList : favouriteLists) {
+            favouriteListResponseSet.add(favouriteList.toResponse(favouriteList));
+        }
 
-
-            TitleBasic titleBasic = titleBasicRepository.findById(titleBasicId).get();
-            Set<FavouriteList> favouriteLists;
-            favouriteLists = favouriteListRepository.findByTitleBasic(titleBasic);
-
-            System.out.println(favouriteLists);
-            return favouriteLists;
+//        System.out.println(favouriteLists);
+        return favouriteListResponseSet;
     }
 
+    @Override
+    public Set<FavouriteListResponse> showPersonalFavouriteList(String userId) {
 
+        AllUser user = allUserRepository.findByUsername(userId).get();
+
+        Set<FavouriteList> favouriteLists = user.getFavoriteLists();
+
+//        Set<FavouriteList> favouriteLists = favouriteListRepository.findAllByOwner(user);
+
+        Set<FavouriteListResponse> favouriteListResponseSet = new HashSet<>();
+        for (FavouriteList favouriteList : favouriteLists) {
+            favouriteListResponseSet.add(favouriteList.toResponse(favouriteList));
+        }
+
+        return favouriteListResponseSet;
+    }
 }
+
+//    public Set<FavouriteListResponse> showPersonalFavouriteList(String userId){
+//
+//
+//        re
+//    }
