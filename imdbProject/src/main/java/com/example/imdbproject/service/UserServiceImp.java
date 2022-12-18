@@ -8,10 +8,7 @@ import com.example.imdbproject.model.AllUser;
 import com.example.imdbproject.model.Rating;
 import com.example.imdbproject.model.TitleBasic;
 import com.example.imdbproject.model.WatchList;
-import com.example.imdbproject.model.response.BooleanResponse;
-import com.example.imdbproject.model.response.FavouriteListResponse;
-import com.example.imdbproject.model.response.TitleBasicRecommenderResponse;
-import com.example.imdbproject.model.response.WatchListResponse;
+import com.example.imdbproject.model.response.*;
 import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -303,7 +300,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public Set<TitleBasicRecommenderResponse> recommender(String username) {
+    public ArrayList<TitleBasicRecommenderResponse> recommender(String username) {
 
 
         AllUser user = allUserRepository.findByUsername(username).get();
@@ -347,6 +344,28 @@ public class UserServiceImp implements UserService, UserDetailsService {
         Set<TitleBasic> genre2Movies = genreRepository.findAllByGenre(genre2);
         Set<TitleBasic> genre3Movies = genreRepository.findAllByGenre(genre3);
 
+
+        ArrayList <TitleBasicResponse> responses = new ArrayList<>();
+
+        //for having only one of the genres
+        Set <TitleBasic> oneGenre = new HashSet<>();
+        oneGenre.addAll(genre1Movies);
+        oneGenre.addAll(genre2Movies);
+        oneGenre.addAll(genre3Movies);
+        //putting rating filter
+        for (TitleBasic eachFilm : oneGenre)
+            if (eachFilm.getRating().getAverageRate() >= 7.0f && eachFilm.getGenres().size()==1)
+                responses.add(eachFilm.responseModel());
+
+        //for having two of highest the genres
+        for (TitleBasic eachFilm : genre2Movies)
+            if (genre1Movies.contains(eachFilm) && eachFilm.getRating().getAverageRate() >= 7.0f)
+                responses.add(eachFilm.responseModel());
+
+        //for having all three genres
+        for (TitleBasic eachFilm : genre1Movies)
+            if (genre2Movies.contains(eachFilm) && genre3Movies.contains(eachFilm)  && eachFilm.getRating().getAverageRate() >= 7.0f)
+                responses.add(eachFilm.responseModel());
 
 
         return null;
