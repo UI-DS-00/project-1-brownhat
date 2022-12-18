@@ -1,13 +1,12 @@
 package com.example.imdbproject.service;
 
-import com.example.imdbproject.model.AllUser;
-import com.example.imdbproject.model.Role;
-import com.example.imdbproject.model.TitleBasic;
+import com.example.imdbproject.model.*;
 
 import java.util.List;
 import java.util.Set;
-import com.example.imdbproject.model.Comment;
+
 import com.example.imdbproject.model.response.BooleanResponse;
+import com.example.imdbproject.model.response.FavouriteListResponse;
 
 import java.util.Optional;
 
@@ -23,6 +22,8 @@ public interface UserService {
     BooleanResponse addFilmToFavouriteList(String username, String favouriteListName, String titleBasic);
     void addComment(String userId , String commentText , String titleBasicId);
     Boolean signUp(String username , String password);
+
+    Set<FavouriteListResponse> showPersonalFavouriteList(String userId);
 
     //================================ JWT :)
 

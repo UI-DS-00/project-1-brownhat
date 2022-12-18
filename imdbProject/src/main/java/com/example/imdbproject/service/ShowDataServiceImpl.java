@@ -161,24 +161,6 @@ public class ShowDataServiceImpl implements ShowDataService {
         TitleBasic titleBasic = titleBasicRepository.findById(titleBasicId).get();
         Set<FavouriteList> favouriteLists;
         favouriteLists = titleBasic.getFavouriteLists();
-        System.out.println(favouriteLists);
-        Set<FavouriteListResponse> favouriteListResponseSet = new HashSet<>();
-        for (FavouriteList favouriteList : favouriteLists) {
-            favouriteListResponseSet.add(favouriteList.toResponse(favouriteList));
-        }
-
-//        System.out.println(favouriteLists);
-        return favouriteListResponseSet;
-    }
-
-    @Override
-    public Set<FavouriteListResponse> showPersonalFavouriteList(String userId) {
-
-        AllUser user = allUserRepository.findByUsername(userId).get();
-
-        Set<FavouriteList> favouriteLists = user.getFavoriteLists();
-
-//        Set<FavouriteList> favouriteLists = favouriteListRepository.findAllByOwner(user);
 
         Set<FavouriteListResponse> favouriteListResponseSet = new HashSet<>();
         for (FavouriteList favouriteList : favouriteLists) {
@@ -187,10 +169,7 @@ public class ShowDataServiceImpl implements ShowDataService {
 
         return favouriteListResponseSet;
     }
+
+
 }
 
-//    public Set<FavouriteListResponse> showPersonalFavouriteList(String userId){
-//
-//
-//        re
-//    }

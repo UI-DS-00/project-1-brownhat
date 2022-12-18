@@ -1,6 +1,8 @@
 package com.example.imdbproject.model;
 
 
+import com.example.imdbproject.model.response.FavouriteListResponse;
+import com.example.imdbproject.model.response.WatchListResponse;
 import lombok.*;
 
 import javax.persistence.*;
@@ -44,4 +46,12 @@ public class WatchList {
         this.owner = owner;
 
     }
+
+    public WatchListResponse toResponse(WatchList watchList){
+        WatchListResponse watchListResponse = new WatchListResponse();
+        watchListResponse.setTitleBasicResponse(watchList.getTitleBasic().responseModel());
+        watchListResponse.setName(watchList.getName());
+        return watchListResponse;
+    }
+
 }

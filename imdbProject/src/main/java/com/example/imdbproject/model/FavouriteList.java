@@ -39,7 +39,7 @@ public class FavouriteList {
      public FavouriteListResponse toResponse(FavouriteList favouriteList){
         FavouriteListResponse favouriteListResponse = new FavouriteListResponse();
         favouriteListResponse.setTitleBasicResponse(favouriteList.getTitleBasic().responseModel());
+        favouriteListResponse.setName(favouriteList.getName());
         return favouriteListResponse;
     }
-
 }

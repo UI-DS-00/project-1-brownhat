@@ -22,7 +22,6 @@ public interface ShowDataService {
 
     Set<FavouriteListResponse> othersFavouriteList(String titleBasic);
 
-    Set<FavouriteListResponse> showPersonalFavouriteList(String userId);
 
 }
 

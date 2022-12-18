@@ -25,24 +25,20 @@ public class TitleBasic {
 
     @OneToOne
     private Rating rating;
-
     private String titleType;
-
     private String primaryTitle;
-
     private String originalTitle;
-
     private boolean isAdult;
-
     private int startYear;
-
     private int endYear;
     private int runtime;
 
     @OneToMany(mappedBy = "titleBasic")
+    @ToString.Exclude
     public Set<FavouriteList> favouriteLists;
 
     @OneToMany(mappedBy = "titleBasic")
+    @ToString.Exclude
     public Set<WatchList> watchLists;
 
     @OneToMany  //@ElementCollection(targetsClass = String.class)

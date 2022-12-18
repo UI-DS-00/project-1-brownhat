@@ -9,6 +9,8 @@ import com.example.imdbproject.model.Rating;
 import com.example.imdbproject.model.TitleBasic;
 import com.example.imdbproject.model.WatchList;
 import com.example.imdbproject.model.response.BooleanResponse;
+import com.example.imdbproject.model.response.FavouriteListResponse;
+import com.example.imdbproject.model.response.WatchListResponse;
 import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -172,6 +174,80 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
+    public Set<FavouriteListResponse> showPersonalFavouriteList(String userId) {
+
+        AllUser user = allUserRepository.findByUsername(userId).get();
+        Set<FavouriteList> favouriteLists;
+        favouriteLists = user.getFavoriteLists();
+        Set<FavouriteListResponse> favouriteListResponseSet = new HashSet<>();
+        for (FavouriteList favouriteList : favouriteLists) {
+            if (favouriteList.getTitleBasic() == null)
+                continue;
+            favouriteListResponseSet.add(favouriteList.toResponse(favouriteList));
+        }
+
+        FavouriteListResponse[] responseArray = new FavouriteListResponse[favouriteListResponseSet.size()];
+        int i=0;
+        for(FavouriteListResponse f : favouriteListResponseSet){
+            responseArray[i] = f;
+            i++;
+        }
+        Arrays.sort(responseArray);
+        favouriteListResponseSet = new HashSet<>();
+
+
+        for(i=0;i<responseArray.length;i++){
+            favouriteListResponseSet.add(responseArray[i]);
+        }
+
+        return favouriteListResponseSet;
+
+
+
+    }
+
+
+
+
+
+
+
+
+    public Set<WatchListResponse> showWatchList(String userId) {
+
+        AllUser user = allUserRepository.findByUsername(userId).get();
+        Set<WatchList> watchListSet;
+        watchListSet = user.getWatchLists();
+        Set<WatchListResponse> watchListResponses = new HashSet<>();
+        for (WatchList watchList : watchListSet) {
+            if (watchList.getTitleBasic() == null)
+                continue;
+            watchListResponses.add(watchList.toResponse(watchList));
+        }
+
+//        FavouriteListResponse[] responseArray = new FavouriteListResponse[watchListResponses.size()];
+//        int i=0;
+//        for(FavouriteListResponse f : watchListResponses){
+//            responseArray[i] = f;
+//            i++;
+//        }
+//        Arrays.sort(responseArray);
+//        watchListResponses = new HashSet<>();
+//
+//
+//        for(i=0;i<responseArray.length;i++){
+//            watchListResponses.add(responseArray[i]);
+//        }
+
+        return watchListResponses;
+
+
+
+    }
+
+
+
+    @Override
     public Boolean reply(String reCommentText, String username,Long commentId) {
 
         try {
@@ -271,4 +347,5 @@ public class UserServiceImp implements UserService, UserDetailsService {
         allUserList =  allUserRepository.findAll();
         return allUserList;
     }
+
 }

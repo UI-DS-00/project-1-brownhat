@@ -1,6 +1,5 @@
 package com.example.imdbproject.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,7 +34,7 @@ public class AllUser
         this.username = username;
         this.password = password;
         this.comments = new HashSet<>();
-        this.movieLists = new HashSet<>();
+        this.watchLists = new HashSet<>();
         this.favoriteLists = new HashSet<>();
         this.roles = new HashSet<>();
     }
@@ -51,13 +50,9 @@ public class AllUser
 
 
     //@OneToMany(mappedBy = "owner")
-    @OneToMany
-    @JoinTable(
-            name = "user_watchList",
-            joinColumns = @JoinColumn(name = "allUser"),
-            inverseJoinColumns = @JoinColumn(name = "watchList"))
-
-    private Set<WatchList> movieLists;
+    @OneToMany(mappedBy = "owner")
+    @ToString.Exclude
+    private Set<WatchList> watchLists;
 
 
     //@OneToMany(mappedBy = "owner")

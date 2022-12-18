@@ -6,10 +6,14 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.imdbproject.exceptions.DuplicateName;
 import com.example.imdbproject.model.AllUser;
+import com.example.imdbproject.model.FavouriteList;
 import com.example.imdbproject.model.Role;
 import com.example.imdbproject.model.request.*;
 import com.example.imdbproject.model.response.BooleanResponse;
+import com.example.imdbproject.model.response.FavouriteListResponse;
+import com.example.imdbproject.service.ShowDataService;
 import com.example.imdbproject.service.UserService;
+import com.example.imdbproject.service.UserServiceImp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,6 +46,7 @@ public class UserServiceController {
     private final UserService userService;
     private final UserService userServiceImp;
 
+    private final ShowDataService showDataService;
     @PostMapping("/user/rating")
     public void makeRating(Authentication authentication , @RequestBody RatingRequest ratingAmount) {
         userService.rating(ratingAmount.getFilmTConst(), ratingAmount.getAmountOfRating(), authentication.getName());
@@ -149,6 +154,16 @@ public class UserServiceController {
         return new ResponseEntity<>(check , HttpStatus.OK);
     }
 
+//    @GetMapping ("/user/showFavouriteList")
+//    public ResponseEntity<Set<FavouriteListResponse>> getUserFavouriteLists(Authentication authentication) {
+//        return new ResponseEntity<>(userServiceImp.showPersonalFavouriteList(authentication.getName()),HttpStatus.OK);
+//    }
+//
+//
+//    @GetMapping ("/user/showWatchList")
+//    public ResponseEntity<Set<FavouriteListResponse>> getUserFavouriteLists(Authentication authentication) {
+//        return new ResponseEntity<>(userServiceImp.showPersonalFavouriteList(authentication.getName()),HttpStatus.OK);
+//    }
 
     //--------------------------------------------------------------------------JWT :)
 
