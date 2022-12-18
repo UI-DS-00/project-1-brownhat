@@ -11,6 +11,7 @@ import java.util.Set;
 import com.example.imdbproject.model.Comment;
 import com.example.imdbproject.model.response.BooleanResponse;
 import com.example.imdbproject.model.response.FavouriteListResponse;
+import com.example.imdbproject.model.response.TitleBasicRecommenderResponse;
 
 import java.util.Optional;
 

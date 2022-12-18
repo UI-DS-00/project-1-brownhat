@@ -10,6 +10,7 @@ import com.example.imdbproject.model.TitleBasic;
 import com.example.imdbproject.model.WatchList;
 import com.example.imdbproject.model.response.BooleanResponse;
 import com.example.imdbproject.model.response.FavouriteListResponse;
+import com.example.imdbproject.model.response.TitleBasicRecommenderResponse;
 import com.example.imdbproject.model.response.WatchListResponse;
 import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;

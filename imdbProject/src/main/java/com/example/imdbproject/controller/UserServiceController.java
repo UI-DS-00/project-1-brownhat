@@ -9,6 +9,7 @@ import com.example.imdbproject.model.AllUser;
 import com.example.imdbproject.model.Role;
 import com.example.imdbproject.model.request.*;
 import com.example.imdbproject.model.response.BooleanResponse;
+import com.example.imdbproject.model.response.TitleBasicRecommenderResponse;
 import com.example.imdbproject.service.ShowDataService;
 import com.example.imdbproject.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
