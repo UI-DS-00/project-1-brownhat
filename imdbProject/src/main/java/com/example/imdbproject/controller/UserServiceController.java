@@ -6,14 +6,11 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.imdbproject.exceptions.DuplicateName;
 import com.example.imdbproject.model.AllUser;
-import com.example.imdbproject.model.FavouriteList;
 import com.example.imdbproject.model.Role;
 import com.example.imdbproject.model.request.*;
 import com.example.imdbproject.model.response.BooleanResponse;
-import com.example.imdbproject.model.response.FavouriteListResponse;
 import com.example.imdbproject.service.ShowDataService;
 import com.example.imdbproject.service.UserService;
-import com.example.imdbproject.service.UserServiceImp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -73,7 +70,6 @@ public class UserServiceController {
     @PostMapping("/signup")
     public ResponseEntity<BooleanResponse> singUp(@RequestBody SignUpRequest sign){
 
-        System.out.println(sign);
         BooleanResponse check;
         try {
             check = new BooleanResponse(userServiceImp.signUp(sign.getUsername() , sign.getPassword()));
@@ -81,7 +77,6 @@ public class UserServiceController {
             check = new BooleanResponse(false);
         }
 
-        System.out.println("recives api");
         return new ResponseEntity<>(check , HttpStatus.OK);
     }
 
@@ -166,6 +161,12 @@ public class UserServiceController {
 //    public ResponseEntity<Set<FavouriteListResponse>> getUserFavouriteLists(Authentication authentication) {
 //        return new ResponseEntity<>(userServiceImp.showPersonalFavouriteList(authentication.getName()),HttpStatus.OK);
 //    }
+
+    @PostMapping("/user/recommender")
+    public ResponseEntity <Set<TitleBasicRecommenderResponse>> recommender(Authentication authentication){
+        return new ResponseEntity<>(userServiceImp.recommender(authentication.getName()) , HttpStatus.OK);
+    }
+
 
     //--------------------------------------------------------------------------JWT :)
 

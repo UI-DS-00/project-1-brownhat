@@ -297,8 +297,15 @@ public class UserServiceImp implements UserService, UserDetailsService {
         saveUser(newUser);
 
         addRoleToUser(username,"ROLE_USER");
-
         return true;
+    }
+
+    @Override
+    public Set<TitleBasicRecommenderResponse> recommender(String username) {
+
+
+        return null;
+
     }
 
 

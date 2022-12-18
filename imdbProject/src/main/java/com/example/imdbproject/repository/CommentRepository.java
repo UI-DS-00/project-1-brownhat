@@ -10,7 +10,8 @@ import java.util.Set;
 
 
 public interface CommentRepository extends JpaRepository<Comment,Long> {
-    Set<Comment> findByTitleBasic (TitleBasic titleBasic);
+    Set<Comment> findByTitleBasic(TitleBasic titleBasic);
 
+    Set<Comment> findByTitleBasicAndIsReply(TitleBasic titleBasic , Boolean isReply);
     Set<Comment> findByReplyForMainComment(Comment id);
 }

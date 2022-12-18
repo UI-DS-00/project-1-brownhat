@@ -1,11 +1,14 @@
 package com.example.imdbproject.service;
 
+import com.example.imdbproject.model.AllUser;
+import com.example.imdbproject.model.Role;
 import com.example.imdbproject.model.*;
+import com.example.imdbproject.model.TitleBasic;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
+import com.example.imdbproject.model.Comment;
 import com.example.imdbproject.model.response.BooleanResponse;
 import com.example.imdbproject.model.response.FavouriteListResponse;
 
@@ -23,6 +26,7 @@ public interface UserService {
     BooleanResponse addFilmToFavouriteList(String username, String favouriteListName, String titleBasic);
     void addComment(String userId , String commentText , String titleBasicId);
     Boolean signUp(String username , String password);
+    Set <TitleBasicRecommenderResponse> recommender(String username);
 
     ArrayList<FavouriteListResponse> showPersonalFavouriteList(String userId);
 
