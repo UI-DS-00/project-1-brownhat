@@ -42,6 +42,7 @@ import javax.transaction.Transactional;
 @Transactional
 @Configuration
 public class UserServiceImp implements UserService, UserDetailsService {
+    private final GenreRepository genreRepository;
 
 
     private final RatingRepository ratingRepository;
@@ -319,10 +320,32 @@ public class UserServiceImp implements UserService, UserDetailsService {
             }
         }
 
+        int max1=0,max2=0,max3=0;
+        String genre1 = null,genre2 = null,genre3 = null;
         LinkedHashMap <String , Integer> sortedGenres = new LinkedHashMap<>();
         for (Map.Entry <String , Integer> eachGenre : favoriteGenres.entrySet()){
-            sortedGenres.put(eachGenre.getKey() , eachGenre.getValue());
+            //sortedGenres.put(eachGenre.getKey() , eachGenre.getValue());
+            if(max1 < eachGenre.getValue()){
+                max3 = max2;
+                genre3 = genre2;
+                max2 =max1;
+                genre2 = genre1;
+                max1 = eachGenre.getValue();
+                genre1 = eachGenre.getKey();
+            } else if (max2 < eachGenre.getValue() ) {
+                max3 = max2;
+                genre3 = genre2;
+                max2 = eachGenre.getValue();
+                genre2 = eachGenre.getKey();
+            }else if (max3 < eachGenre.getValue() ) {
+                max3 = eachGenre.getValue();
+                genre3 = eachGenre.getKey();
+            }
         }
+
+        Set<TitleBasic> genre1Movies = genreRepository.findAllByGenre(genre1);
+        Set<TitleBasic> genre2Movies = genreRepository.findAllByGenre(genre2);
+        Set<TitleBasic> genre3Movies = genreRepository.findAllByGenre(genre3);
 
 
 

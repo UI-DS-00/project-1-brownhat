@@ -39,4 +39,6 @@ public interface UserService {
     Optional<AllUser> getUser(String userName);
     //method of returning a list of all users
      List<AllUser> getUser();
+
+
 }
