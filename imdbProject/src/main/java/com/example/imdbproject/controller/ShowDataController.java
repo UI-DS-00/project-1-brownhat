@@ -3,14 +3,20 @@ package com.example.imdbproject.controller;
 
 import com.example.imdbproject.model.FavouriteList;
 import com.example.imdbproject.model.request.Input;
+import com.example.imdbproject.model.response.FavouriteListResponse;
 import com.example.imdbproject.model.response.NameBasicSummery;
 import com.example.imdbproject.model.response.TitleBasicResponse;
+import com.example.imdbproject.model.response.WatchListResponse;
 import com.example.imdbproject.service.ShowDataServiceImpl;
+import com.example.imdbproject.service.UserService;
+import com.example.imdbproject.service.UserServiceImp;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 @RestController
@@ -18,6 +24,7 @@ import java.util.Set;
 @RequestMapping("/data/show")
 public class ShowDataController {
     private final ShowDataServiceImpl showDataService;
+    private final UserServiceImp userServiceImp;
 
     @GetMapping("/allFilms")
     public ResponseEntity<Set<TitleBasicResponse>> getFilms(){
@@ -46,8 +53,18 @@ public class ShowDataController {
     }
 
     @GetMapping ("/others/favouriteList")
-    public ResponseEntity<Set<FavouriteList>> getFavouriteLists(@RequestBody Input input) {
-        //return new ResponseEntity<>(showDataService.favouriteList(input.getInput()),HttpStatus.OK);
-        return new ResponseEntity<>(showDataService.othersFavouriteList("tt0012349"),HttpStatus.OK);
+    public ResponseEntity<Set<FavouriteListResponse>> getFavouriteLists(@RequestBody Input input) {
+        return new ResponseEntity<>(showDataService.othersFavouriteList(input.getInput()),HttpStatus.OK);
+        //return new ResponseEntity<>(showDataService.othersFavouriteList("tt0012349"),HttpStatus.OK);
+    }
+    @GetMapping ("/user/showFavouriteList")
+    public ResponseEntity<ArrayList<FavouriteListResponse>> showFavouriteList(Authentication authentication) {
+        return new ResponseEntity<>(userServiceImp.showPersonalFavouriteList(authentication.getName()),HttpStatus.OK);
+    }
+
+    @GetMapping ("/user/showWatchList")
+    public ResponseEntity<Set<WatchListResponse>> showWatchList(Authentication authentication) {
+        return new ResponseEntity<>(userServiceImp.showWatchList(authentication.getName()),HttpStatus.OK);
     }
 }
+

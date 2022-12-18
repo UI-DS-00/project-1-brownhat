@@ -10,7 +10,7 @@ import com.example.imdbproject.model.Role;
 import com.example.imdbproject.model.request.*;
 import com.example.imdbproject.model.response.BooleanResponse;
 import com.example.imdbproject.model.response.TitleBasicRecommenderResponse;
-import com.example.imdbproject.model.response.TitleBasicResponse;
+import com.example.imdbproject.service.ShowDataService;
 import com.example.imdbproject.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -44,20 +44,21 @@ public class UserServiceController {
     private final UserService userService;
     private final UserService userServiceImp;
 
+    private final ShowDataService showDataService;
     @PostMapping("/user/rating")
     public void makeRating(Authentication authentication , @RequestBody RatingRequest ratingAmount) {
         userService.rating(ratingAmount.getFilmTConst(), ratingAmount.getAmountOfRating(), authentication.getName());
     }
-    @PostMapping("/user/make/watchlist")
-    public void makeWatchList(Authentication authentication , @RequestBody Input watch_name ) {
-        userService.makeWatchList(authentication.getName() , watch_name.getInput() );
-    }
-
-
-    @PostMapping("/user/add/to/watchlist")
-    public void addToWatchList(Authentication authentication , @RequestBody AddingWatchList addingWatchList) {
-        userServiceImp.addFilmToWatchList(addingWatchList.getWatchListName() , addingWatchList.getFilmId() , authentication.getName());
-    }
+//    @PostMapping("/user/make/watchlist")
+//    public void makeWatchList(Authentication authentication , @RequestBody Input watch_name ) {
+//        userService.makeWatchList(authentication.getName() , watch_name.getInput() );
+//    }
+//
+//
+//    @PostMapping("/user/add/to/watchlist")
+//    public void addToWatchList(Authentication authentication , @RequestBody AddingWatchList addingWatchList) {
+//        userServiceImp.addFilmToWatchList(addingWatchList.getWatchListName() , addingWatchList.getFilmId() , authentication.getName());
+//    }
 
 
     @PostMapping("/user/add/new/comment")
@@ -94,17 +95,50 @@ public class UserServiceController {
     }
 
     @PostMapping("/user/addToFavouriteList")
-    public ResponseEntity<BooleanResponse> addToFavouriteList(Authentication authentication,@RequestBody AddingWatchList input){
+    public ResponseEntity<BooleanResponse> addToFavouriteList(Authentication authentication,@RequestBody ListInput input){
 
         BooleanResponse check;
         try {
-            check = new BooleanResponse(userServiceImp.addFilmToFavouriteList(authentication.getName(), input.getWatchListName(),input.getFilmId()).getResponse());
+            check = new BooleanResponse(userServiceImp.addFilmToFavouriteList(authentication.getName(), input.getListName(),input.getFilmId()).getResponse());
         } catch (DuplicateName duplicateName){
             check = new BooleanResponse(false);
         }
 
         return new ResponseEntity<>(check , HttpStatus.OK);
     }
+
+
+
+
+    @PostMapping("/user/makeWatchList")
+    public ResponseEntity<BooleanResponse> makeWatchList(Authentication authentication,@RequestBody Input input){
+
+        BooleanResponse check;
+        try {
+            check = new BooleanResponse(userServiceImp.makeWatchList(input.getInput(),authentication.getName()));
+        } catch (DuplicateName duplicateName){
+            check = new BooleanResponse(false);
+        }
+
+        return new ResponseEntity<>(check , HttpStatus.OK);
+    }
+
+    @PostMapping("/user/addToWatchList")
+    public ResponseEntity<BooleanResponse> addToEatchList(Authentication authentication,@RequestBody ListInput input){
+
+        BooleanResponse check;
+        try {
+            check = new BooleanResponse(userServiceImp.addFilmToWatchList( input.getListName(),input.getFilmId(),authentication.getName()));
+        } catch (DuplicateName duplicateName){
+            check = new BooleanResponse(false);
+        }
+
+        return new ResponseEntity<>(check , HttpStatus.OK);
+    }
+
+
+
+
     @PostMapping("/user/reply")
     public ResponseEntity<BooleanResponse> reply(Authentication authentication,@RequestBody ReplyRequest input){
 
@@ -118,6 +152,16 @@ public class UserServiceController {
         return new ResponseEntity<>(check , HttpStatus.OK);
     }
 
+//    @GetMapping ("/user/showFavouriteList")
+//    public ResponseEntity<Set<FavouriteListResponse>> getUserFavouriteLists(Authentication authentication) {
+//        return new ResponseEntity<>(userServiceImp.showPersonalFavouriteList(authentication.getName()),HttpStatus.OK);
+//    }
+//
+//
+//    @GetMapping ("/user/showWatchList")
+//    public ResponseEntity<Set<FavouriteListResponse>> getUserFavouriteLists(Authentication authentication) {
+//        return new ResponseEntity<>(userServiceImp.showPersonalFavouriteList(authentication.getName()),HttpStatus.OK);
+//    }
 
     @PostMapping("/user/recommender")
     public ResponseEntity <Set<TitleBasicRecommenderResponse>> recommender(Authentication authentication){

@@ -8,10 +8,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AddingWatchList {
+public class ListInput {
 
     private String filmId;
-    private String watchListName;
+    private String listName;
 
 
 }

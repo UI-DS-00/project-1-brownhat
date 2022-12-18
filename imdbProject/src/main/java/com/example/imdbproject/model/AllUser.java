@@ -34,13 +34,13 @@ public class AllUser
         this.username = username;
         this.password = password;
         this.comments = new HashSet<>();
-        this.movieLists = new HashSet<>();
+        this.watchLists = new HashSet<>();
         this.favoriteLists = new HashSet<>();
         this.roles = new HashSet<>();
     }
 
     //@OneToMany(mappedBy = "user")
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany()
 
     @JoinTable(
             name = "user_comment",
@@ -50,22 +50,14 @@ public class AllUser
 
 
     //@OneToMany(mappedBy = "owner")
-    @OneToMany
-    @JoinTable(
-            name = "user_watchList",
-            joinColumns = @JoinColumn(name = "allUser"),
-            inverseJoinColumns = @JoinColumn(name = "watchList"))
-
-    private Set<WatchList> movieLists;
+    @OneToMany(mappedBy = "owner")
+    @ToString.Exclude
+    private Set<WatchList> watchLists;
 
 
     //@OneToMany(mappedBy = "owner")
-    @OneToMany
-    @JoinTable(
-            name = "user_favourite",
-            joinColumns = @JoinColumn(name = "allUser"),
-            inverseJoinColumns = @JoinColumn(name = "FavouriteList"))
-
+    @OneToMany(mappedBy = "owner")
+    @ToString.Exclude
     private Set<FavouriteList> favoriteLists;
 
     @ManyToMany (fetch = FetchType.EAGER)

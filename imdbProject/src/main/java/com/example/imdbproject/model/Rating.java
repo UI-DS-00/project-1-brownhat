@@ -2,6 +2,7 @@ package com.example.imdbproject.model;
 
 
 import com.example.imdbproject.model.response.RateResponse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -25,6 +26,7 @@ class Rating {
 
 
     @OneToOne
+    @ToString.Exclude
     private TitleBasic titleConst;
     private Float averageRate;
     private Integer vote_numbers;

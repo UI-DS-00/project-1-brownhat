@@ -2,6 +2,7 @@ package com.example.imdbproject.model;
 
 
 import com.example.imdbproject.model.response.TitleBasicResponse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,20 +25,23 @@ public class TitleBasic {
 
     @OneToOne
     private Rating rating;
-
     private String titleType;
-
     private String primaryTitle;
-
     private String originalTitle;
-
     private boolean isAdult;
-
     private int startYear;
-
     private int endYear;
     private int runtime;
-    @OneToMany  //@ElementCollection(targetClass = String.class)
+
+    @OneToMany(mappedBy = "titleBasic")
+    @ToString.Exclude
+    public Set<FavouriteList> favouriteLists;
+
+    @OneToMany(mappedBy = "titleBasic")
+    @ToString.Exclude
+    public Set<WatchList> watchLists;
+
+    @OneToMany  //@ElementCollection(targetsClass = String.class)
     //@JoinColumn(name = "genre")
     private Set<Genre> genres;
 
@@ -66,4 +70,6 @@ public class TitleBasic {
         this.runtime = runtime;
         this.genres = genres;
     }
+
+
 }

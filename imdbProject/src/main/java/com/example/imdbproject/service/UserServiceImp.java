@@ -9,7 +9,9 @@ import com.example.imdbproject.model.Rating;
 import com.example.imdbproject.model.TitleBasic;
 import com.example.imdbproject.model.WatchList;
 import com.example.imdbproject.model.response.BooleanResponse;
+import com.example.imdbproject.model.response.FavouriteListResponse;
 import com.example.imdbproject.model.response.TitleBasicRecommenderResponse;
+import com.example.imdbproject.model.response.WatchListResponse;
 import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -109,38 +111,35 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
 
     @Override
-    public void makeWatchList(String username , String filmName) {
-
+    public Boolean makeWatchList(String name, String username) {
         Optional<AllUser> user = allUserRepository.findByUsername(username);
-        if (user.isEmpty())
-            throw new UsernameNotFoundException("user not found");
-
+        BooleanResponse booleanResponse;
         try {
-            WatchList newWatchList = new WatchList(filmName , user.get() , new HashSet<>());
+            WatchList newWatchList = WatchList.builder().name(name).owner( user.get()).build();
             watchListRepository.save(newWatchList);
-
+            booleanResponse = new BooleanResponse(true);
         }catch (Exception e) {
-            throw new DuplicateName();
+            booleanResponse = new BooleanResponse(false);
         }
-
+        return booleanResponse.getResponse();
     }
 
     @Override
-    public void addFilmToWatchList( String watchlistName, String titleBasic , String username) {
+    public Boolean addFilmToWatchList( String watchlistName, String titleBasicId , String username) {
 
-        Optional <AllUser> user = allUserRepository.findByUsername(username);
-        if (user.isEmpty())
-            throw new UsernameNotFoundException("user not found");
-        Optional <WatchList> currentWatchList = watchListRepository.findByNameAndOwner(watchlistName , user.get());
-        Optional <TitleBasic> film = titleBasicRepository.findById(titleBasic);
+        try {
 
-        if (currentWatchList.isEmpty())
-            throw new WrongInput("watch list not found");
-        if (film.isEmpty())
-            throw new WrongInput("film not found");
+            AllUser user = allUserRepository.findByUsername(username).get();
+            TitleBasic film = titleBasicRepository.findById(titleBasicId).get();
 
-        currentWatchList.get().getList().add(film.get());
-        watchListRepository.save(currentWatchList.get());
+            WatchList watchList = WatchList.builder().owner(user).
+                    name(watchlistName).titleBasic(film).build();
+            watchListRepository.save(watchList);
+            return true;
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     @Override
@@ -148,39 +147,102 @@ public class UserServiceImp implements UserService, UserDetailsService {
         Optional<AllUser> user = allUserRepository.findByUsername(username);
         BooleanResponse booleanResponse;
         try {
-            FavouriteList newWatchList = new FavouriteList(name , user.get() , new HashSet<>());
-            favouriteListRepository.save(newWatchList);
+            FavouriteList newFavouriteList = FavouriteList.builder().name(name).owner( user.get()).build();
+            favouriteListRepository.save(newFavouriteList);
             booleanResponse = new BooleanResponse(true);
         }catch (Exception e) {
             booleanResponse = new BooleanResponse(false);
-            throw new DuplicateName();
         }
-        return new BooleanResponse(booleanResponse.getResponse());
+        return booleanResponse;
 
     }
 
     @Override
-    public BooleanResponse addFilmToFavouriteList(String username, String favouriteListName, String titleBasic) {
+    public BooleanResponse addFilmToFavouriteList(String username, String favouriteListName, String titleBasicId) {
+
         try {
+
             AllUser user = allUserRepository.findByUsername(username).get();
-            TitleBasic film = titleBasicRepository.findById(titleBasic).get();
+            TitleBasic film = titleBasicRepository.findById(titleBasicId).get();
 
-            for (FavouriteList f : user.getFavoriteLists()) {
-                if (favouriteListName.compareTo(f.getName()) == 0) {
-                    f.getList().add(film);
-                    favouriteListRepository.save(f);
-                    user.getFavoriteLists().add(f);
-                    allUserRepository.save(user);
-                    return new BooleanResponse(true);
-
-                }
-            }
-
-        }catch (Exception e){
+            FavouriteList favouriteList = FavouriteList.builder().owner(user).name(favouriteListName).
+                    titleBasic(film).build();
+            favouriteListRepository.save(favouriteList);
             return new BooleanResponse(false);
+        }catch (Exception e) {
+            return new BooleanResponse(true);
         }
-        return new BooleanResponse(false);
     }
+
+    @Override
+    public ArrayList<FavouriteListResponse> showPersonalFavouriteList(String userId) {
+
+        AllUser user = allUserRepository.findByUsername(userId).get();
+        Set<FavouriteList> favouriteLists;
+        favouriteLists = user.getFavoriteLists();
+        ArrayList<FavouriteListResponse> favouriteListResponseSet = new ArrayList<>();
+        for (FavouriteList favouriteList : favouriteLists) {
+            if (favouriteList.getTitleBasic() == null)
+                continue;
+            favouriteListResponseSet.add(favouriteList.toResponse(favouriteList));
+        }
+
+        FavouriteListResponse[] responseArray = new FavouriteListResponse[favouriteListResponseSet.size()];
+        int i=0;
+        for(FavouriteListResponse f : favouriteListResponseSet){
+            responseArray[i] = f;
+            i++;
+        }
+        Arrays.sort(responseArray);
+        favouriteListResponseSet = new ArrayList<>();
+
+
+        for(i=0;i<responseArray.length;i++){
+            favouriteListResponseSet.add(responseArray[i]);
+        }
+
+        return favouriteListResponseSet;
+
+    }
+
+
+
+
+
+
+
+
+    public Set<WatchListResponse> showWatchList(String userId) {
+
+        AllUser user = allUserRepository.findByUsername(userId).get();
+        Set<WatchList> watchListSet;
+        watchListSet = user.getWatchLists();
+        Set<WatchListResponse> watchListResponses = new HashSet<>();
+        for (WatchList watchList : watchListSet) {
+            if (watchList.getTitleBasic() == null)
+                continue;
+            watchListResponses.add(watchList.toResponse(watchList));
+        }
+
+        WatchListResponse[] responseArray = new WatchListResponse[watchListResponses.size()];
+        int i=0;
+        for(WatchListResponse f : watchListResponses){
+            responseArray[i] = f;
+            i++;
+        }
+        Arrays.sort(responseArray);
+        watchListResponses = new HashSet<>();
+
+
+        for(i=0;i<responseArray.length;i++){
+            watchListResponses.add(responseArray[i]);
+        }
+
+        return watchListResponses;
+
+    }
+
+
 
     @Override
     public Boolean reply(String reCommentText, String username,Long commentId) {
@@ -289,4 +351,5 @@ public class UserServiceImp implements UserService, UserDetailsService {
         allUserList =  allUserRepository.findAll();
         return allUserList;
     }
+
 }

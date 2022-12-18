@@ -1,4 +1,4 @@
-package com.example.imdbproject.config;
+package com.example.imdbproject.exceptions.config;
 
 import com.example.imdbproject.model.*;
 

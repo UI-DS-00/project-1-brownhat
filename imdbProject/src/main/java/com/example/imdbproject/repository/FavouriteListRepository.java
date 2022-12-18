@@ -1,9 +1,6 @@
 package com.example.imdbproject.repository;
 
-import com.example.imdbproject.model.Episode;
-import com.example.imdbproject.model.FavouriteList;
-import com.example.imdbproject.model.TitleBasic;
-import com.example.imdbproject.model.WatchList;
+import com.example.imdbproject.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +9,11 @@ import java.util.Set;
 
 public interface FavouriteListRepository extends JpaRepository<FavouriteList, Integer> {
     Optional<FavouriteList> findByName(String name);
-    Set<FavouriteList> findByList(TitleBasic titleBasic);
+    Set<FavouriteList> findByTitleBasic(TitleBasic titleBasic);
+    Set<FavouriteList> findAllByNameAndOwner(String s1, AllUser s2);
+
+    Set<FavouriteList> findAllByOwner(AllUser user);
+
+    Set<FavouriteList> findAllByTitleBasic(TitleBasic titleBasic);
 
 }
