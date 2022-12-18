@@ -305,6 +305,27 @@ public class UserServiceImp implements UserService, UserDetailsService {
     public Set<TitleBasicRecommenderResponse> recommender(String username) {
 
 
+        AllUser user = allUserRepository.findByUsername(username).get();
+        ArrayList<FavouriteListResponse> favouriteListResponse = showPersonalFavouriteList(username);
+        Map <String,Integer> favoriteGenres = new HashMap<>();
+
+        for (FavouriteListResponse favouriteList : favouriteListResponse){
+            for (String genre : favouriteList.getTitleBasicResponse().getGenres()){
+
+                if (favoriteGenres.containsKey(genre))
+                    favoriteGenres.put(genre , favoriteGenres.get(genre)+1);
+
+                else favoriteGenres.put(genre , 1);
+            }
+        }
+
+        LinkedHashMap <String , Integer> sortedGenres = new LinkedHashMap<>();
+        for (Map.Entry <String , Integer> eachGenre : favoriteGenres.entrySet()){
+            sortedGenres.put(eachGenre.getKey() , eachGenre.getValue());
+        }
+
+
+
         return null;
 
     }
