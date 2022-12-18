@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:get/get.dart';
 import 'HomePage.dart';
 import 'login_page.dart';
 //import 'Home.dart';
 //##########################################################
 class BNavigationBar extends StatefulWidget {
   const BNavigationBar({Key ?key}) : super(key: key);
-
   @override
   State<BNavigationBar> createState() => _MainState();
 }
 
 class _MainState extends State<BNavigationBar> {
+  final RxInt _bottomNavIndex = (-1).obs;
 
   List<IconData> iconList = [
     Icons.account_circle_outlined,
@@ -20,7 +21,6 @@ class _MainState extends State<BNavigationBar> {
     Icons.star_border,
 
   ];
-  int _bottomNavIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class _MainState extends State<BNavigationBar> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.home_filled),
         onPressed: (){
-          _bottomNavIndex = -1;
+          _bottomNavIndex.value = -1;
           buildPages();
           print(_bottomNavIndex);
         },
@@ -40,13 +40,13 @@ class _MainState extends State<BNavigationBar> {
       bottomNavigationBar:
       AnimatedBottomNavigationBar(
         icons: iconList,
-        activeIndex: _bottomNavIndex,
+        activeIndex: _bottomNavIndex.value,
         gapLocation: GapLocation.center,
         notchSmoothness: NotchSmoothness.verySmoothEdge,
         leftCornerRadius: 32,
         rightCornerRadius: 32,
         //height: 50,
-        onTap: (index) => setState(() => _bottomNavIndex = index),
+        onTap: (index) => setState(() => _bottomNavIndex.value = index),
         backgroundColor: Colors.orangeAccent,
         inactiveColor: Colors.white,
 
@@ -61,7 +61,7 @@ class _MainState extends State<BNavigationBar> {
 
   Widget ?buildPages() // returns a class which returns scaffold
   {
-    switch(_bottomNavIndex)
+    switch(_bottomNavIndex.value)
     {
       case 0 :
         return LoginScreen();

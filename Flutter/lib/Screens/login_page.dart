@@ -1,6 +1,6 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Screens/sign_up_page.dart';
 import 'package:flutter_app/widgets/custom_button.dart';
 import 'package:get/get.dart';
 
@@ -22,9 +22,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
-          child: SizedBox(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SingleChildScrollView(
+              child: SizedBox(
             height: context.height,
             child: Column(
               children: [
@@ -39,31 +39,26 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: userNameController,
                   onChanged: (value) {
                     setState(() {
-                      if (userNameController.text.isNotEmpty ||
-                          passController.text.isNotEmpty) {
+                      if (userNameController.text.isNotEmpty) {
                         textEmptyU = false;
                       } else
                         textEmptyU = true;
                     });
                   },
-                  decoration: const InputDecoration(
-                      hintText: 'Username'
-                  ),
+                  decoration: const InputDecoration(hintText: 'Username'),
                 ),
                 TextField(
+                  obscureText: true,
                   controller: passController,
                   onChanged: (value) {
                     setState(() {
-                      if (userNameController.text.isNotEmpty &&
-                          passController.text.isNotEmpty) {
+                      if (passController.text.isNotEmpty) {
                         textEmptyP = false;
                       } else
                         textEmptyP = true;
                     });
                   },
-                  decoration: const InputDecoration(
-                      hintText: 'Password'
-                  ),
+                  decoration: const InputDecoration(hintText: 'Password'),
                 ),
                 const SizedBox(
                   height: 40,
@@ -71,24 +66,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 CustomeButton(
                     text: 'LOG IN',
                     onTapped: () {},
-                    color: textEmptyU || textEmptyP ? Colors.white60 : Colors.white),
+                    color: textEmptyU || textEmptyP
+                        ? Colors.white60
+                        : Colors.white),
                 const SizedBox(
                   height: 10,
                 ),
                 CustomeButton(
                     text: 'CREATE YOUR ACCOUNT',
-                    onTapped: () {},
+                    onTapped: () {
+                      Get.to(SignUpScreen());
+                    },
                     color: Colors.white),
                 const SizedBox(
                   height: 110,
                 ),
               ],
             ),
-          )
-
-        )
-
-      ),
+          ))),
     );
   }
 }

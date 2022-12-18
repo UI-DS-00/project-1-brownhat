@@ -1,94 +1,120 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Controllers/user_controller.dart';
+import 'package:flutter_app/Screens/BNavigationBar.dart';
 import 'package:flutter_app/widgets/custom_button.dart';
 import 'package:get/get.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController userNameController = TextEditingController();
-  TextEditingController passController = TextEditingController();
-
-  bool textEmptyU = true;
-  bool textEmptyP = true;
+class SignUpScreen extends GetView<UserController> {
+  SignUpScreen({Key? key}) : super(key: key);
+  Rx<Color> BColor = Colors.white60.obs;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
-          child: SizedBox(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SingleChildScrollView(
+              child: SizedBox(
             height: context.height,
             child: Column(
               children: [
                 const Spacer(),
                 Image.asset(
-                  'User.png',
+                  'SignUp.png',
                 ),
                 const SizedBox(
                   height: 40,
                 ),
                 TextField(
-                  controller: userNameController,
+                  controller: controller.userNameController,
                   onChanged: (value) {
-                    setState(() {
-                      if (userNameController.text.isNotEmpty ||
-                          passController.text.isNotEmpty) {
-                        textEmptyU = false;
-                      } else
-                        textEmptyU = true;
-                    });
+                    if (!controller.checkUserNameEmpty() &&
+                        !controller.checkPassEmpty()) {
+                      BColor.value = Colors.white;
+                    } else {
+                      BColor.value = Colors.white60;
+                    }
+                    //print('U : ' + textEmptyU.toString());
+                    // setState(() {
+                    //   if (userNameController.text.isNotEmpty ||
+                    //       passController.text.isNotEmpty) {
+                    //     textEmptyU = false;
+                    //   } else
+                    //     textEmptyU = true;
+                    // });
                   },
-                  decoration: const InputDecoration(
-                      hintText: 'Username'
-                  ),
+                  decoration: const InputDecoration(hintText: 'Username'),
                 ),
                 TextField(
-                  controller: passController,
+                  obscureText: true,
+                  controller: controller.passController,
                   onChanged: (value) {
-                    setState(() {
-                      if (userNameController.text.isNotEmpty &&
-                          passController.text.isNotEmpty) {
-                        textEmptyP = false;
-                      } else
-                        textEmptyP = true;
-                    });
+                    if (!controller.checkUserNameEmpty() &&
+                        !controller.checkPassEmpty()) {
+                      BColor.value = Colors.white;
+                    } else {
+                      BColor.value = Colors.white60;
+                    }
+                    print(BColor.toString());
+
+                    //print('P : ' + textEmptyP.toString());
+                    // setState(() {
+                    //   if (userNameController.text.isNotEmpty &&
+                    //       passController.text.isNotEmpty) {
+                    //     textEmptyP = false;
+                    //   } else
+                    //     textEmptyP = true;
+                    // });
                   },
-                  decoration: const InputDecoration(
-                      hintText: 'Password'
-                  ),
+                  decoration: const InputDecoration(hintText: 'Password'),
                 ),
                 const SizedBox(
                   height: 40,
                 ),
                 CustomeButton(
-                    text: 'LOG IN',
-                    onTapped: () {},
-                    color: textEmptyU || textEmptyP ? Colors.white60 : Colors.white),
+                    text: 'SIGN UP',
+                    onTapped: () {
+                      if (!controller.textEmptyP && !controller.textEmptyU) {
+                        controller.signUp();
+                        // Get.defaultDialog(
+                        //     title: 'Done!',
+                        //     titleStyle: TextStyle(
+                        //         fontWeight: FontWeight.bold, fontSize: 22),
+                        //     middleText: 'Successfuly Registered',
+                        //     middleTextStyle: TextStyle(fontSize: 18),
+                        //     buttonColor: Colors.amberAccent,
+                        //     textConfirm: 'OK',
+                        //     backgroundColor: Colors.tealAccent,
+                        //     confirmTextColor: Colors.black,
+                        //     onConfirm: () {
+                        //       Get.back();
+                        //
+                        //       // passController.text = '';
+                        //       // userNameController.text = '';
+                        //       controller.userNameController.clear();
+                        //       controller.passController.clear();
+                        //       BColor.value = Colors.white60;
+                        //       controller.textEmptyU =
+                        //           true; // to avoid entering button again
+                        //       controller.textEmptyP = true;
+                        //
+                        //       //Get.back();
+                        //     });
+                      }
+                    },
+                    color: BColor.value),
                 const SizedBox(
-                  height: 10,
-                ),
-                CustomeButton(
-                    text: 'CREATE YOUR ACCOUNT',
-                    onTapped: () {},
-                    color: Colors.white),
-                const SizedBox(
-                  height: 110,
+                  height: 160,
                 ),
               ],
             ),
-          )
-
-        )
-
-      ),
+          ))),
     );
+
   }
+
 }
+
+
+
