@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 @RestController
@@ -59,7 +60,7 @@ public class ShowDataController {
         //return new ResponseEntity<>(showDataService.othersFavouriteList("tt0012349"),HttpStatus.OK);
     }
     @GetMapping ("/user/showFavouriteList")
-    public ResponseEntity<Set<FavouriteListResponse>> showFavouriteList(Authentication authentication) {
+    public ResponseEntity<ArrayList<FavouriteListResponse>> showFavouriteList(Authentication authentication) {
         return new ResponseEntity<>(userServiceImp.showPersonalFavouriteList(authentication.getName()),HttpStatus.OK);
     }
 

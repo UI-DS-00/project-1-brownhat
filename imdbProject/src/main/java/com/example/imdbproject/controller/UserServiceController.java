@@ -73,6 +73,7 @@ public class UserServiceController {
     @PostMapping("/signup")
     public ResponseEntity<BooleanResponse> singUp(@RequestBody SignUpRequest sign){
 
+        System.out.println(sign);
         BooleanResponse check;
         try {
             check = new BooleanResponse(userServiceImp.signUp(sign.getUsername() , sign.getPassword()));
@@ -80,6 +81,7 @@ public class UserServiceController {
             check = new BooleanResponse(false);
         }
 
+        System.out.println("recives api");
         return new ResponseEntity<>(check , HttpStatus.OK);
     }
 

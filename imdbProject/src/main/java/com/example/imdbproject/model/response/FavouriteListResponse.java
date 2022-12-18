@@ -22,11 +22,6 @@ public class FavouriteListResponse implements Comparable {
     public int compareTo(Object o1) {
 
         FavouriteListResponse favouriteListResponse = (FavouriteListResponse) o1;
-        if (Integer.parseInt(this.getName()) == Integer.parseInt(favouriteListResponse.getName()))
-            return 0;
-        else if (Integer.parseInt(this.getName()) > Integer.parseInt(favouriteListResponse.getName()))
-            return 1;
-        else
-            return -1;
+        return Integer.compare(Integer.parseInt(this.getName()), Integer.parseInt(favouriteListResponse.getName()));
     }
 }

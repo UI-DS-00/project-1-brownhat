@@ -174,12 +174,12 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public Set<FavouriteListResponse> showPersonalFavouriteList(String userId) {
+    public ArrayList<FavouriteListResponse> showPersonalFavouriteList(String userId) {
 
         AllUser user = allUserRepository.findByUsername(userId).get();
         Set<FavouriteList> favouriteLists;
         favouriteLists = user.getFavoriteLists();
-        Set<FavouriteListResponse> favouriteListResponseSet = new HashSet<>();
+        ArrayList<FavouriteListResponse> favouriteListResponseSet = new ArrayList<>();
         for (FavouriteList favouriteList : favouriteLists) {
             if (favouriteList.getTitleBasic() == null)
                 continue;
@@ -193,7 +193,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
             i++;
         }
         Arrays.sort(responseArray);
-        favouriteListResponseSet = new HashSet<>();
+        favouriteListResponseSet = new ArrayList<>();
 
 
         for(i=0;i<responseArray.length;i++){
@@ -201,8 +201,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
         }
 
         return favouriteListResponseSet;
-
-
 
     }
 
@@ -225,23 +223,21 @@ public class UserServiceImp implements UserService, UserDetailsService {
             watchListResponses.add(watchList.toResponse(watchList));
         }
 
-//        FavouriteListResponse[] responseArray = new FavouriteListResponse[watchListResponses.size()];
-//        int i=0;
-//        for(FavouriteListResponse f : watchListResponses){
-//            responseArray[i] = f;
-//            i++;
-//        }
-//        Arrays.sort(responseArray);
-//        watchListResponses = new HashSet<>();
-//
-//
-//        for(i=0;i<responseArray.length;i++){
-//            watchListResponses.add(responseArray[i]);
-//        }
+        WatchListResponse[] responseArray = new WatchListResponse[watchListResponses.size()];
+        int i=0;
+        for(WatchListResponse f : watchListResponses){
+            responseArray[i] = f;
+            i++;
+        }
+        Arrays.sort(responseArray);
+        watchListResponses = new HashSet<>();
+
+
+        for(i=0;i<responseArray.length;i++){
+            watchListResponses.add(responseArray[i]);
+        }
 
         return watchListResponses;
-
-
 
     }
 

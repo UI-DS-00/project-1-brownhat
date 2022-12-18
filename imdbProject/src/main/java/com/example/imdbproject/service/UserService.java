@@ -2,6 +2,7 @@ package com.example.imdbproject.service;
 
 import com.example.imdbproject.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ public interface UserService {
     void addComment(String userId , String commentText , String titleBasicId);
     Boolean signUp(String username , String password);
 
-    Set<FavouriteListResponse> showPersonalFavouriteList(String userId);
+    ArrayList<FavouriteListResponse> showPersonalFavouriteList(String userId);
 
     //================================ JWT :)
 
