@@ -27,7 +27,7 @@ public interface UserService {
     BooleanResponse addFilmToFavouriteList(String username, String favouriteListName, String titleBasic);
     void addComment(String userId , String commentText , String titleBasicId);
     Boolean signUp(String username , String password);
-    Set <TitleBasicRecommenderResponse> recommender(String username);
+    ArrayList <TitleBasicRecommenderResponse> recommender(String username);
 
     ArrayList<FavouriteListResponse> showPersonalFavouriteList(String userId);
 
