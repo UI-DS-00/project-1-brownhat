@@ -1,9 +1,6 @@
 package com.example.imdbproject.service;
 import com.example.imdbproject.model.*;
-import com.example.imdbproject.model.response.FavouriteListResponse;
-import com.example.imdbproject.model.response.NameBasicSummery;
-import com.example.imdbproject.model.response.PrincipalResponse;
-import com.example.imdbproject.model.response.TitleBasicResponse;
+import com.example.imdbproject.model.response.*;
 import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,10 +75,41 @@ public class ShowDataServiceImpl implements ShowDataService{
             filmResponse.setActors(casts);
 
 
-            //add comments
-            Set <Comment> comments = commentRepository.findByTitleBasic(eachFilm);
-            Set <Comment> replies;//--------------------------------------------
+            //add comments---------------------------------------------------------------------------------
+            Set <Comment> comments = commentRepository.findByTitleBasicAndIsReply(eachFilm , false);
 
+            Set <Comment> addingAllSubComments = comments;
+            Set <CommentResponse> addingAllSubComments2= CommentResponse.makeCommentRespond(comments);
+            Set <CommentResponse> copy = addingAllSubComments2;
+
+            while (! addingAllSubComments.isEmpty()) {
+                Set <Comment> newComments = new HashSet<>();
+                Set <CommentResponse> newComments1 = new HashSet<>();
+
+                for (CommentResponse comment : addingAllSubComments2) {
+
+                    Comment foundedComment=null;
+                    for (Comment comment1 : addingAllSubComments){
+                        if (CommentResponse.isEqual(comment1 , comment)){
+                            foundedComment = comment1;
+                            break;
+                        }
+                    }
+                    Set<Comment> replies = commentRepository.findByReplyForMainComment(foundedComment);
+
+                    comment.setReplies(CommentResponse.makeCommentRespond(replies));
+
+
+                    newComments.addAll(replies);
+                    newComments1.addAll(comment.getReplies());
+
+                }
+
+                addingAllSubComments = newComments;
+                addingAllSubComments2 = newComments1;
+            }
+
+            filmResponse.setComments(copy);
 
             allFilms.add(filmResponse);
         }
@@ -146,8 +174,82 @@ public class ShowDataServiceImpl implements ShowDataService{
         for (Rating rating:inputRatings)
             filteredMovies.add(rating.getTitleConst());
 
-        for(TitleBasic titleBasic1:filteredMovies)
-            moviesByRating.add(titleBasic1.responseModel());
+//        for(TitleBasic titleBasic1:filteredMovies)
+//            moviesByRating.add(titleBasic1.responseModel());
+
+
+
+
+        for (TitleBasic eachFilm: filteredMovies){
+
+            Set <PrincipalResponse> casts = new HashSet<>();
+            Set <PrincipalResponse> crew = new HashSet<>();
+            TitleBasicResponse filmResponse = eachFilm.responseModel();
+            //getting all the cast and crew
+
+            Set <Principal> principals = principalRepository.findByFilmCode(eachFilm.getTConst());
+
+            //adding cast and crew
+            for (Principal eachPerson : principals){
+
+                if (eachPerson.getNConst() == null)
+                    continue;
+
+                if (eachPerson.getCategory().equals("actor")  || eachPerson.getCategory().equals("actress") )
+                    casts.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
+                            , eachPerson.getJob(), eachPerson.getCharacters()));
+
+                else crew.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
+                        , eachPerson.getJob(), eachPerson.getCharacters()));
+
+            }
+
+            //adding the rate
+            filmResponse.setRate(ratingRepository.findByTitleConst(eachFilm).responseModel());
+
+            filmResponse.setCrew( crew);
+            filmResponse.setActors(casts);
+
+
+            //add comments---------------------------------------------------------------------------------
+            Set <Comment> comments = commentRepository.findByTitleBasicAndIsReply(eachFilm , false);
+
+            Set <Comment> addingAllSubComments = comments;
+            Set <CommentResponse> addingAllSubComments2= CommentResponse.makeCommentRespond(comments);
+            Set <CommentResponse> copy = addingAllSubComments2;
+
+            while (! addingAllSubComments.isEmpty()) {
+                Set <Comment> newComments = new HashSet<>();
+                Set <CommentResponse> newComments1 = new HashSet<>();
+
+                for (CommentResponse comment : addingAllSubComments2) {
+
+                    Comment foundedComment=null;
+                    for (Comment comment1 : addingAllSubComments){
+                        if (CommentResponse.isEqual(comment1 , comment)){
+                            foundedComment = comment1;
+                            break;
+                        }
+                    }
+                    Set<Comment> replies = commentRepository.findByReplyForMainComment(foundedComment);
+
+                    comment.setReplies(CommentResponse.makeCommentRespond(replies));
+
+
+                    newComments.addAll(replies);
+                    newComments1.addAll(comment.getReplies());
+
+                }
+
+                addingAllSubComments = newComments;
+                addingAllSubComments2 = newComments1;
+            }
+
+            filmResponse.setComments(copy);
+
+            moviesByRating.add(filmResponse);
+        }
+
 
 
         return moviesByRating;
