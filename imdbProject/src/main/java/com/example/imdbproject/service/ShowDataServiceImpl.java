@@ -174,9 +174,6 @@ public class ShowDataServiceImpl implements ShowDataService{
         for (Rating rating:inputRatings)
             filteredMovies.add(rating.getTitleConst());
 
-//        for(TitleBasic titleBasic1:filteredMovies)
-//            moviesByRating.add(titleBasic1.responseModel());
-
 
 
 
