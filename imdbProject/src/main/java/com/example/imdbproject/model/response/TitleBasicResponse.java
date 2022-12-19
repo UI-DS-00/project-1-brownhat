@@ -15,7 +15,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class TitleBasicResponse {
 
-
     private String titleType;
     private String primaryTitle;
     private String originalTitle;
@@ -32,7 +31,6 @@ public class TitleBasicResponse {
     private RateResponse rate;
 
 
-
     public TitleBasicResponse(String titleType, String primaryTitle, String originalTitle, boolean isAdult, int startYear, int endYear, int runtime
             , Set<String> genres) {
         this.titleType = titleType;
@@ -46,10 +44,12 @@ public class TitleBasicResponse {
     }
 
     public TitleBasicRecommenderResponse toRecommenderResponse(){
+
         TitleBasicRecommenderResponse titleBasicRecommenderResponse =new TitleBasicRecommenderResponse();
         titleBasicRecommenderResponse.setFilmName(this.getOriginalTitle());
         titleBasicRecommenderResponse.setGenres(this.getGenres());
         titleBasicRecommenderResponse.setRate(this.getRate().getRate());
+        titleBasicRecommenderResponse.setEndYear(this.getEndYear());
 
         return titleBasicRecommenderResponse;
     }

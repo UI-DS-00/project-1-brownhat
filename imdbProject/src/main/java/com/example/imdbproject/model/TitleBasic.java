@@ -1,6 +1,7 @@
 package com.example.imdbproject.model;
 
 
+import com.example.imdbproject.model.response.TitleBasicRecommenderResponse;
 import com.example.imdbproject.model.response.TitleBasicResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -71,5 +72,16 @@ public class TitleBasic {
         this.genres = genres;
     }
 
+    public TitleBasicRecommenderResponse toRecommenderResponse(){
+        TitleBasicRecommenderResponse titleBasicRecommenderResponse =new TitleBasicRecommenderResponse();
+        titleBasicRecommenderResponse.setFilmName(this.getOriginalTitle());
+        for (Genre genre:this.getGenres())
+            titleBasicRecommenderResponse.getGenres().add(genre.getGenre());
+        titleBasicRecommenderResponse.setEndYear(this.getEndYear());
+
+        titleBasicRecommenderResponse.setRate(this.getRating().getAverageRate());
+
+        return titleBasicRecommenderResponse;
+    }
 
 }

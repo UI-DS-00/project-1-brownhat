@@ -69,5 +69,10 @@ public class ShowDataController {
         return new ResponseEntity<>(userServiceImp.recommender(authentication.getName()) , HttpStatus.OK);
     }
 
+    @GetMapping("/topTen")
+    public ResponseEntity<Set<TitleBasicResponse>> showTopTen(){
+        return new ResponseEntity<>(showDataService.topTen() , HttpStatus.OK);
+    }
+
 }
 

@@ -14,4 +14,6 @@ public interface TitleBasicRepository extends CrudRepository<TitleBasic, String>
     Set<TitleBasic> findByEndYearIs(Integer endYear);
     Set<TitleBasic> findByGenres(String genre);
 
+    Set<TitleBasic> findTop10ByOrderByEndYearDesc();
+
 }
