@@ -1,10 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Controllers/user_controller.dart';
-import 'package:flutter_app/Screens/BNavigationBar.dart';
 import 'package:flutter_app/widgets/custom_button.dart';
 import 'package:get/get.dart';
-
-
 class SignUpScreen extends GetView<UserController> {
   SignUpScreen({Key? key}) : super(key: key);
   Rx<Color> BColor = Colors.white60.obs;

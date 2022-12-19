@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:flutter_app/Screens/movie_screen.dart';
 import 'package:get/get.dart';
 import 'HomePage.dart';
 import 'login_page.dart';
@@ -65,6 +66,9 @@ class _MainState extends State<BNavigationBar> {
     {
       case 0 :
         return LoginScreen();
+        break;
+      case 1:
+        return MovieScreen();
         break;
       case 2 :
         return const HomePage();
