@@ -340,9 +340,27 @@ public class UserServiceImp implements UserService, UserDetailsService {
             }
         }
 
-        Set<TitleBasic> genre1Movies = genreRepository.findAllByGenre(genre1);
-        Set<TitleBasic> genre2Movies = genreRepository.findAllByGenre(genre2);
-        Set<TitleBasic> genre3Movies = genreRepository.findAllByGenre(genre3);
+//        Set<TitleBasic> genre1Movies = genreRepository.findAllByGenre(genre1);
+
+        Set<Genre> genre1TitleString = genreRepository.findByGenre(genre1);
+        Set<Genre> genre2TitleString = genreRepository.findByGenre(genre2);
+        Set<Genre> genre3TitleString = genreRepository.findByGenre(genre3);
+
+        Set<TitleBasic> genre1Movies = new HashSet<>();
+        Set<TitleBasic> genre2Movies =  new HashSet<>();
+        Set<TitleBasic> genre3Movies =  new HashSet<>();
+
+
+        for(Genre titleBasicByGenre:genre1TitleString)
+            genre1Movies.add(titleBasicRepository.findById(titleBasicByGenre.getTitleBasic()).get());
+
+        for(Genre titleBasicByGenre:genre2TitleString)
+            genre2Movies.add(titleBasicRepository.findById(titleBasicByGenre.getTitleBasic()).get());
+
+        for(Genre titleBasicByGenre:genre3TitleString)
+            genre3Movies.add(titleBasicRepository.findById(titleBasicByGenre.getTitleBasic()).get());
+
+
 
 
         ArrayList <TitleBasicResponse> responses = new ArrayList<>();
@@ -359,7 +377,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         //for having two of highest the genres
         for (TitleBasic eachFilm : genre2Movies)
-            if (genre1Movies.contains(eachFilm) && eachFilm.getRating().getAverageRate() >= 7.0f)
+            if (genre1Movies.contains(eachFilm) && eachFilm.getRating().getAverageRate() >= 7.0f
+            &&  eachFilm.getGenres().size()==2)
                 responses.add(eachFilm.responseModel());
 
         //for having all three genres
@@ -367,8 +386,12 @@ public class UserServiceImp implements UserService, UserDetailsService {
             if (genre2Movies.contains(eachFilm) && genre3Movies.contains(eachFilm)  && eachFilm.getRating().getAverageRate() >= 7.0f)
                 responses.add(eachFilm.responseModel());
 
+        ArrayList<TitleBasicRecommenderResponse> answer = new ArrayList<>();
+        for(TitleBasicResponse titleBasicResponse : responses){
+            answer.add(titleBasicResponse.toRecommenderResponse());
+        }
 
-        return null;
+        return answer;
 
     }
 

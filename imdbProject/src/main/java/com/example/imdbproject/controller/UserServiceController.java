@@ -163,10 +163,7 @@ public class UserServiceController {
 //        return new ResponseEntity<>(userServiceImp.showPersonalFavouriteList(authentication.getName()),HttpStatus.OK);
 //    }
 
-    @PostMapping("/user/recommender")
-    public ResponseEntity <Set<TitleBasicRecommenderResponse>> recommender(Authentication authentication){
-        return new ResponseEntity<>(userServiceImp.recommender(authentication.getName()) , HttpStatus.OK);
-    }
+
 
 
     //--------------------------------------------------------------------------JWT :)

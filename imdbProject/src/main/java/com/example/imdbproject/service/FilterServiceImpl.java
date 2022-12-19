@@ -1,10 +1,12 @@
 package com.example.imdbproject.service;
 
 import com.example.imdbproject.model.Aka;
+import com.example.imdbproject.model.Genre;
 import com.example.imdbproject.model.NameBasic;
 import com.example.imdbproject.model.TitleBasic;
 import com.example.imdbproject.model.response.TitleBasicResponse;
 import com.example.imdbproject.repository.AkaRepository;
+import com.example.imdbproject.repository.GenreRepository;
 import com.example.imdbproject.repository.NameBasicRepository;
 import com.example.imdbproject.repository.TitleBasicRepository;
 import lombok.AllArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.Set;
 @Service
 
 public class FilterServiceImpl implements FilterService{
+    private final GenreRepository genreRepository;
     private TitleBasicRepository titleBasicRepository;
     private NameBasicRepository nameBasic;
     private AkaRepository akaRepository;
@@ -40,18 +43,18 @@ public class FilterServiceImpl implements FilterService{
     public Set<TitleBasicResponse> filterByGenre(String genre) {
 
         Set<TitleBasicResponse> filteredMoviesSummary = new HashSet<>();
-        Set<TitleBasic> filteredMovies = titleBasicRepository.findByGenres(genre);
+        Set<Genre> filteredMovies = genreRepository.findByGenre(genre);
 
-        for(TitleBasic titleBasic:filteredMovies)
-            filteredMoviesSummary.add(titleBasic.responseModel());
+        for(Genre titleBasicByGenre:filteredMovies)
+            filteredMoviesSummary.add(titleBasicRepository.findById(titleBasicByGenre.getTitleBasic()).get().responseModel());
 
         return filteredMoviesSummary;
     }
 
     @Override
-    public Set<TitleBasicResponse> filterByActor(String nConst) {
+    public Set<TitleBasicResponse> filterByActor(String name) {
         Set<TitleBasic> filteredMovies = new HashSet<>();
-        Optional<NameBasic> inputNameBasic = nameBasic.findById(nConst);
+        Optional<NameBasic> inputNameBasic = nameBasic.findByPrimaryName(name);
         Set<TitleBasicResponse> filteredMoviesSummary = new HashSet<>();
 
         filteredMovies = inputNameBasic.get().getKnownForTitles();
