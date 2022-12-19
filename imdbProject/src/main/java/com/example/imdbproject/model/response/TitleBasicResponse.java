@@ -15,7 +15,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class TitleBasicResponse {
 
-
     private String titleType;
     private String primaryTitle;
     private String originalTitle;
@@ -30,7 +29,6 @@ public class TitleBasicResponse {
     private Set <CommentResponse> comments;
 
     private RateResponse rate;
-
 
 
     public TitleBasicResponse(String titleType, String primaryTitle, String originalTitle, boolean isAdult, int startYear, int endYear, int runtime
