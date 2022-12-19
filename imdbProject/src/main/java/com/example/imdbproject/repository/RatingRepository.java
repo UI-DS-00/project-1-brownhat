@@ -12,7 +12,7 @@ public interface RatingRepository extends JpaRepository<Rating, String> {
 
     Set<Rating> findAllByOrderByAverageRateDesc();
 
-    public Set<Rating> findTop10ByOrderByAverageRateDesc();
+    Set<Rating> findTop10ByOrderByAverageRateDesc();
 
     Rating findByTitleConst(TitleBasic titleBasic);
 }

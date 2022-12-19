@@ -46,10 +46,12 @@ public class TitleBasicResponse {
     }
 
     public TitleBasicRecommenderResponse toRecommenderResponse(){
+
         TitleBasicRecommenderResponse titleBasicRecommenderResponse =new TitleBasicRecommenderResponse();
         titleBasicRecommenderResponse.setFilmName(this.getOriginalTitle());
         titleBasicRecommenderResponse.setGenres(this.getGenres());
         titleBasicRecommenderResponse.setRate(this.getRate().getRate());
+        titleBasicRecommenderResponse.setEndYear(this.getEndYear());
 
         return titleBasicRecommenderResponse;
     }

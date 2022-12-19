@@ -363,7 +363,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
 
 
-        ArrayList <TitleBasicResponse> responses = new ArrayList<>();
+        ArrayList <TitleBasic> responses = new ArrayList<>();
 
         //for having only one of the genres
         Set <TitleBasic> oneGenre = new HashSet<>();
@@ -373,24 +373,30 @@ public class UserServiceImp implements UserService, UserDetailsService {
         //putting rating filter
         for (TitleBasic eachFilm : oneGenre)
             if (eachFilm.getRating().getAverageRate() >= 7.0f && eachFilm.getGenres().size()==1)
-                responses.add(eachFilm.responseModel());
+                responses.add(eachFilm);
 
         //for having two of highest the genres
-        for (TitleBasic eachFilm : genre2Movies)
+        for (TitleBasic eachFilm : genre2Movies) {
             if (genre1Movies.contains(eachFilm) && eachFilm.getRating().getAverageRate() >= 7.0f
-            &&  eachFilm.getGenres().size()==2)
-                responses.add(eachFilm.responseModel());
-
+                    && eachFilm.getGenres().size() == 2)
+                responses.add(eachFilm);
+        }
         //for having all three genres
         for (TitleBasic eachFilm : genre1Movies)
             if (genre2Movies.contains(eachFilm) && genre3Movies.contains(eachFilm)  && eachFilm.getRating().getAverageRate() >= 7.0f)
-                responses.add(eachFilm.responseModel());
+                responses.add(eachFilm);
 
         ArrayList<TitleBasicRecommenderResponse> answer = new ArrayList<>();
-        for(TitleBasicResponse titleBasicResponse : responses){
-            answer.add(titleBasicResponse.toRecommenderResponse());
+        for(TitleBasic titleBasic : responses){
+            answer.add(titleBasic.toRecommenderResponse());
         }
 
+        if (answer.isEmpty()){
+
+            Set<TitleBasic> latestMovies = titleBasicRepository.findTop10ByOrderByEndYearDesc();
+            for(TitleBasic titleBasic: latestMovies)
+                answer.add(titleBasic.toRecommenderResponse());
+        }
         return answer;
 
     }
