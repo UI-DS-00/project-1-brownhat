@@ -359,7 +359,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         //for having two of highest the genres
         for (TitleBasic eachFilm : genre2Movies)
-            if (genre1Movies.contains(eachFilm) && eachFilm.getRating().getAverageRate() >= 7.0f)
+            if (genre1Movies.contains(eachFilm) && eachFilm.getRating().getAverageRate() >= 7.0f
+            &&  eachFilm.getGenres().size()==2)
                 responses.add(eachFilm.responseModel());
 
         //for having all three genres
@@ -367,8 +368,12 @@ public class UserServiceImp implements UserService, UserDetailsService {
             if (genre2Movies.contains(eachFilm) && genre3Movies.contains(eachFilm)  && eachFilm.getRating().getAverageRate() >= 7.0f)
                 responses.add(eachFilm.responseModel());
 
+        ArrayList<TitleBasicRecommenderResponse> answer = new ArrayList<>();
+        for(TitleBasicResponse titleBasicResponse : responses){
+            answer.add(titleBasicResponse.toRecommenderResponse());
+        }
 
-        return null;
+        return answer;
 
     }
 
