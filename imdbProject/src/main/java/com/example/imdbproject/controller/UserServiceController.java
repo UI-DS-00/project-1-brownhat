@@ -163,10 +163,7 @@ public class UserServiceController {
 //        return new ResponseEntity<>(userServiceImp.showPersonalFavouriteList(authentication.getName()),HttpStatus.OK);
 //    }
 
-    @GetMapping("/user/recommender")
-    public ResponseEntity <ArrayList<TitleBasicRecommenderResponse>> recommender(Authentication authentication){
-        return new ResponseEntity<>(userServiceImp.recommender(authentication.getName()) , HttpStatus.OK);
-    }
+
 
 
     //--------------------------------------------------------------------------JWT :)

@@ -340,9 +340,27 @@ public class UserServiceImp implements UserService, UserDetailsService {
             }
         }
 
-        Set<TitleBasic> genre1Movies = genreRepository.findAllByGenre(genre1);
-        Set<TitleBasic> genre2Movies = genreRepository.findAllByGenre(genre2);
-        Set<TitleBasic> genre3Movies = genreRepository.findAllByGenre(genre3);
+//        Set<TitleBasic> genre1Movies = genreRepository.findAllByGenre(genre1);
+
+        Set<Genre> genre1TitleString = genreRepository.findByGenre(genre1);
+        Set<Genre> genre2TitleString = genreRepository.findByGenre(genre2);
+        Set<Genre> genre3TitleString = genreRepository.findByGenre(genre3);
+
+        Set<TitleBasic> genre1Movies = new HashSet<>();
+        Set<TitleBasic> genre2Movies =  new HashSet<>();
+        Set<TitleBasic> genre3Movies =  new HashSet<>();
+
+
+        for(Genre titleBasicByGenre:genre1TitleString)
+            genre1Movies.add(titleBasicRepository.findById(titleBasicByGenre.getTitleBasic()).get());
+
+        for(Genre titleBasicByGenre:genre2TitleString)
+            genre2Movies.add(titleBasicRepository.findById(titleBasicByGenre.getTitleBasic()).get());
+
+        for(Genre titleBasicByGenre:genre3TitleString)
+            genre3Movies.add(titleBasicRepository.findById(titleBasicByGenre.getTitleBasic()).get());
+
+
 
 
         ArrayList <TitleBasicResponse> responses = new ArrayList<>();

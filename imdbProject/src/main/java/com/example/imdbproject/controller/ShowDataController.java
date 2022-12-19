@@ -3,10 +3,7 @@ package com.example.imdbproject.controller;
 
 import com.example.imdbproject.model.FavouriteList;
 import com.example.imdbproject.model.request.Input;
-import com.example.imdbproject.model.response.FavouriteListResponse;
-import com.example.imdbproject.model.response.NameBasicSummery;
-import com.example.imdbproject.model.response.TitleBasicResponse;
-import com.example.imdbproject.model.response.WatchListResponse;
+import com.example.imdbproject.model.response.*;
 import com.example.imdbproject.service.ShowDataServiceImpl;
 import com.example.imdbproject.service.UserService;
 import com.example.imdbproject.service.UserServiceImp;
@@ -67,6 +64,10 @@ public class ShowDataController {
         return new ResponseEntity<>(userServiceImp.showWatchList(authentication.getName()),HttpStatus.OK);
     }
 
+    @GetMapping("/user/recommender")
+    public ResponseEntity <ArrayList<TitleBasicRecommenderResponse>> recommender(Authentication authentication){
+        return new ResponseEntity<>(userServiceImp.recommender(authentication.getName()) , HttpStatus.OK);
+    }
 
 }
 
