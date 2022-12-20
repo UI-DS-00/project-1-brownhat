@@ -29,6 +29,13 @@ public class ShowDataController {
     }
 
 
+    @GetMapping("/each/film")
+    public ResponseEntity<TitleBasicResponse> getEachFilm(@RequestBody Input filmName){
+        return new ResponseEntity<>(showDataService.eachFilmData(filmName.getInput()), HttpStatus.OK);
+    }
+
+
+
     //actors and directors service function
 
     @GetMapping ("/actors")

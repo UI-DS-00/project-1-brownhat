@@ -204,12 +204,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
 
-
-
-
-
-
-
     public Set<WatchListResponse> showWatchList(String userId) {
 
         AllUser user = allUserRepository.findByUsername(userId).get();
@@ -272,7 +266,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     public void addComment(String username, String commentText, String titleBasicId) {
 
         Optional<AllUser> user = allUserRepository.findByUsername(username);
-        Optional <TitleBasic> movie = titleBasicRepository.findById(titleBasicId);
+        Optional <TitleBasic> movie = titleBasicRepository.findByPrimaryTitle(titleBasicId);
 
         if (user.isEmpty() || movie.isEmpty())
             throw new WrongInput("wrong user id or movie id");

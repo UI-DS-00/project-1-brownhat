@@ -12,6 +12,7 @@ import com.example.imdbproject.model.Comment;
 import com.example.imdbproject.model.response.BooleanResponse;
 import com.example.imdbproject.model.response.FavouriteListResponse;
 import com.example.imdbproject.model.response.TitleBasicRecommenderResponse;
+import com.example.imdbproject.model.response.TitleBasicResponse;
 
 import java.util.Optional;
 
@@ -30,6 +31,8 @@ public interface UserService {
     ArrayList <TitleBasicRecommenderResponse> recommender(String username);
 
     ArrayList<FavouriteListResponse> showPersonalFavouriteList(String userId);
+
+
 
     //================================ JWT :)
 

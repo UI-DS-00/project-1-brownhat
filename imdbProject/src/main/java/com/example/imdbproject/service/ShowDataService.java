@@ -22,6 +22,7 @@ public interface ShowDataService {
 
     Set<FavouriteListResponse> othersFavouriteList(String titleBasic);
 
+    TitleBasicResponse eachFilmData(String filmName);
 
 }
 
