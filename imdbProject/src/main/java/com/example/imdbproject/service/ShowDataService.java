@@ -1,10 +1,10 @@
 package com.example.imdbproject.service;
 
-import com.example.imdbproject.model.FavouriteList;
-import com.example.imdbproject.model.response.FavouriteListResponse;
 import com.example.imdbproject.model.response.NameBasicSummery;
+import com.example.imdbproject.model.response.TitleBasicFavouriteList;
 import com.example.imdbproject.model.response.TitleBasicResponse;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public interface ShowDataService {
@@ -18,9 +18,9 @@ public interface ShowDataService {
 
     Set <TitleBasicResponse> filmRating();
 
-    Set<TitleBasicResponse> topTen();
+    ArrayList<TitleBasicResponse> topTen();
 
-    Set<FavouriteListResponse> othersFavouriteList(String titleBasic);
+    Set<TitleBasicFavouriteList> othersFavouriteList(String titleBasic);
 
 
 }

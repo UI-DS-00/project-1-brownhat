@@ -33,9 +33,5 @@ public class FilterController {
         return new ResponseEntity<>(filterService.filterByActor(input.getInput()), HttpStatus.OK);
     }
 
-    @GetMapping("/region")
-    public ResponseEntity<Set<TitleBasicResponse>> getFilmsByRegion(@RequestBody Input input){
-        return new ResponseEntity<>(filterService.filterByRegion(input.getInput()), HttpStatus.OK);
-    }
 
 }

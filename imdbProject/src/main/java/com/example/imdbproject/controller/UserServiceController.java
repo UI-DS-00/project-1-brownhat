@@ -115,7 +115,7 @@ public class UserServiceController {
 
         BooleanResponse check;
         try {
-            check = new BooleanResponse(userServiceImp.makeWatchList(input.getInput(),authentication.getName()));
+            check = new BooleanResponse(userServiceImp.makeWatchList(input.getInput(),authentication.getName()).getResponse());
         } catch (DuplicateName duplicateName){
             check = new BooleanResponse(false);
         }
@@ -128,7 +128,7 @@ public class UserServiceController {
 
         BooleanResponse check;
         try {
-            check = new BooleanResponse(userServiceImp.addFilmToWatchList( input.getListName(),input.getFilmId(),authentication.getName()));
+            check = new BooleanResponse(userServiceImp.addFilmToWatchList( input.getListName(),input.getFilmId(),authentication.getName()).getResponse());
         } catch (DuplicateName duplicateName){
             check = new BooleanResponse(false);
         }

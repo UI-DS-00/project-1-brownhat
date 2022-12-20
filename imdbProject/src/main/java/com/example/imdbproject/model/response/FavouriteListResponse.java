@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Set;
 
@@ -22,6 +23,6 @@ public class FavouriteListResponse implements Comparable {
     public int compareTo(Object o1) {
 
         FavouriteListResponse favouriteListResponse = (FavouriteListResponse) o1;
-        return Integer.compare(Integer.parseInt(this.getName()), Integer.parseInt(favouriteListResponse.getName()));
+        return (this.getName().compareTo( favouriteListResponse.getName()));
     }
 }
