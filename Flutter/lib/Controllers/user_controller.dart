@@ -1,15 +1,21 @@
+import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/models/movie.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
+import 'package:dio/dio.dart';
 
 class UserController extends GetxController {
   TextEditingController userNameController = TextEditingController();
   TextEditingController passController = TextEditingController();
+  String accessToken = '-1';
+  String refreshToken = '-1';
   bool textEmptyU = true;
-
+  bool flag = true;
   bool textEmptyP = true;
 
   bool checkUserNameEmpty() {
@@ -40,39 +46,22 @@ class UserController extends GetxController {
     }
 
     try {
-      http.Response response = await http.post(Uri.parse('http://192.168.137.1:8080/api/signup'),
-          headers: <String,String>
-          {
-            'Content-Type' : 'application/json'
-          },
-          body: <String , String>
-          {
-            "username": username,
-            "password": password,
-          }
-          // headers: {
-          //   '': '',
-          //   '': '',
-          // }
-          );
-      // if (response.statusCode < 300) {
-      //   Map responseMap = convert.jsonDecode(response.body);
-      //   if (!responseMap['response']) {
-      //     //username is repited!
-      //     return;
-      //   }
-      //   String token = response.body;
-      //
-      //   SharedPreferences pref = await SharedPreferences.getInstance();
-      //   await pref.setString('token', responseMap['token']);
-      //   await pref.setString('username', username);
-      //   await pref.setString('password', password);
-
-
-      //}
-    print(response.body);
-    print(response.statusCode);
+      String username = userNameController.text;
+      String password = passController.text;
+      var dio = Dio();
+      var response =
+          await dio.post('http://192.168.137.1:8080/api/signup', data: {
+        'username': username,
+        'password': password,
+      });
+      print(response.statusCode);
+      //flag = false;
+     flag = response.data['response'];
     } catch (e, s) {
+      Get.snackbar(s.toString(), e.toString(),
+          backgroundGradient:
+          LinearGradient(colors: [Colors.orangeAccent, Colors.purple]));
+      print('jjhkj');
       print(s);
       print(e);
     }
@@ -84,31 +73,34 @@ class UserController extends GetxController {
     if (userName.isEmpty) {
       return;
     }
-    if (password.isEmpty || password.length < 8) {
+    if (password.isEmpty || password.length < 0) {
       return;
     }
 
     try {
-      http.Response response = await http.post(Uri.parse(''),
-          body: convert.jsonEncode({
-            'username': userName,
-            'password': password,
-          }),
-          headers: {
-            '': '',
-            '': '',
-          });
-      String token = response.body;
+      String username = userNameController.text;
+      String password = passController.text;
+      var dio = Dio();
+      // var response  = await dio.post('http://192.168.137.1:8080/api/login' , data: {
+      //   'username' : username,
+      //   'password' : password,
+      // }
+      // );
 
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      await pref.setString('token', token);
-      await pref.setString('userName', userName);
-      await pref.setString('password', password);
-      print(response.body);
+      var response = await dio.get('http://192.168.137.1:8080/api/login',
+          queryParameters: {'username': username, 'password': password});
       print(response.statusCode);
+      accessToken = response.data['accesstoken'];
+      refreshToken = response.data['refreshtoken'];
+      //
+      // print( 'login is : ' + response.data['response']);
+      //flag = response.data['response'];
     } catch (e, s) {
       print(s);
       print(e);
+      Get.snackbar(s.toString(), e.toString(),
+          backgroundGradient:
+              LinearGradient(colors: [Colors.orangeAccent, Colors.purple]));
     }
   }
 }
