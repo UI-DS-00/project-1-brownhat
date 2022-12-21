@@ -2,6 +2,7 @@ package com.example.imdbproject.repository;
 
 
 import com.example.imdbproject.model.TitleBasic;
+import com.example.imdbproject.model.response.TitleBasicResponse;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,5 +18,4 @@ public interface TitleBasicRepository extends CrudRepository<TitleBasic, String>
 
     Optional<TitleBasic> findByPrimaryTitle (String name);
     Set<TitleBasic> findTop10ByOrderByEndYearDesc();
-
 }

@@ -33,6 +33,12 @@ public class ShowDataController {
     }
 
 
+    @GetMapping("/each/film/favoriteLists/{filmName}")
+    public ResponseEntity< Set <TitleBasicFavouriteList>> getOthersFavoriteListsByFilm(@PathVariable("filmName") String film_name){
+        return new ResponseEntity<>(showDataService.othersFavouriteList(film_name),HttpStatus.ACCEPTED);
+    }
+
+
 
     //actors and directors service function
 

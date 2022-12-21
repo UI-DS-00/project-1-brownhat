@@ -87,6 +87,35 @@ public class FilterServiceImpl implements FilterService{
 
 
 
+    @Override
+    public Set<TitleBasicResponse> filterByCrew(String name) {
+        Set<TitleBasic> filteredMovies = new HashSet<>();
+        Optional<NameBasic> inputNameBasic = nameBasicRepository.findByPrimaryName(name);
+        Set<TitleBasicResponse> filteredMoviesSummary = new HashSet<>();
+
+        filteredMovies = inputNameBasic.get().getKnownForTitles();
+
+
+
+        filteredMoviesSummary = fillingInfo(filteredMovies);
+
+        Set <TitleBasicResponse> result = new HashSet<>();
+        Boolean founded = false;
+        for (TitleBasicResponse eachFilm : filteredMoviesSummary){
+            for ( PrincipalResponse person : eachFilm.getCrew()){
+                if (person.getNameBasicSummery().getPrimaryName().equals(inputNameBasic.get().getPrimaryName()))
+                    founded = true;
+            }
+            if (founded)
+                result.add(eachFilm);
+            founded = false;
+
+        }
+
+
+        return result;
+
+    }
 
     Set<TitleBasicResponse> fillingInfo(Set<TitleBasic> films){
 
@@ -163,5 +192,7 @@ public class FilterServiceImpl implements FilterService{
         }
         return allFilms;
     }
+
+
 
 }
