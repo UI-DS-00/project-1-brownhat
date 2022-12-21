@@ -58,7 +58,7 @@ public class ShowDataController {
     }
 
     @GetMapping ("/user/showWatchList")
-    public ResponseEntity<Set<WatchListResponse>> showWatchList(Authentication authentication) {
+    public ResponseEntity<ArrayList<TitleBasicWatchList>> showWatchList(Authentication authentication) {
         return new ResponseEntity<>(userServiceImp.showWatchList(authentication.getName()),HttpStatus.OK);
     }
 

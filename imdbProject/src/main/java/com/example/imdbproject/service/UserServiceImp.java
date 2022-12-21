@@ -200,6 +200,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
             responseArray[i] = f;
             i++;
         }
+
+
         Arrays.sort(responseArray);
         favouriteListResponseSet = new ArrayList<>();
 
@@ -212,33 +214,54 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     }
 
-    public Set<WatchListResponse> showWatchList(String userId) {
+    public ArrayList<TitleBasicWatchList> showWatchList(String userId) {
+
+
 
         AllUser user = allUserRepository.findByUsername(userId).get();
         Set<WatchList> watchListSet;
         watchListSet = user.getWatchLists();
-        Set<WatchListResponse> watchListResponses = new HashSet<>();
+        ArrayList<TitleBasicWatchList> answer = new ArrayList<>();
+
+
         for (WatchList watchList : watchListSet) {
-            if (watchList.getTitleBasic() == null)
-                continue;
-            watchListResponses.add(watchList.toResponse(watchList));
+            if (watchList.getTitleBasic() == null) {
+                watchListSet.remove(watchList);
+                break;
+            }
         }
 
-        WatchListResponse[] responseArray = new WatchListResponse[watchListResponses.size()];
+
+
+        WatchList[] responseArray = new WatchList[watchListSet.size()];
         int i=0;
-        for(WatchListResponse f : watchListResponses){
+        for(WatchList f : watchListSet){
             responseArray[i] = f;
             i++;
         }
         Arrays.sort(responseArray);
-        watchListResponses = new HashSet<>();
-
-
+        TitleBasicWatchList titleBasicWatchList = new TitleBasicWatchList();
         for(i=0;i<responseArray.length;i++){
-            watchListResponses.add(responseArray[i]);
-        }
+            if (i == 0){
+                titleBasicWatchList.setName(responseArray[i].getName());
+                titleBasicWatchList.setOwnerUsername(userId);
+                titleBasicWatchList.getMovieName().add(responseArray[i].getTitleBasic().getPrimaryTitle());
 
-        return watchListResponses;
+            }
+            else if(responseArray[i].getName().equals(responseArray[i-1].getName())){
+                titleBasicWatchList.getMovieName().add(responseArray[i].getTitleBasic().getPrimaryTitle());
+            } else if (responseArray[i].getName().compareTo(responseArray[i-1].getName())!=0) {
+                answer.add(titleBasicWatchList);
+                titleBasicWatchList = new TitleBasicWatchList();
+                titleBasicWatchList.setName(responseArray[i].getName());
+                titleBasicWatchList.getMovieName().add(responseArray[i].getTitleBasic().getPrimaryTitle());
+                titleBasicWatchList.setOwnerUsername(userId);
+
+            }
+        }
+        answer.add(titleBasicWatchList);
+
+        return answer;
 
     }
 
