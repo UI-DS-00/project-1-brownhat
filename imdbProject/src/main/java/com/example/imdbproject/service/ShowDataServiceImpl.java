@@ -215,27 +215,26 @@ public class ShowDataServiceImpl implements ShowDataService {
     }
 
     @Override
-    public Set<TitleBasicResponse> filmEndYear() {
+    public ArrayList<TitleBasicResponse> filmEndYear() {
 
-        Set<TitleBasic> allFilms = titleBasicRepository.findAllByOrderByEndYearDesc();
+        ArrayList<TitleBasic> allFilms = titleBasicRepository.findAllByOrderByEndYearDesc();
 
-        Set<TitleBasicResponse> allFilms1 = new HashSet<>();
+        ArrayList<TitleBasicResponse> allFilms1 = new ArrayList<>();
 
         for (TitleBasic titleBasic : allFilms)
-            allFilms1.add(titleBasic.responseModel());
-
+            allFilms1.add(eachFilmData(titleBasic.getPrimaryTitle()));
 
         return allFilms1;
     }
 
     @Override
-    public Set<TitleBasicResponse> filmRating() {
+    public ArrayList<TitleBasicResponse> filmRating() {
 
-        Set<Rating> films = ratingRepository.findAllByOrderByAverageRateDesc();
+        ArrayList<Rating> films = ratingRepository.findAllByOrderByAverageRateDesc();
 
-        Set<TitleBasicResponse> allFilms = new HashSet<>();
+        ArrayList<TitleBasicResponse> allFilms = new ArrayList<>();
         for (Rating rating : films)
-            allFilms.add(rating.getTitleConst().responseModel());
+            allFilms.add(eachFilmData(rating.getTitleConst().getPrimaryTitle()));
 
         return allFilms;
 
@@ -329,10 +328,10 @@ public class ShowDataServiceImpl implements ShowDataService {
 
 
     @Override
-    public Set<TitleBasicFavouriteList> othersFavouriteList(String titleBasicId) {
+    public Set<TitleBasicFavouriteList> othersFavouriteList(String primaryTitle) {
 
         Set<FavouriteList> favouriteLists = favouriteListRepository.findByTitleBasic
-                (titleBasicRepository.findById(titleBasicId).get());
+                (titleBasicRepository.findByPrimaryTitle(primaryTitle).get());
 
         Set<TitleBasicFavouriteList> answer = new HashSet<>();
         Set<FavouriteList> temp;

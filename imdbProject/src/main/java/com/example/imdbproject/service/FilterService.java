@@ -12,6 +12,7 @@ public interface FilterService {
 
     Set<TitleBasicResponse> filterByActor(String nConst);
 
+    Set<TitleBasicResponse> filterByCrew(String nConst);
 
 
 }
