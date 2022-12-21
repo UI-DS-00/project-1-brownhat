@@ -1,7 +1,7 @@
 package com.example.imdbproject.model;
 
 import com.example.imdbproject.model.response.FavouriteListResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.imdbproject.model.response.TitleBasicFavouriteList;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,5 +41,17 @@ public class FavouriteList {
         favouriteListResponse.setTitleBasicResponse(favouriteList.getTitleBasic().responseModel());
         favouriteListResponse.setName(favouriteList.getName());
         return favouriteListResponse;
+    }
+
+    public static TitleBasicFavouriteList showList (Set<FavouriteList> favouriteListSet){
+
+        TitleBasicFavouriteList titleBasicFavouriteList = new TitleBasicFavouriteList();
+        for (FavouriteList favouriteList1 : favouriteListSet) {
+            titleBasicFavouriteList.getMovieName().add(favouriteList1.getTitleBasic().getPrimaryTitle());
+            titleBasicFavouriteList.setName(favouriteList1.getName());
+            titleBasicFavouriteList.setOwnerUsername(favouriteList1.getOwner().getUsername());
+
+        }
+            return titleBasicFavouriteList;
     }
 }

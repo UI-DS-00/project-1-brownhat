@@ -12,7 +12,6 @@ public interface FilterService {
 
     Set<TitleBasicResponse> filterByActor(String nConst);
 
-    Set<TitleBasicResponse> filterByRegion(String nConst);
 
 
 }

@@ -13,7 +13,7 @@ import java.util.*;
 @AllArgsConstructor
 @Service
 
-public class ShowDataServiceImpl implements ShowDataService{
+public class ShowDataServiceImpl implements ShowDataService {
 
 
     private final TitleBasicRepository titleBasicRepository;
@@ -29,7 +29,7 @@ public class ShowDataServiceImpl implements ShowDataService{
     public TitleBasicResponse allMoviesData(String tConst) {
         Optional<TitleBasic> titleBasic = titleBasicRepository.findById(tConst);
 
-        if(titleBasic.isEmpty())
+        if (titleBasic.isEmpty())
             throw new EntityNotFoundException(TitleBasic.class.getName());
 
 
@@ -121,53 +121,54 @@ public class ShowDataServiceImpl implements ShowDataService{
         Iterable<TitleBasic> films = titleBasicRepository.findAll();
 
 
-        for (TitleBasic eachFilm: films){
+        for (TitleBasic eachFilm : films) {
 
-            Set <PrincipalResponse> casts = new HashSet<>();
-            Set <PrincipalResponse> crew = new HashSet<>();
+            Set<PrincipalResponse> casts = new HashSet<>();
+            Set<PrincipalResponse> crew = new HashSet<>();
             TitleBasicResponse filmResponse = eachFilm.responseModel();
             //getting all the cast and crew
 
-            Set <Principal> principals = principalRepository.findByFilmCode(eachFilm.getTConst());
+            Set<Principal> principals = principalRepository.findByFilmCode(eachFilm.getTConst());
 
             //adding cast and crew
-            for (Principal eachPerson : principals){
+            for (Principal eachPerson : principals) {
 
                 if (eachPerson.getNConst() == null)
                     continue;
 
-                if (eachPerson.getCategory().equals("actor")  || eachPerson.getCategory().equals("actress") )
+                if (eachPerson.getCategory().equals("actor") || eachPerson.getCategory().equals("actress"))
                     casts.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
                             , eachPerson.getJob(), eachPerson.getCharacters()));
 
-                else crew.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
-                        , eachPerson.getJob(), eachPerson.getCharacters()));
+                else
+                    crew.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
+                            , eachPerson.getJob(), eachPerson.getCharacters()));
 
             }
 
             //adding the rate
             filmResponse.setRate(ratingRepository.findByTitleConst(eachFilm).responseModel());
 
-            filmResponse.setCrew( crew);
+            filmResponse.setCrew(crew);
             filmResponse.setActors(casts);
 
 
             //add comments---------------------------------------------------------------------------------
-            Set <Comment> comments = commentRepository.findByTitleBasicAndIsReply(eachFilm , false);
+            Set<Comment> comments = commentRepository.findByTitleBasicAndIsReply(eachFilm, false);
 
-            Set <Comment> addingAllSubComments = comments;
-            Set <CommentResponse> addingAllSubComments2= CommentResponse.makeCommentRespond(comments);
-            Set <CommentResponse> copy = addingAllSubComments2;
+            Set<Comment> addingAllSubComments = comments;
+            Set<CommentResponse> addingAllSubComments2 = CommentResponse.makeCommentRespond(comments);
+            Set<CommentResponse> copy = addingAllSubComments2;
 
-            while (! addingAllSubComments.isEmpty()) {
-                Set <Comment> newComments = new HashSet<>();
-                Set <CommentResponse> newComments1 = new HashSet<>();
+            while (!addingAllSubComments.isEmpty()) {
+                Set<Comment> newComments = new HashSet<>();
+                Set<CommentResponse> newComments1 = new HashSet<>();
 
                 for (CommentResponse comment : addingAllSubComments2) {
 
-                    Comment foundedComment=null;
-                    for (Comment comment1 : addingAllSubComments){
-                        if (CommentResponse.isEqual(comment1 , comment)){
+                    Comment foundedComment = null;
+                    for (Comment comment1 : addingAllSubComments) {
+                        if (CommentResponse.isEqual(comment1, comment)) {
                             foundedComment = comment1;
                             break;
                         }
@@ -196,18 +197,17 @@ public class ShowDataServiceImpl implements ShowDataService{
     }
 
 
-
     @Override
     public Set<NameBasicSummery> ActorsAndDirectors(String professions) {
 
-        Set <PrimaryProfession> primaryProfession = primaryProfessionRepository.findByProfession(professions);
-        Set <NameBasicSummery> nameBasics = new HashSet<>();
+        Set<PrimaryProfession> primaryProfession = primaryProfessionRepository.findByProfession(professions);
+        Set<NameBasicSummery> nameBasics = new HashSet<>();
 
-        for (PrimaryProfession primaryProfession1 :primaryProfession) {
-           Optional <NameBasic>  person =  nameBasicRepository.findById(primaryProfession1.getNameBasic().getNConst());
+        for (PrimaryProfession primaryProfession1 : primaryProfession) {
+            Optional<NameBasic> person = nameBasicRepository.findById(primaryProfession1.getNameBasic().getNConst());
 
-           if (person.isPresent())
-               nameBasics.add(person.get().responseModel());
+            if (person.isPresent())
+                nameBasics.add(person.get().responseModel());
         }
         return nameBasics;
 
@@ -217,9 +217,9 @@ public class ShowDataServiceImpl implements ShowDataService{
     @Override
     public Set<TitleBasicResponse> filmEndYear() {
 
-        Set <TitleBasic> allFilms= titleBasicRepository.findAllByOrderByEndYearDesc();
+        Set<TitleBasic> allFilms = titleBasicRepository.findAllByOrderByEndYearDesc();
 
-        Set <TitleBasicResponse> allFilms1 = new HashSet<>();
+        Set<TitleBasicResponse> allFilms1 = new HashSet<>();
 
         for (TitleBasic titleBasic : allFilms)
             allFilms1.add(titleBasic.responseModel());
@@ -231,9 +231,9 @@ public class ShowDataServiceImpl implements ShowDataService{
     @Override
     public Set<TitleBasicResponse> filmRating() {
 
-        Set <Rating> films = ratingRepository.findAllByOrderByAverageRateDesc();
+        Set<Rating> films = ratingRepository.findAllByOrderByAverageRateDesc();
 
-        Set <TitleBasicResponse> allFilms = new HashSet<>();
+        Set<TitleBasicResponse> allFilms = new HashSet<>();
         for (Rating rating : films)
             allFilms.add(rating.getTitleConst().responseModel());
 
@@ -242,65 +242,64 @@ public class ShowDataServiceImpl implements ShowDataService{
     }
 
     @Override
-    public Set<TitleBasicResponse> topTen() {
+    public ArrayList<TitleBasicResponse> topTen() {
 
-        Set<Rating> inputRatings= ratingRepository.findTop10ByOrderByAverageRateDesc();
-        Set<TitleBasic> filteredMovies = new HashSet<>();
-        Set<TitleBasicResponse> moviesByRating = new HashSet<>();
+        ArrayList<Rating> inputRatings = ratingRepository.findTop10ByOrderByAverageRateDesc();
+        ArrayList<TitleBasic> filteredMovies = new ArrayList<>();
+        ArrayList<TitleBasicResponse> moviesByRating = new ArrayList<>();
 
-        for (Rating rating:inputRatings)
+        for (Rating rating : inputRatings)
             filteredMovies.add(rating.getTitleConst());
 
 
+        for (TitleBasic eachFilm : filteredMovies) {
 
-
-        for (TitleBasic eachFilm: filteredMovies){
-
-            Set <PrincipalResponse> casts = new HashSet<>();
-            Set <PrincipalResponse> crew = new HashSet<>();
+            Set<PrincipalResponse> casts = new HashSet<>();
+            Set<PrincipalResponse> crew = new HashSet<>();
             TitleBasicResponse filmResponse = eachFilm.responseModel();
             //getting all the cast and crew
 
-            Set <Principal> principals = principalRepository.findByFilmCode(eachFilm.getTConst());
+            Set<Principal> principals = principalRepository.findByFilmCode(eachFilm.getTConst());
 
             //adding cast and crew
-            for (Principal eachPerson : principals){
+            for (Principal eachPerson : principals) {
 
                 if (eachPerson.getNConst() == null)
                     continue;
 
-                if (eachPerson.getCategory().equals("actor")  || eachPerson.getCategory().equals("actress") )
+                if (eachPerson.getCategory().equals("actor") || eachPerson.getCategory().equals("actress"))
                     casts.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
                             , eachPerson.getJob(), eachPerson.getCharacters()));
 
-                else crew.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
-                        , eachPerson.getJob(), eachPerson.getCharacters()));
+                else
+                    crew.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
+                            , eachPerson.getJob(), eachPerson.getCharacters()));
 
             }
 
             //adding the rate
             filmResponse.setRate(ratingRepository.findByTitleConst(eachFilm).responseModel());
 
-            filmResponse.setCrew( crew);
+            filmResponse.setCrew(crew);
             filmResponse.setActors(casts);
 
 
             //add comments---------------------------------------------------------------------------------
-            Set <Comment> comments = commentRepository.findByTitleBasicAndIsReply(eachFilm , false);
+            Set<Comment> comments = commentRepository.findByTitleBasicAndIsReply(eachFilm, false);
 
-            Set <Comment> addingAllSubComments = comments;
-            Set <CommentResponse> addingAllSubComments2= CommentResponse.makeCommentRespond(comments);
-            Set <CommentResponse> copy = addingAllSubComments2;
+            Set<Comment> addingAllSubComments = comments;
+            Set<CommentResponse> addingAllSubComments2 = CommentResponse.makeCommentRespond(comments);
+            Set<CommentResponse> copy = addingAllSubComments2;
 
-            while (! addingAllSubComments.isEmpty()) {
-                Set <Comment> newComments = new HashSet<>();
-                Set <CommentResponse> newComments1 = new HashSet<>();
+            while (!addingAllSubComments.isEmpty()) {
+                Set<Comment> newComments = new HashSet<>();
+                Set<CommentResponse> newComments1 = new HashSet<>();
 
                 for (CommentResponse comment : addingAllSubComments2) {
 
-                    Comment foundedComment=null;
-                    for (Comment comment1 : addingAllSubComments){
-                        if (CommentResponse.isEqual(comment1 , comment)){
+                    Comment foundedComment = null;
+                    for (Comment comment1 : addingAllSubComments) {
+                        if (CommentResponse.isEqual(comment1, comment)) {
                             foundedComment = comment1;
                             break;
                         }
@@ -325,25 +324,32 @@ public class ShowDataServiceImpl implements ShowDataService{
         }
 
 
-
         return moviesByRating;
     }
 
 
     @Override
-    public Set<FavouriteListResponse> othersFavouriteList(String titleBasicId) {
+    public Set<TitleBasicFavouriteList> othersFavouriteList(String titleBasicId) {
 
-        TitleBasic titleBasic = titleBasicRepository.findById(titleBasicId).get();
-        Set<FavouriteList> favouriteLists;
-        favouriteLists = titleBasic.getFavouriteLists();
+        Set<FavouriteList> favouriteLists = favouriteListRepository.findByTitleBasic
+                (titleBasicRepository.findById(titleBasicId).get());
 
-        Set<FavouriteListResponse> favouriteListResponseSet = new HashSet<>();
+        Set<TitleBasicFavouriteList> answer = new HashSet<>();
+        Set<FavouriteList> temp;
         for (FavouriteList favouriteList : favouriteLists) {
-            favouriteListResponseSet.add(favouriteList.toResponse(favouriteList));
+            if (favouriteList.getTitleBasic() == null) {
+                continue;
+            }
+            temp = favouriteListRepository.findAllByNameAndOwner(favouriteList.getName(), favouriteList.getOwner());
+                for (FavouriteList tempCheck:temp) {
+                    if (tempCheck.getTitleBasic() == null) {
+                        temp.remove(tempCheck);
+                        break;
+                    }
+                }
+                answer.add(FavouriteList.showList(temp));
+
         }
-
-        return favouriteListResponseSet;
+        return answer;
     }
-
-
 }

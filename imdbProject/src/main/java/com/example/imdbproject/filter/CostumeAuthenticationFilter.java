@@ -47,6 +47,7 @@ public class CostumeAuthenticationFilter extends UsernamePasswordAuthenticationF
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         //This is the way we reach username and password
         String username = request.getParameter("username");
+        var a = request.getParameterMap();
         String password = request.getParameter("password");
         log.info("username id: {}" , username);
         log.info("password id: {}" , password);

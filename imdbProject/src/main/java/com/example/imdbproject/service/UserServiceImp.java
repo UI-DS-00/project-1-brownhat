@@ -41,10 +41,10 @@ import javax.transaction.Transactional;
 public class UserServiceImp implements UserService, UserDetailsService {
     private final GenreRepository genreRepository;
 
-
+    private final NameBasicRepository nameBasicRepository;
     private final RatingRepository ratingRepository;
     private final WatchListRepository watchListRepository;
-
+    private final PrincipalRepository principalRepository;
     private final FavouriteListRepository favouriteListRepository;
     private final CommentRepository commentRepository;
     private final TitleBasicRepository titleBasicRepository;
@@ -109,34 +109,40 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
 
     @Override
-    public Boolean makeWatchList(String name, String username) {
+    public BooleanResponse makeWatchList(String name, String username) {
         Optional<AllUser> user = allUserRepository.findByUsername(username);
-        BooleanResponse booleanResponse;
         try {
+            if(watchListRepository.findByNameAndOwner(name,user.get()).isPresent())
+                return new BooleanResponse(false);
             WatchList newWatchList = WatchList.builder().name(name).owner( user.get()).build();
             watchListRepository.save(newWatchList);
-            booleanResponse = new BooleanResponse(true);
+            return new BooleanResponse(true);
         }catch (Exception e) {
-            booleanResponse = new BooleanResponse(false);
+            return new BooleanResponse(false);
         }
-        return booleanResponse.getResponse();
     }
 
     @Override
-    public Boolean addFilmToWatchList( String watchlistName, String titleBasicId , String username) {
+    public BooleanResponse addFilmToWatchList( String watchlistName, String titleBasicId , String username) {
 
         try {
 
             AllUser user = allUserRepository.findByUsername(username).get();
             TitleBasic film = titleBasicRepository.findById(titleBasicId).get();
 
-            WatchList watchList = WatchList.builder().owner(user).
-                    name(watchlistName).titleBasic(film).build();
-            watchListRepository.save(watchList);
-            return true;
-        }catch (Exception e) {
+            if (watchListRepository.findByName(watchlistName).isPresent()) {
+                if (watchListRepository.findByOwnerAndNameAndTitleBasic(user, watchlistName, film).isPresent())
+                    return new BooleanResponse(false);
+
+                WatchList watchList = WatchList.builder().owner(user).
+                        name(watchlistName).titleBasic(film).build();
+                watchListRepository.save(watchList);
+                return new BooleanResponse(true);
+            } else
+                return new BooleanResponse(false);
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-            return false;
+            return new BooleanResponse(false);
         }
     }
 
@@ -145,6 +151,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
         Optional<AllUser> user = allUserRepository.findByUsername(username);
         BooleanResponse booleanResponse;
         try {
+            if(favouriteListRepository.findByOwnerAndName(user.get(),name).isPresent())
+                return new BooleanResponse(false);
             FavouriteList newFavouriteList = FavouriteList.builder().name(name).owner( user.get()).build();
             favouriteListRepository.save(newFavouriteList);
             booleanResponse = new BooleanResponse(true);
@@ -163,17 +171,24 @@ public class UserServiceImp implements UserService, UserDetailsService {
             AllUser user = allUserRepository.findByUsername(username).get();
             TitleBasic film = titleBasicRepository.findById(titleBasicId).get();
 
-            FavouriteList favouriteList = FavouriteList.builder().owner(user).name(favouriteListName).
-                    titleBasic(film).build();
-            favouriteListRepository.save(favouriteList);
-            return new BooleanResponse(false);
+            if (favouriteListRepository.findByName(favouriteListName).isPresent()) {
+                if (favouriteListRepository.findByOwnerAndNameAndTitleBasic(user,favouriteListName,film).isPresent())
+                    return new BooleanResponse(false);
+                else {
+                    FavouriteList favouriteList = FavouriteList.builder().owner(user).name(favouriteListName).
+                            titleBasic(film).build();
+                    favouriteListRepository.save(favouriteList);
+                    return new BooleanResponse(true);
+                }
+            }else
+                return new BooleanResponse(false);
         }catch (Exception e) {
-            return new BooleanResponse(true);
+            return new BooleanResponse(false);
         }
     }
 
     @Override
-    public ArrayList<FavouriteListResponse> showPersonalFavouriteList(String userId) {
+    public ArrayList<FavouriteListResponse> showFavouriteList(String userId) {
 
         AllUser user = allUserRepository.findByUsername(userId).get();
         Set<FavouriteList> favouriteLists;
@@ -191,6 +206,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
             responseArray[i] = f;
             i++;
         }
+
+
         Arrays.sort(responseArray);
         favouriteListResponseSet = new ArrayList<>();
 
@@ -203,34 +220,54 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     }
 
+    public ArrayList<TitleBasicWatchList> showWatchList(String userId) {
 
-    public Set<WatchListResponse> showWatchList(String userId) {
+
 
         AllUser user = allUserRepository.findByUsername(userId).get();
         Set<WatchList> watchListSet;
         watchListSet = user.getWatchLists();
-        Set<WatchListResponse> watchListResponses = new HashSet<>();
+        ArrayList<TitleBasicWatchList> answer = new ArrayList<>();
+
+
         for (WatchList watchList : watchListSet) {
-            if (watchList.getTitleBasic() == null)
-                continue;
-            watchListResponses.add(watchList.toResponse(watchList));
+            if (watchList.getTitleBasic() == null) {
+                watchListSet.remove(watchList);
+                break;
+            }
         }
 
-        WatchListResponse[] responseArray = new WatchListResponse[watchListResponses.size()];
+
+
+        WatchList[] responseArray = new WatchList[watchListSet.size()];
         int i=0;
-        for(WatchListResponse f : watchListResponses){
+        for(WatchList f : watchListSet){
             responseArray[i] = f;
             i++;
         }
         Arrays.sort(responseArray);
-        watchListResponses = new HashSet<>();
-
-
+        TitleBasicWatchList titleBasicWatchList = new TitleBasicWatchList();
         for(i=0;i<responseArray.length;i++){
-            watchListResponses.add(responseArray[i]);
-        }
+            if (i == 0){
+                titleBasicWatchList.setName(responseArray[i].getName());
+                titleBasicWatchList.setOwnerUsername(userId);
+                titleBasicWatchList.getMovieName().add(responseArray[i].getTitleBasic().getPrimaryTitle());
 
-        return watchListResponses;
+            }
+            else if(responseArray[i].getName().equals(responseArray[i-1].getName())){
+                titleBasicWatchList.getMovieName().add(responseArray[i].getTitleBasic().getPrimaryTitle());
+            } else if (responseArray[i].getName().compareTo(responseArray[i-1].getName())!=0) {
+                answer.add(titleBasicWatchList);
+                titleBasicWatchList = new TitleBasicWatchList();
+                titleBasicWatchList.setName(responseArray[i].getName());
+                titleBasicWatchList.getMovieName().add(responseArray[i].getTitleBasic().getPrimaryTitle());
+                titleBasicWatchList.setOwnerUsername(userId);
+
+            }
+        }
+        answer.add(titleBasicWatchList);
+
+        return answer;
 
     }
 
@@ -239,6 +276,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Override
     public Boolean reply(String reCommentText, String username,Long commentId) {
 
+        //reply comment
         try {
 
             Comment reComment = new Comment();
@@ -298,7 +336,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
 
         AllUser user = allUserRepository.findByUsername(username).get();
-        ArrayList<FavouriteListResponse> favouriteListResponse = showPersonalFavouriteList(username);
+        ArrayList<FavouriteListResponse> favouriteListResponse = showFavouriteList(username);
         Map <String,Integer> favoriteGenres = new HashMap<>();
 
         for (FavouriteListResponse favouriteList : favouriteListResponse){
@@ -437,5 +475,83 @@ public class UserServiceImp implements UserService, UserDetailsService {
         allUserList =  allUserRepository.findAll();
         return allUserList;
     }
+
+
+    Set<TitleBasicResponse> fillingInfo(Set<TitleBasic> films){
+
+        Set<TitleBasicResponse> allFilms = new HashSet<>();
+
+        for (TitleBasic eachFilm: films){
+
+            Set <PrincipalResponse> casts = new HashSet<>();
+            Set <PrincipalResponse> crew = new HashSet<>();
+            TitleBasicResponse filmResponse = eachFilm.responseModel();
+            //getting all the cast and crew
+
+            Set <Principal> principals = principalRepository.findByFilmCode(eachFilm.getTConst());
+
+            //adding cast and crew
+            for (Principal eachPerson : principals){
+
+                if (eachPerson.getNConst() == null)
+                    continue;
+
+                if (eachPerson.getCategory().equals("actor")  || eachPerson.getCategory().equals("actress") )
+                    casts.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
+                            , eachPerson.getJob(), eachPerson.getCharacters()));
+
+                else crew.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
+                        , eachPerson.getJob(), eachPerson.getCharacters()));
+
+            }
+
+            //adding the rate
+            filmResponse.setRate(ratingRepository.findByTitleConst(eachFilm).responseModel());
+
+            filmResponse.setCrew( crew);
+            filmResponse.setActors(casts);
+
+
+            //add comments---------------------------------------------------------------------------------
+            Set <Comment> comments = commentRepository.findByTitleBasicAndIsReply(eachFilm , false);
+
+            Set <Comment> addingAllSubComments = comments;
+            Set <CommentResponse> addingAllSubComments2= CommentResponse.makeCommentRespond(comments);
+            Set <CommentResponse> copy = addingAllSubComments2;
+
+            while (! addingAllSubComments.isEmpty()) {
+                Set <Comment> newComments = new HashSet<>();
+                Set <CommentResponse> newComments1 = new HashSet<>();
+
+                for (CommentResponse comment : addingAllSubComments2) {
+
+                    Comment foundedComment=null;
+                    for (Comment comment1 : addingAllSubComments){
+                        if (CommentResponse.isEqual(comment1 , comment)){
+                            foundedComment = comment1;
+                            break;
+                        }
+                    }
+                    Set<Comment> replies = commentRepository.findByReplyForMainComment(foundedComment);
+
+                    comment.setReplies(CommentResponse.makeCommentRespond(replies));
+
+
+                    newComments.addAll(replies);
+                    newComments1.addAll(comment.getReplies());
+
+                }
+
+                addingAllSubComments = newComments;
+                addingAllSubComments2 = newComments1;
+            }
+
+            filmResponse.setComments(copy);
+
+            allFilms.add(filmResponse);
+        }
+        return allFilms;
+    }
+
 
 }

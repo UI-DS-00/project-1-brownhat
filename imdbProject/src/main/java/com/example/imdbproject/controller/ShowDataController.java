@@ -1,11 +1,9 @@
 package com.example.imdbproject.controller;
 
 
-import com.example.imdbproject.model.FavouriteList;
 import com.example.imdbproject.model.request.Input;
 import com.example.imdbproject.model.response.*;
 import com.example.imdbproject.service.ShowDataServiceImpl;
-import com.example.imdbproject.service.UserService;
 import com.example.imdbproject.service.UserServiceImp;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -57,17 +55,17 @@ public class ShowDataController {
     }
 
     @GetMapping ("/others/favouriteList")
-    public ResponseEntity<Set<FavouriteListResponse>> getFavouriteLists(@RequestBody Input input) {
+    public ResponseEntity<Set<TitleBasicFavouriteList>> getFavouriteLists(@RequestBody Input input) {
         return new ResponseEntity<>(showDataService.othersFavouriteList(input.getInput()),HttpStatus.OK);
         //return new ResponseEntity<>(showDataService.othersFavouriteList("tt0012349"),HttpStatus.OK);
     }
     @GetMapping ("/user/showFavouriteList")
     public ResponseEntity<ArrayList<FavouriteListResponse>> showFavouriteList(Authentication authentication) {
-        return new ResponseEntity<>(userServiceImp.showPersonalFavouriteList(authentication.getName()),HttpStatus.OK);
+        return new ResponseEntity<>(userServiceImp.showFavouriteList(authentication.getName()),HttpStatus.OK);
     }
 
     @GetMapping ("/user/showWatchList")
-    public ResponseEntity<Set<WatchListResponse>> showWatchList(Authentication authentication) {
+    public ResponseEntity<ArrayList<TitleBasicWatchList>> showWatchList(Authentication authentication) {
         return new ResponseEntity<>(userServiceImp.showWatchList(authentication.getName()),HttpStatus.OK);
     }
 
@@ -77,7 +75,7 @@ public class ShowDataController {
     }
 
     @GetMapping("/topTen")
-    public ResponseEntity<Set<TitleBasicResponse>> showTopTen(){
+    public ResponseEntity<ArrayList<TitleBasicResponse>> showTopTen(){
         return new ResponseEntity<>(showDataService.topTen() , HttpStatus.OK);
     }
 

@@ -103,9 +103,11 @@ public class UserServiceController {
     public ResponseEntity<BooleanResponse> makeWatchList(Authentication authentication,@RequestBody Input input){
 
         BooleanResponse check;
-
-        check = new BooleanResponse(userServiceImp.makeWatchList(input.getInput(),authentication.getName()));
-
+        try {
+            check = new BooleanResponse(userServiceImp.makeWatchList(input.getInput(),authentication.getName()).getResponse());
+        } catch (DuplicateName duplicateName){
+            check = new BooleanResponse(false);
+        }
 
         return new ResponseEntity<>(check , HttpStatus.OK);
     }
@@ -115,7 +117,7 @@ public class UserServiceController {
 
         BooleanResponse check;
         try {
-            check = new BooleanResponse(userServiceImp.addFilmToWatchList( input.getListName(),input.getFilmId(),authentication.getName()));
+            check = new BooleanResponse(userServiceImp.addFilmToWatchList( input.getListName(),input.getFilmId(),authentication.getName()).getResponse());
         } catch (DuplicateName duplicateName){
             check = new BooleanResponse(false);
         }
