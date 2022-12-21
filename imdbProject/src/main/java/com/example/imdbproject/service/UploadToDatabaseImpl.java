@@ -6,18 +6,15 @@ import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @AllArgsConstructor
 @Service
+
 public class UploadToDatabaseImpl <T> {
 
     //String s = \N;
@@ -180,6 +177,15 @@ public class UploadToDatabaseImpl <T> {
                 titleBasicTemp = new TitleBasic();
             }
         }
+
+        Random random = new Random();
+        int day = random.nextInt(1,30);
+
+        int month = random.nextInt(1,12);
+
+        nameBasic.setBirthDay(day);
+        nameBasic.setBirthMonth(month);
+
 
         nameBasic.setKnownForTitles(titleBasics);
         nameBasicRepository.save(nameBasic);

@@ -329,10 +329,10 @@ public class ShowDataServiceImpl implements ShowDataService {
 
 
     @Override
-    public Set<TitleBasicFavouriteList> othersFavouriteList(String titleBasicId) {
+    public Set<TitleBasicFavouriteList> othersFavouriteList(String primaryTitle) {
 
         Set<FavouriteList> favouriteLists = favouriteListRepository.findByTitleBasic
-                (titleBasicRepository.findById(titleBasicId).get());
+                (titleBasicRepository.findByPrimaryTitle(primaryTitle).get());
 
         Set<TitleBasicFavouriteList> answer = new HashSet<>();
         Set<FavouriteList> temp;
@@ -352,4 +352,8 @@ public class ShowDataServiceImpl implements ShowDataService {
         }
         return answer;
     }
+
+
+
+
 }

@@ -25,6 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import com.example.imdbproject.model.*;
@@ -271,8 +272,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     }
 
-
-
     @Override
     public Boolean reply(String reCommentText, String username,Long commentId) {
 
@@ -475,6 +474,29 @@ public class UserServiceImp implements UserService, UserDetailsService {
         allUserList =  allUserRepository.findAll();
         return allUserList;
     }
+
+
+    public BirthResponse nameBasicBirthdays(){
+
+        LocalDate localDate = LocalDate.now();
+        String[] date = localDate.toString().split("-");
+
+        Set<NameBasic> input = nameBasicRepository.findByBirthDayAndBirthMonth
+                (Integer.parseInt(date[2]),Integer.parseInt(date[1]));
+
+        BirthResponse birthResponse = new BirthResponse();
+        for(NameBasic nameBasic : input){
+            birthResponse.getNames().add(nameBasic.getPrimaryName());
+
+        }
+        birthResponse.setBirthDay(date[1]+" / "+date[2]);
+
+        return birthResponse;
+    }
+
+
+
+
 
 
     Set<TitleBasicResponse> fillingInfo(Set<TitleBasic> films){

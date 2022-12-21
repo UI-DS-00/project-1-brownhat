@@ -1,6 +1,7 @@
 package com.example.imdbproject.controller;
 
 
+import com.example.imdbproject.model.NameBasic;
 import com.example.imdbproject.model.request.Input;
 import com.example.imdbproject.model.response.*;
 import com.example.imdbproject.service.ShowDataServiceImpl;
@@ -66,6 +67,7 @@ public class ShowDataController {
 
     @GetMapping ("/user/showWatchList")
     public ResponseEntity<ArrayList<TitleBasicWatchList>> showWatchList(Authentication authentication) {
+        userServiceImp.nameBasicBirthdays();
         return new ResponseEntity<>(userServiceImp.showWatchList(authentication.getName()),HttpStatus.OK);
     }
 
@@ -77,6 +79,11 @@ public class ShowDataController {
     @GetMapping("/topTen")
     public ResponseEntity<ArrayList<TitleBasicResponse>> showTopTen(){
         return new ResponseEntity<>(showDataService.topTen() , HttpStatus.OK);
+    }
+
+    @GetMapping("/showBirthdays")
+    public ResponseEntity<BirthResponse> birthday(){
+        return new ResponseEntity<>(userServiceImp.nameBasicBirthdays() , HttpStatus.OK);
     }
 
 }
