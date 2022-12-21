@@ -57,6 +57,7 @@ public class ShowDataController {
     //actors and directors service function
 
     @GetMapping ("/actors")
+    //actors controller
     public ResponseEntity<Set<NameBasicSummery>> getActors() {
         return new ResponseEntity<>(showDataService.ActorsAndDirectors("actor"),HttpStatus.OK);
     }
