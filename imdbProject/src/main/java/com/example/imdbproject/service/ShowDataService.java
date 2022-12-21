@@ -14,9 +14,9 @@ public interface ShowDataService {
 
     Set<TitleBasicResponse> allMoviesData();
 
-    Set <TitleBasicResponse> filmEndYear();
+    ArrayList<TitleBasicResponse> filmEndYear();
 
-    Set <TitleBasicResponse> filmRating();
+    ArrayList<TitleBasicResponse> filmRating();
 
     ArrayList<TitleBasicResponse> topTen();
 
