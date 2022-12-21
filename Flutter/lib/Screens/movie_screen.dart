@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Controllers/movie_controller.dart';
+import 'package:flutter_app/Screens/Movie_details_screen.dart';
+import 'package:flutter_app/models/movie.dart';
 import 'package:flutter_app/widgets/base_widget.dart';
 import 'package:get/get.dart';
 
@@ -24,12 +26,14 @@ class MovieScreen extends GetView<MovieController> {
             itemCount: controller.movieList.length + 20,
             separatorBuilder: (context, index) => const Divider(),
             itemBuilder: (context, index) {
+              Movie M = controller.movieList[index];
               return ListTile(
                 leading: const Icon(Icons.question_mark),
                 title: const Text('temp'),
                 onTap: ()
                 {
-                  Get.snackbar('OK', 'DONE!');
+                  GetPage(name : '/MovieDetailsScreen' , page: ()=>  MovieDetailsScreen());
+                  Get.toNamed("/MovieDetailsScreen" , arguments: M);
                 },
               );
             },
