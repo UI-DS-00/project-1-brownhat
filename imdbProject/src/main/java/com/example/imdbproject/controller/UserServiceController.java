@@ -49,17 +49,6 @@ public class UserServiceController {
     public void makeRating(Authentication authentication , @RequestBody RatingRequest ratingAmount) {
         userService.rating(ratingAmount.getFilmTConst(), ratingAmount.getAmountOfRating(), authentication.getName());
     }
-//    @PostMapping("/user/make/watchlist")
-//    public void makeWatchList(Authentication authentication , @RequestBody Input watch_name ) {
-//        userService.makeWatchList(authentication.getName() , watch_name.getInput() );
-//    }
-//
-//
-//    @PostMapping("/user/add/to/watchlist")
-//    public void addToWatchList(Authentication authentication , @RequestBody AddingWatchList addingWatchList) {
-//        userServiceImp.addFilmToWatchList(addingWatchList.getWatchListName() , addingWatchList.getFilmId() , authentication.getName());
-//    }
-
 
     @PostMapping("/user/add/new/comment")
     //"/user/add/new/comment/{titleBasic}/{id}"
@@ -151,18 +140,6 @@ public class UserServiceController {
 
         return new ResponseEntity<>(check , HttpStatus.OK);
     }
-
-//    @GetMapping ("/user/showFavouriteList")
-//    public ResponseEntity<Set<FavouriteListResponse>> getUserFavouriteLists(Authentication authentication) {
-//        return new ResponseEntity<>(userServiceImp.showPersonalFavouriteList(authentication.getName()),HttpStatus.OK);
-//    }
-//
-//
-//    @GetMapping ("/user/showWatchList")
-//    public ResponseEntity<Set<FavouriteListResponse>> getUserFavouriteLists(Authentication authentication) {
-//        return new ResponseEntity<>(userServiceImp.showPersonalFavouriteList(authentication.getName()),HttpStatus.OK);
-//    }
-
 
 
 

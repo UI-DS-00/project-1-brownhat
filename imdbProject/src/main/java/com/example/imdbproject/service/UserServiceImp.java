@@ -3,6 +3,7 @@ package com.example.imdbproject.service;
 import com.example.imdbproject.exceptions.DuplicateName;
 import com.example.imdbproject.exceptions.WrongInput;
 import com.example.imdbproject.exceptions.ratingOutOfBound;
+import com.example.imdbproject.filter.CostumeAuthenticationFilter;
 import com.example.imdbproject.model.AllUser;
 import com.example.imdbproject.model.Rating;
 import com.example.imdbproject.model.TitleBasic;
@@ -11,6 +12,9 @@ import com.example.imdbproject.model.response.*;
 import com.example.imdbproject.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.dynamic.DynamicType;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -25,6 +29,7 @@ import java.util.*;
 
 import com.example.imdbproject.model.*;
 
+import javax.swing.*;
 import javax.transaction.Transactional;
 
 
@@ -45,6 +50,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     private final TitleBasicRepository titleBasicRepository;
     private final AllUserRepository allUserRepository;
     private final RoleRepository roleRepository;
+
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
@@ -297,7 +303,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     public void addComment(String username, String commentText, String titleBasicId) {
 
         Optional<AllUser> user = allUserRepository.findByUsername(username);
-        Optional <TitleBasic> movie = titleBasicRepository.findById(titleBasicId);
+        Optional <TitleBasic> movie = titleBasicRepository.findByPrimaryTitle(titleBasicId);
 
         if (user.isEmpty() || movie.isEmpty())
             throw new WrongInput("wrong user id or movie id");

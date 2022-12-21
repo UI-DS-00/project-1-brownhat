@@ -37,6 +37,83 @@ public class ShowDataServiceImpl implements ShowDataService {
 
     }
 
+
+    @Override
+    public TitleBasicResponse eachFilmData(String filmName) {
+
+        Optional <TitleBasic> eachFilm = titleBasicRepository.findByPrimaryTitle(filmName);
+
+        if (eachFilm.isEmpty())
+            throw new NoSuchElementException("no such film was found");
+
+        Set <PrincipalResponse> casts = new HashSet<>();
+        Set <PrincipalResponse> crew = new HashSet<>();
+        TitleBasicResponse filmResponse = eachFilm.get().responseModel();
+        //getting all the cast and crew
+
+        Set <Principal> principals = principalRepository.findByFilmCode(eachFilm.get().getTConst());
+
+        //adding cast and crew
+        for (Principal eachPerson : principals){
+
+            if (eachPerson.getNConst() == null)
+                continue;
+
+            if (eachPerson.getCategory().equals("actor")  || eachPerson.getCategory().equals("actress") )
+                casts.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
+                        , eachPerson.getJob(), eachPerson.getCharacters()));
+
+            else crew.add(new PrincipalResponse(nameBasicRepository.findById(eachPerson.getNConst().getNConst()).get().responseModel()
+                    , eachPerson.getJob(), eachPerson.getCharacters()));
+
+        }
+
+        //adding the rate
+        filmResponse.setRate(ratingRepository.findByTitleConst(eachFilm.get()).responseModel());
+
+        filmResponse.setCrew( crew);
+        filmResponse.setActors(casts);
+
+
+        //add comments---------------------------------------------------------------------------------
+        Set <Comment> comments = commentRepository.findByTitleBasicAndIsReply(eachFilm.get() , false);
+
+        Set <Comment> addingAllSubComments = comments;
+        Set <CommentResponse> addingAllSubComments2= CommentResponse.makeCommentRespond(comments);
+        Set <CommentResponse> copy = addingAllSubComments2;
+
+        while (! addingAllSubComments.isEmpty()) {
+            Set <Comment> newComments = new HashSet<>();
+            Set <CommentResponse> newComments1 = new HashSet<>();
+
+            for (CommentResponse comment : addingAllSubComments2) {
+
+                Comment foundedComment=null;
+                for (Comment comment1 : addingAllSubComments){
+                    if (CommentResponse.isEqual(comment1 , comment)){
+                        foundedComment = comment1;
+                        break;
+                    }
+                }
+                Set<Comment> replies = commentRepository.findByReplyForMainComment(foundedComment);
+
+                comment.setReplies(CommentResponse.makeCommentRespond(replies));
+
+
+                newComments.addAll(replies);
+                newComments1.addAll(comment.getReplies());
+
+            }
+
+            addingAllSubComments = newComments;
+            addingAllSubComments2 = newComments1;
+        }
+
+        filmResponse.setComments(copy);
+
+        return filmResponse;
+    }
+
     @Override
     public Set<TitleBasicResponse> allMoviesData() {
 

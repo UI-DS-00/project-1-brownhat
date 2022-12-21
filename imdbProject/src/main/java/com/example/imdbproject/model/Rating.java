@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.text.DecimalFormat;
 
 @Entity
 @NoArgsConstructor
@@ -50,7 +51,11 @@ class Rating {
 
     public RateResponse responseModel(){
 
-        return new RateResponse(averageRate , vote_numbers);
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        Float f = Float.valueOf(df.format(averageRate));
+
+        return new RateResponse(f , vote_numbers);
     }
 
    }
