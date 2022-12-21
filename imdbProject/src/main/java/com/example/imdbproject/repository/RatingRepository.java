@@ -11,9 +11,10 @@ import java.util.Set;
 
 public interface RatingRepository extends JpaRepository<Rating, String> {
 
-    Set<Rating> findAllByOrderByAverageRateDesc();
+    ArrayList<Rating> findAllByOrderByAverageRateDesc();
 
     ArrayList<Rating> findTop10ByOrderByAverageRateDesc();
 
     Rating findByTitleConst(TitleBasic titleBasic);
+
 }

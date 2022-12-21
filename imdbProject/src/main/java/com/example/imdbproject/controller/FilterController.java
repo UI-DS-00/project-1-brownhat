@@ -34,4 +34,10 @@ public class FilterController {
     }
 
 
+    @GetMapping("/crew")
+    public ResponseEntity<Set<TitleBasicResponse>> getFilmsByCrew(@RequestBody Input input){
+        return new ResponseEntity<>(filterService.filterByCrew(input.getInput()), HttpStatus.OK);
+    }
+
+
 }

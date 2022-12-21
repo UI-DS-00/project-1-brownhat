@@ -34,6 +34,25 @@ public class ShowDataController {
     }
 
 
+    @GetMapping("/each/film/favoriteLists/{filmName}")
+    public ResponseEntity< Set <TitleBasicFavouriteList>> getOthersFavoriteListsByFilm(@PathVariable("filmName") String film_name){
+        return new ResponseEntity<>(showDataService.othersFavouriteList(film_name),HttpStatus.ACCEPTED);
+    }
+
+
+    @GetMapping("/films/all/rating")
+    public ResponseEntity< ArrayList <TitleBasicResponse>> AllFilmsRatingOrder(){
+        return new ResponseEntity<>(showDataService.filmRating(),HttpStatus.OK);
+    }
+
+
+    @GetMapping("/films/all/year")
+    public ResponseEntity< ArrayList <TitleBasicResponse>> AllFilmsYearOrder(){
+        return new ResponseEntity<>(showDataService.filmEndYear(),HttpStatus.OK);
+    }
+
+
+
 
     //actors and directors service function
 
