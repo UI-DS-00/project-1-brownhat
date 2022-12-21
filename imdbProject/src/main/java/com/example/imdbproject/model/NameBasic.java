@@ -2,6 +2,7 @@ package com.example.imdbproject.model;
 
 
 import com.example.imdbproject.model.response.NameBasicSummery;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,8 +33,13 @@ class NameBasic{
     private int birthYear;
     private int deathYear;
 
+    private int birthDay;
 
-    @OneToMany
+    private int birthMonth;
+
+    @OneToMany(mappedBy = "nameBasic")
+    @ToString.Exclude
+    @JsonIgnore
     private Set<PrimaryProfession> primaryProfessions;
 
     @ManyToMany

@@ -1,5 +1,6 @@
 package com.example.imdbproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,10 +20,10 @@ public class PrimaryProfession {
     private Integer id;
 
 
-    @ManyToOne
-//    @JoinColumn(name = "name_basic_primary_professions")
+    @ManyToOne()
+    @ToString.Exclude
+    @JsonIgnore
     private NameBasic nameBasic;
-
     private String profession;
 
 }

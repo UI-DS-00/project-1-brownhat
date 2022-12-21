@@ -16,4 +16,6 @@ public interface NameBasicRepository extends JpaRepository<NameBasic, String> {
 
 
     Optional<NameBasic> findByPrimaryName(String name);
+
+    Set<NameBasic> findByBirthDayAndBirthMonth(int i1,int i2);
 }
